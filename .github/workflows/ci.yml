@@ -21,5 +21,7 @@ jobs:
           use-mathlib-cache: true
           leanchecker: true
           nanoda: false
-      - name: Compile the proof endpoint with warnings as errors
+      - name: Compile the odd-order endpoint with warnings as errors
         run: lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
+      - name: Compile the alternating endpoint with warnings as errors
+        run: lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean

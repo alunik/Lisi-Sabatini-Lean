@@ -1,7 +1,11 @@
 import LisiSabatini.OddOrderProof
+import LisiSabatini.Alternating
 
 /-!
-# Lisi--Sabatini for finite soluble groups of odd order
+# Lisi--Sabatini for odd-order soluble and large alternating groups
 
-Minimal library entrypoint for the code-only odd-order formalization.
+The library exposes the odd-order soluble theorem and the fully
+kernel-checked alternating-group theorem
+`hasLisiSabatini_alternatingGroup_ge_forty`, valid in every degree at least
+forty.
 -/
