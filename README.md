@@ -1,29 +1,99 @@
-# Lisi–Sabatini: odd-order soluble and large alternating groups
+# Formalized Sylow-intersection results
 
-This Lean 4/mathlib project formalizes two cases of the Lisi–Sabatini
-conjecture:
+This Lean 4/mathlib project contains two related but distinct developments.
+The first concerns the original Lisi–Sabatini conjecture. The second concerns
+the mixed three-intersection problem and Huang's same-row specialization; it
+should not be identified with the Lisi–Sabatini conjecture.
 
-- finite soluble groups of odd order; and
-- alternating groups `A_n` in every degree `n ≥ 40`.
+| Problem | Formalized range | Main endpoint |
+| --- | --- | --- |
+| Original Lisi–Sabatini property | finite solvable groups of odd order | `hasLisiSabatini_of_solvable_of_odd` |
+| Original Lisi–Sabatini property | alternating groups `A_n`, `n ≥ 40` | `hasLisiSabatini_alternatingGroup_ge_forty` |
+| Mixed three-intersection synchronization | all finite solvable groups | `mixedThreeSylowCoreSynchronization_of_solvable` |
+| Huang's same-row three-intersection property | all finite solvable groups | `threeConjugatesSylowSynchronization_of_solvable` |
 
-The alternating endpoint is:
+## Three intersections in finite solvable groups
+
+The strongest theorem in this part of the project is in
+[`LisiSabatini/SolvableThreeSylowSynchronization.lean`](LisiSabatini/SolvableThreeSylowSynchronization.lean):
 
 ```lean
-theorem hasLisiSabatini_alternatingGroup_ge_forty
-    (n : ℕ) (hn : 40 ≤ n) :
-    HasLisiSabatini (alternatingGroup (Fin n))
+theorem mixedThreeSylowCoreSynchronization_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    HasMixedThreeSylowCoreSynchronization.{uG, uI} G
 ```
 
-Its proof is fully checked by Lean. It constructs a quadratic
-conjugacy-class bound from the exact base-`p` Sylow wreath recurrence and
-proves a uniform strict budget from degree 40 onward.
+Expanding the definition, let `I` be a finite index type, let
+`p : I → ℕ` be an injective family of primes, and prescribe three independent
+Sylow rows
 
-The alternating endpoint uses no GAP computation, finite-census
-certificate, or project-specific axiom. Its axiom audit reports only the
-standard principles used throughout mathlib:
-`propext`, `Classical.choice`, and `Quot.sound`.
+```lean
+P Q R : ∀ i, Sylow (p i) G.
+```
 
-The odd-order endpoint is:
+Then there are two elements `x y : G`, common to every row, such that
+
+```text
+P_i ∩ xQ_i x⁻¹ ∩ yR_i y⁻¹ = O_{p_i}(G)
+```
+
+for every `i`. Here `O_p(G)` is the largest normal `p`-subgroup of `G`,
+formalized as `pCore p G`. Taking `P = Q = R` gives Huang's same-row
+three-intersection property:
+
+```lean
+theorem threeConjugatesSylowSynchronization_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    HasThreeConjugatesSylowSynchronization.{uG, uI} G
+```
+
+The proof has four principal layers:
+
+1. `ThreeConjugatesSynchronization.lean` defines the mixed two-row,
+   mixed three-row, and same-row properties.
+2. `ThreeSylowSolvableReduction.lean` reduces the solvable theorem through
+   an elementary-abelian chief factor to simultaneous affine orbit
+   avoidance.
+3. The affine modules settle the characteristic and odd-prime branches and
+   isolate the remaining noncommuting `2`-core branch.
+4. `HallBergerClassificationAssembly.lean` supplies that final input;
+   `SolvableThreeSylowSynchronization.lean` closes the unconditional
+   solvable-group theorem.
+
+The resulting nilpotent-subgroup consequence is:
+
+```lean
+theorem threeNilpotentIntersectionInFitting_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    ThreeNilpotentIntersectionInFitting G
+```
+
+Thus, for arbitrary nilpotent subgroups `H`, `K`, and `M` of a finite
+solvable group, some `x,y ∈ G` satisfy
+
+```text
+H ∩ xKx⁻¹ ∩ yMy⁻¹ ≤ F(G).
+```
+
+## Original Lisi–Sabatini results
+
+The original property asks for one conjugator that makes a prescribed
+finite family of same-row Sylow intersections inclusion-minimal
+simultaneously.
+
+### Finite solvable groups of odd order
+
+[`LisiSabatini/OddOrderProof.lean`](LisiSabatini/OddOrderProof.lean) proves
+the stronger Sylow-core statement
+
+```lean
+theorem strongLisiSabatini_of_solvable_of_odd
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    (hodd : Odd (Nat.card G)) :
+    StrongLisiSabatini.{uG, uI} G
+```
+
+and derives the original formulation:
 
 ```lean
 theorem hasLisiSabatini_of_solvable_of_odd
@@ -32,66 +102,50 @@ theorem hasLisiSabatini_of_solvable_of_odd
     HasLisiSabatini.{uG, uI} G
 ```
 
-It follows from the stronger theorem
-`strongLisiSabatini_of_solvable_of_odd`.
+Solvability remains an explicit hypothesis. Feit–Thompson is neither
+imported nor postulated.
 
-## Alternating proof structure
+### Alternating groups in degree at least 40
 
-For a Sylow `p`-subgroup `P ≤ S_n`, let `a(n,p,j)` be the number of
-elements of `P` with cycle type `p^j 1^(n-pj)`, and set
+[`LisiSabatini/Alternating.lean`](LisiSabatini/Alternating.lean) proves:
 
-```text
-C(n,p,j) = n! / (p^j j! (n-pj)!).
+```lean
+theorem hasLisiSabatini_alternatingGroup_ge_forty
+    (n : ℕ) (hn : 40 ≤ n) :
+    HasLisiSabatini (alternatingGroup (Fin n))
 ```
 
-The normalized quadratic cost in the bad-conjugator argument is
+The proof constructs a quadratic conjugacy-class bound from the exact
+base-`p` Sylow wreath recurrence and proves a uniform strict budget from
+degree `40` onward. It uses no GAP census or project-specific axiom. See
+[`ALTERNATING_GROUPS_PROOF.md`](ALTERNATING_GROUPS_PROOF.md) for the
+mathematical proof structure and verification report.
 
-```text
-sum_j a(n,p,j)^2 / C(n,p,j).
-```
+## Related formalized endpoints
 
-For `p = 2`, only even `j` contribute after restriction to `A_n`. The
-formal proof:
+The repository also contains:
 
-1. constructs a concrete Sylow subgroup of `S_n` from the base-`p` digits
-   of `n`;
-2. proves the exact iterated-wreath recurrence for its cycle-profile
-   coefficients;
-3. identifies those coefficients with Sylow/conjugacy-class
-   intersections;
-4. transfers linked Sylow rows from `S_n` to `A_n`, losing at most a
-   factor four and charging only classes that meet `A_n`; and
-5. bounds the exact coefficients by a monotone negative-binomial
-   envelope.
+- mixed two-row Sylow-core synchronization for finite solvable groups of odd
+  order;
+- mixed intersection of two arbitrary nilpotent subgroups into the Fitting
+  subgroup in finite solvable groups of odd order; and
+- an independent mixed three-row theorem for finite solvable groups with
+  commutative Sylow `2`-subgroups, now subsumed by the all-solvable theorem.
 
-For `n ≥ 40`, the symmetric-profile budget before the factor-four transfer
-is
+## Scope and trust boundary
 
-```text
-3/16 + 1/25 + 1/10000 + 1/2400 + 1/1024
-  = 439667/1920000
-  < 1/4.
-```
+All group-theoretic endpoints above concern finite groups. The
+three-intersection theorem assumes solvability; the alternating result is a
+theorem about the original Lisi–Sabatini property, not the
+three-intersection property. The project does not claim either result for
+all finite groups or for all almost simple groups.
 
-Consequently, the transferred bad loci have total normalized size below
-one, so a common good conjugator exists.
+There are no `sorry`, `admit`, or project-specific axioms in the public proof
+chain. The focused endpoint audit reports only Lean's standard logical
+principles used throughout mathlib: `propext`, `Classical.choice`, and
+`Quot.sound`.
 
-See [`ALTERNATING_GROUPS_PROOF.md`](ALTERNATING_GROUPS_PROOF.md) for the
-mathematical details and verification report.
-
-## Scope
-
-For `n ≥ 40`, the alternating proof establishes the stronger conclusion
-that all prescribed same-prime Sylow intersections can be made trivial
-simultaneously. The exported theorem records the original
-inclusion-minimal Lisi–Sabatini property.
-
-Solubility is an explicit hypothesis in the odd-order theorem. The
-mathematical Feit–Thompson theorem would remove it, but Feit–Thompson is
-neither imported nor postulated here. No unrestricted strong
-Lisi–Sabatini theorem for general finite groups is asserted.
-
-## Building
+## Building and verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
 
@@ -100,28 +154,36 @@ lake exe cache get
 lake build
 ```
 
-To check the two publication endpoints with warnings treated as errors:
+The public endpoints can be checked independently with warnings treated as
+errors:
 
 ```text
 lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
 lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
+lake env lean -DwarningAsError=true LisiSabatini/SolvableThreeSylowSynchronization.lean
 ```
 
-## Repository layout
+The focused axiom audit for the solvable three-intersection theorem and its
+public consequences is:
 
-- `LisiSabatini.lean` — library entrypoint.
-- `LisiSabatini/Alternating.lean` — alternating theorem for `n ≥ 40`.
-- `LisiSabatini/AlternatingSylowQuadraticEnvelope.lean` — uniform
-  quadratic envelope.
-- `LisiSabatini/AlternatingSylowQuadraticFormula.lean` — exact class-sum
-  formula.
-- `LisiSabatini/AlternatingSylowBasePBlocks.lean` — concrete Sylow model.
-- `LisiSabatini/SylowPairQuadraticBound.lean` — generic bad-locus class
-  bound.
-- `LisiSabatini/OddOrderProof.lean` — odd-order group-theoretic induction
-  and public theorems.
-- `LisiSabatini/PrimewiseAffineRegularityCore.lean` — linear induction.
-- `LisiSabatini/OddOrderChiefFactorCore.lean` — minimal-normal
-  chief-factor construction.
-- `LisiSabatini/NormalComponentReductionCore.lean` — affine lifting
-  interface.
+```text
+lake env lean -DwarningAsError=true \
+  LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean
+```
+
+## Repository guide
+
+- `LisiSabatini.lean` — combined library entrypoint.
+- `LisiSabatini/Basic.lean` and `Strong.lean` — the original
+  Lisi–Sabatini definitions and strong form.
+- `LisiSabatini/OddOrderProof.lean` — odd-order solvable endpoint.
+- `LisiSabatini/Alternating.lean` — alternating endpoint for `n ≥ 40`.
+- `ALTERNATING_GROUPS_PROOF.md` — detailed alternating proof note.
+- `LisiSabatini/ThreeConjugatesSynchronization.lean` — definitions for
+  the mixed and same-row three-intersection problems.
+- `LisiSabatini/SolvableThreeSylowSynchronization.lean` — all-solvable
+  three-intersection endpoint.
+- `LisiSabatini/NilpotentIntersectionApplications.lean` — public
+  Fitting-subgroup consequences.
+- `LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean` —
+  focused public-endpoint axiom audit.

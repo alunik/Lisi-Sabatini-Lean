@@ -1,4 +1,4 @@
-import LisiSabatini.Basic
+import LisiSabatini.MixedSylowIntersections
 import Mathlib.Algebra.Group.ConjFinite
 import Mathlib.Data.Set.Card.Arithmetic
 import Mathlib.GroupTheory.GroupAction.Quotient
@@ -46,12 +46,6 @@ local instance finiteConjActSylowPairQuadratic
 variable {G : Type uG} [Group G]
 
 /-! ## Bad conjugators and the family union bound -/
-
-/-- The intersection of a prescribed Sylow subgroup with a conjugate of an
-independently prescribed Sylow subgroup at the same prime. -/
-def mixedSylowInter {p : ℕ}
-    (P Q : Sylow p G) (x : G) : Subgroup G :=
-  (P : Subgroup G) ⊓ ((x • Q : Sylow p G) : Subgroup G)
 
 /-- Conjugators for which the prescribed two-row Sylow intersection is
 nontrivial. -/

@@ -129,25 +129,17 @@ instance primePowerNormalClosure_normal
     (primePowerNormalClosure p G).Normal :=
   Subgroup.normalClosure_normal
 
-/-- **Burnside/Frattini centrality bridge.**
-
-If a finite `p`-group has central derived subgroup and central `p`-th
-powers, then its Frattini subgroup is central. -/
-theorem frattini_le_center_of_classTwo_of_pow_mem_center
+/-- The Burnside--Frattini identity for a finite `p`-group:
+`Φ(G) = G' · G^p`, with `G^p` represented by the normal closure of the
+ambient `p`-th powers. -/
+theorem frattini_eq_commutator_sup_primePowerNormalClosure
     {p : ℕ} {G : Type*} [Group G] [Finite G]
-    (hp : p.Prime) (hGp : IsPGroup p G)
-    (hclass : commutator G ≤ Subgroup.center G)
-    (hpowerCenter : ∀ x : G, x ^ p ∈ Subgroup.center G) :
-    frattini G ≤ Subgroup.center G := by
+    (hp : p.Prime) (hGp : IsPGroup p G) :
+    frattini G =
+      commutator G ⊔ primePowerNormalClosure p G := by
   let Ppow := primePowerNormalClosure p G
   let K : Subgroup G := commutator G ⊔ Ppow
   letI : K.Normal := inferInstance
-  have hPpowCenter : Ppow ≤ Subgroup.center G := by
-    apply Subgroup.normalClosure_le_normal
-    rintro z ⟨x, rfl⟩
-    exact hpowerCenter x
-  have hKcenter : K ≤ Subgroup.center G :=
-    sup_le hclass hPpowCenter
   have hPpowPhi : Ppow ≤ frattini G := by
     apply Subgroup.normalClosure_le_normal
     rintro z ⟨x, rfl⟩
@@ -179,7 +171,49 @@ theorem frattini_le_center_of_classTwo_of_pow_mem_center
     rw [← QuotientGroup.ker_mk' K]
     intro x hx
     exact hmap hx
-  exact hPhiK.trans hKcenter
+  exact le_antisymm hPhiK hKPhi
+
+/-- Frattini subgroups are subgroup-monotone inside a finite `p`-group,
+after mapping the subgroup Frattini subgroup into the ambient group. -/
+theorem map_frattini_subgroup_le_frattini_of_isPGroup
+    {p : ℕ} {G : Type*} [Group G] [Finite G]
+    (hp : p.Prime) (hGp : IsPGroup p G)
+    (H : Subgroup G) :
+    (frattini H).map H.subtype ≤ frattini G := by
+  rw [frattini_eq_commutator_sup_primePowerNormalClosure
+    hp (hGp.to_subgroup H), Subgroup.map_sup]
+  refine sup_le ?_ ?_
+  · rw [Subgroup.map_subtype_commutator]
+    exact (Subgroup.commutator_mono le_top le_top).trans
+      (commutator_le_frattini_of_isPGroup hp hGp)
+  · rw [Subgroup.map_le_iff_le_comap]
+    unfold primePowerNormalClosure
+    apply Subgroup.normalClosure_le_normal
+    rintro _ ⟨x, rfl⟩
+    change (x : G) ^ p ∈ frattini G
+    exact pow_prime_mem_frattini_of_isPGroup hp hGp x
+
+/-- **Burnside/Frattini centrality bridge.**
+
+If a finite `p`-group has central derived subgroup and central `p`-th
+powers, then its Frattini subgroup is central. -/
+theorem frattini_le_center_of_classTwo_of_pow_mem_center
+    {p : ℕ} {G : Type*} [Group G] [Finite G]
+    (hp : p.Prime) (hGp : IsPGroup p G)
+    (hclass : commutator G ≤ Subgroup.center G)
+    (hpowerCenter : ∀ x : G, x ^ p ∈ Subgroup.center G) :
+    frattini G ≤ Subgroup.center G := by
+  let Ppow := primePowerNormalClosure p G
+  let K : Subgroup G := commutator G ⊔ Ppow
+  letI : K.Normal := inferInstance
+  have hPpowCenter : Ppow ≤ Subgroup.center G := by
+    apply Subgroup.normalClosure_le_normal
+    rintro z ⟨x, rfl⟩
+    exact hpowerCenter x
+  have hKcenter : K ≤ Subgroup.center G :=
+    sup_le hclass hPpowCenter
+  rw [frattini_eq_commutator_sup_primePowerNormalClosure hp hGp]
+  exact hKcenter
 
 /-! ## Cyclic and Hall endpoints -/
 
