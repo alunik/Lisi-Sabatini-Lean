@@ -18,6 +18,11 @@ Its proof is fully checked by Lean. It constructs a quadratic
 conjugacy-class bound from the exact base-`p` Sylow wreath recurrence and
 proves a uniform strict budget from degree 40 onward.
 
+The alternating endpoint uses no GAP computation, finite-census
+certificate, or project-specific axiom. Its axiom audit reports only the
+standard principles used throughout mathlib:
+`propext`, `Classical.choice`, and `Quot.sound`.
+
 The odd-order endpoint is:
 
 ```lean
