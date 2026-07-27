@@ -1,12 +1,21 @@
-# Three synchronized Sylow intersections in finite solvable groups
+# Formalized Sylow-intersection results
 
-This Lean 4/mathlib project proves the three-conjugates conjecture for every
-finite solvable group.  The formal result is stronger: the three Sylow
-subgroups at each prime may be prescribed independently.
+This Lean 4/mathlib project contains two related but distinct developments.
+The first concerns the original Lisi–Sabatini conjecture. The second concerns
+the mixed three-intersection problem and Huang's same-row specialization; it
+should not be identified with the Lisi–Sabatini conjecture.
 
-The public endpoint is
-[`LisiSabatini/SolvableThreeSylowSynchronization.lean`](LisiSabatini/SolvableThreeSylowSynchronization.lean).
-Its main theorem is:
+| Problem | Formalized range | Main endpoint |
+| --- | --- | --- |
+| Original Lisi–Sabatini property | finite solvable groups of odd order | `hasLisiSabatini_of_solvable_of_odd` |
+| Original Lisi–Sabatini property | alternating groups `A_n`, `n ≥ 40` | `hasLisiSabatini_alternatingGroup_ge_forty` |
+| Mixed three-intersection synchronization | all finite solvable groups | `mixedThreeSylowCoreSynchronization_of_solvable` |
+| Huang's same-row three-intersection property | all finite solvable groups | `threeConjugatesSylowSynchronization_of_solvable` |
+
+## Three intersections in finite solvable groups
+
+The strongest theorem in this part of the project is in
+[`LisiSabatini/SolvableThreeSylowSynchronization.lean`](LisiSabatini/SolvableThreeSylowSynchronization.lean):
 
 ```lean
 theorem mixedThreeSylowCoreSynchronization_of_solvable
@@ -14,29 +23,23 @@ theorem mixedThreeSylowCoreSynchronization_of_solvable
     HasMixedThreeSylowCoreSynchronization.{uG, uI} G
 ```
 
-After expanding the definition, this says that for every finite index type
-`I`, every injective family of primes `p : I → ℕ`, and every three prescribed
-families
+Expanding the definition, let `I` be a finite index type, let
+`p : I → ℕ` be an injective family of primes, and prescribe three independent
+Sylow rows
 
 ```lean
-P Q R : ∀ i, Sylow (p i) G
+P Q R : ∀ i, Sylow (p i) G.
 ```
 
-there are common elements `x y : G` such that, simultaneously for every
-`i`,
-
-```lean
-mixedSylowTripleInter (P i) (Q i) (R i) x y =
-  pCore (p i) G
-```
-
-Here
+Then there are two elements `x y : G`, common to every row, such that
 
 ```text
-mixedSylowTripleInter P Q R x y = P ∩ xQx⁻¹ ∩ yRy⁻¹.
+P_i ∩ xQ_i x⁻¹ ∩ yR_i y⁻¹ = O_{p_i}(G)
 ```
 
-Taking `P = Q = R` gives the same-row three-conjugates theorem:
+for every `i`. Here `O_p(G)` is the largest normal `p`-subgroup of `G`,
+formalized as `pCore p G`. Taking `P = Q = R` gives Huang's same-row
+three-intersection property:
 
 ```lean
 theorem threeConjugatesSylowSynchronization_of_solvable
@@ -44,17 +47,20 @@ theorem threeConjugatesSylowSynchronization_of_solvable
     HasThreeConjugatesSylowSynchronization.{uG, uI} G
 ```
 
-## Further formalized consequences
+The proof has four principal layers:
 
-The repository also contains:
+1. `ThreeConjugatesSynchronization.lean` defines the mixed two-row,
+   mixed three-row, and same-row properties.
+2. `ThreeSylowSolvableReduction.lean` reduces the solvable theorem through
+   an elementary-abelian chief factor to simultaneous affine orbit
+   avoidance.
+3. The affine modules settle the characteristic and odd-prime branches and
+   isolate the remaining noncommuting `2`-core branch.
+4. `HallBergerClassificationAssembly.lean` supplies that final input;
+   `SolvableThreeSylowSynchronization.lean` closes the unconditional
+   solvable-group theorem.
 
-- the mixed two-row theorem for finite solvable groups of odd order;
-- the original strong Lisi–Sabatini theorem for finite solvable groups of
-  odd order;
-- the mixed three-row theorem for solvable groups whose Sylow
-  `2`-subgroups are commutative;
-- the Fitting-subgroup consequence for three independently prescribed
-  nilpotent subgroups:
+The resulting nilpotent-subgroup consequence is:
 
 ```lean
 theorem threeNilpotentIntersectionInFitting_of_solvable
@@ -62,34 +68,84 @@ theorem threeNilpotentIntersectionInFitting_of_solvable
     ThreeNilpotentIntersectionInFitting G
 ```
 
-The last statement says that for nilpotent subgroups `H`, `K`, and `M`,
-there are `x y : G` with
+Thus, for arbitrary nilpotent subgroups `H`, `K`, and `M` of a finite
+solvable group, some `x,y ∈ G` satisfy
 
 ```text
 H ∩ xKx⁻¹ ∩ yMy⁻¹ ≤ F(G).
 ```
 
-## Proof organization
+## Original Lisi–Sabatini results
 
-The proof has four layers.
+The original property asks for one conjugator that makes a prescribed
+finite family of same-row Sylow intersections inclusion-minimal
+simultaneously.
 
-1. `ThreeConjugatesSynchronization.lean` defines the mixed two-row,
-   mixed three-row, and same-row properties.
-2. `ThreeSylowSolvableReduction.lean` reduces the solvable theorem, by
-   induction through an elementary-abelian chief factor, to a simultaneous
-   affine two-base statement.
-3. The affine files prove the required estimates for the characteristic
-   and odd-prime branches and reduce the remaining noncommuting `2`-core
-   branch to a precise two-group classification.
-4. `HallBergerClassificationAssembly.lean` completes that classification
-   and `SolvableThreeSylowSynchronization.lean` substitutes it into the
-   solvable reduction.
+### Finite solvable groups of odd order
 
-`NilpotentIntersectionCorollaries.lean` contains only the general
-Sylow-to-Fitting implications.  Concrete odd-order and commutative-Sylow-`2`
-applications are separated into `NilpotentIntersectionApplications.lean`.
+[`LisiSabatini/OddOrderProof.lean`](LisiSabatini/OddOrderProof.lean) proves
+the stronger Sylow-core statement
 
-## Verification
+```lean
+theorem strongLisiSabatini_of_solvable_of_odd
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    (hodd : Odd (Nat.card G)) :
+    StrongLisiSabatini.{uG, uI} G
+```
+
+and derives the original formulation:
+
+```lean
+theorem hasLisiSabatini_of_solvable_of_odd
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    (hodd : Odd (Nat.card G)) :
+    HasLisiSabatini.{uG, uI} G
+```
+
+Solvability remains an explicit hypothesis. Feit–Thompson is neither
+imported nor postulated.
+
+### Alternating groups in degree at least 40
+
+[`LisiSabatini/Alternating.lean`](LisiSabatini/Alternating.lean) proves:
+
+```lean
+theorem hasLisiSabatini_alternatingGroup_ge_forty
+    (n : ℕ) (hn : 40 ≤ n) :
+    HasLisiSabatini (alternatingGroup (Fin n))
+```
+
+The proof constructs a quadratic conjugacy-class bound from the exact
+base-`p` Sylow wreath recurrence and proves a uniform strict budget from
+degree `40` onward. It uses no GAP census or project-specific axiom. See
+[`ALTERNATING_GROUPS_PROOF.md`](ALTERNATING_GROUPS_PROOF.md) for the
+mathematical proof structure and verification report.
+
+## Related formalized endpoints
+
+The repository also contains:
+
+- mixed two-row Sylow-core synchronization for finite solvable groups of odd
+  order;
+- mixed intersection of two arbitrary nilpotent subgroups into the Fitting
+  subgroup in finite solvable groups of odd order; and
+- an independent mixed three-row theorem for finite solvable groups with
+  commutative Sylow `2`-subgroups, now subsumed by the all-solvable theorem.
+
+## Scope and trust boundary
+
+All group-theoretic endpoints above concern finite groups. The
+three-intersection theorem assumes solvability; the alternating result is a
+theorem about the original Lisi–Sabatini property, not the
+three-intersection property. The project does not claim either result for
+all finite groups or for all almost simple groups.
+
+There are no `sorry`, `admit`, or project-specific axioms in the public proof
+chain. The focused endpoint audit reports only Lean's standard logical
+principles used throughout mathlib: `propext`, `Classical.choice`, and
+`Quot.sound`.
+
+## Building and verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
 
@@ -98,30 +154,36 @@ lake exe cache get
 lake build
 ```
 
-The publication endpoint can be checked independently with warnings treated
-as errors:
+The public endpoints can be checked independently with warnings treated as
+errors:
 
 ```text
-lake env lean -DwarningAsError=true \
-  LisiSabatini/SolvableThreeSylowSynchronization.lean
+lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
+lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
+lake env lean -DwarningAsError=true LisiSabatini/SolvableThreeSylowSynchronization.lean
 ```
 
-The focused axiom audit is:
+The focused axiom audit for the solvable three-intersection theorem and its
+public consequences is:
 
 ```text
 lake env lean -DwarningAsError=true \
   LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean
 ```
 
-Every public result listed above depends only on Lean's standard logical
-axioms: `propext`, `Classical.choice`, and `Quot.sound`.
+## Repository guide
 
-## Scope
-
-Solvability is an explicit hypothesis.  This branch contains no
-almost-simple or CFSG-family development, no GAP census, and no external
-classification assumption.  Proposition-valued intermediate interfaces are
-inhabited by Lean proofs before they are used by the public endpoint.
-
-The repository contains the source dependency closure of the proved
-solvable and odd-order results, plus the two focused axiom-audit modules.
+- `LisiSabatini.lean` — combined library entrypoint.
+- `LisiSabatini/Basic.lean` and `Strong.lean` — the original
+  Lisi–Sabatini definitions and strong form.
+- `LisiSabatini/OddOrderProof.lean` — odd-order solvable endpoint.
+- `LisiSabatini/Alternating.lean` — alternating endpoint for `n ≥ 40`.
+- `ALTERNATING_GROUPS_PROOF.md` — detailed alternating proof note.
+- `LisiSabatini/ThreeConjugatesSynchronization.lean` — definitions for
+  the mixed and same-row three-intersection problems.
+- `LisiSabatini/SolvableThreeSylowSynchronization.lean` — all-solvable
+  three-intersection endpoint.
+- `LisiSabatini/NilpotentIntersectionApplications.lean` — public
+  Fitting-subgroup consequences.
+- `LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean` —
+  focused public-endpoint axiom audit.

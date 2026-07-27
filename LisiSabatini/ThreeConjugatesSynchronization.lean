@@ -44,7 +44,7 @@ def HasMixedThreeSylowCoreSynchronization
         mixedSylowTripleInter (P i) (Q i) (R i) x y =
           pCore (p i) G
 
-/-- Hongyi's same-row three-conjugates synchronization property. -/
+/-- Huang's same-row three-intersection synchronization property. -/
 def HasThreeConjugatesSylowSynchronization
     (G : Type uG) [Group G] [Finite G] : Prop :=
   ∀ {I : Type uI} [Fintype I] (p : I → ℕ),
