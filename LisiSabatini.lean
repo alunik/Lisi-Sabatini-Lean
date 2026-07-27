@@ -1,7 +1,7 @@
-import LisiSabatini.OddOrderProof
+import LisiSabatini.NilpotentIntersectionApplications
 
 /-!
-# Lisi--Sabatini for finite soluble groups of odd order
+# Three synchronized Sylow intersections in finite solvable groups
 
-Minimal library entrypoint for the code-only odd-order formalization.
+Library entrypoint for the unconditional solvable-group results.
 -/

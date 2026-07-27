@@ -201,12 +201,12 @@ private noncomputable instance fintypeCommutativeIndex
     (p : J → ℕ) : Fintype (CommutativeIndex K p) :=
   Fintype.ofFinite _
 
-private def operatorBound
+def operatorBound
     (R : PrimeCoreMixedCyclicCenterFullSchurFamilyRows r d K p)
     (j : J) : ℕ :=
   cyclicCenterOperatorSpectrumBound r d (p j) (R.rank j)
 
-private noncomputable def spectrumWeight
+noncomputable def spectrumWeight
     (R : PrimeCoreMixedCyclicCenterFullSchurFamilyRows r d K p)
     (j : J) : ℕ := by
   classical

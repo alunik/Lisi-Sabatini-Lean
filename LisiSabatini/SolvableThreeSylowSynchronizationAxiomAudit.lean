@@ -1,0 +1,34 @@
+import LisiSabatini.NilpotentIntersectionApplications
+import LisiSabatini.SolvableThreeSylowSynchronization
+
+/-!
+# Axiom audit for the public solvable-group results
+-/
+
+#print axioms
+  LisiSabatini.mixedThreeSylowCoreSynchronization_of_solvable
+#print axioms
+  LisiSabatini.threeConjugatesSylowSynchronization_of_solvable
+#print axioms
+  LisiSabatini.threeNilpotentIntersectionInFitting_of_solvable
+
+#print axioms
+  LisiSabatini.mixedStrongLisiSabatini_of_solvable_of_odd
+#print axioms
+  LisiSabatini.strongLisiSabatini_of_solvable_of_odd
+#print axioms
+  LisiSabatini.hasLisiSabatini_of_solvable_of_odd
+#print axioms
+  LisiSabatini.mixedThreeSylowCoreSynchronization_of_solvable_of_odd
+
+#print axioms
+  LisiSabatini.mixedThreeSylowCoreSynchronization_of_solvable_of_commutativeSylowTwo
+#print axioms
+  LisiSabatini.threeConjugatesSylowSynchronization_of_solvable_of_commutativeSylowTwo
+
+#print axioms
+  LisiSabatini.nilpotentSelfIntersectionInFitting_of_solvable_of_odd
+#print axioms
+  LisiSabatini.mixedNilpotentIntersectionInFitting_of_solvable_of_odd
+#print axioms
+  LisiSabatini.threeNilpotentIntersectionInFitting_of_solvable_of_commutativeSylowTwo

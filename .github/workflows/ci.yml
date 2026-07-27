@@ -21,5 +21,7 @@ jobs:
           use-mathlib-cache: true
           leanchecker: true
           nanoda: false
-      - name: Compile the proof endpoint with warnings as errors
-        run: lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
+      - name: Compile the solvable proof endpoint with warnings as errors
+        run: lake env lean -DwarningAsError=true LisiSabatini/SolvableThreeSylowSynchronization.lean
+      - name: Audit the endpoint axioms
+        run: lake env lean -DwarningAsError=true LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean

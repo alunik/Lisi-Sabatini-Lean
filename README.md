@@ -1,68 +1,95 @@
-# Lisi–Sabatini for soluble groups of odd order
+# Three synchronized Sylow intersections in finite solvable groups
 
-This Lean 4/mathlib project formalises the Lisi–Sabatini conjecture for
-finite **soluble groups of odd order**.  It proves the stronger synchronized
-statement: for any finite family of prescribed Sylow subgroups at distinct
-primes, a single conjugating element makes every intersection equal to the
-corresponding normal prime core.
+This Lean 4/mathlib project proves the three-conjugates conjecture for every
+finite solvable group.  The formal result is stronger: the three Sylow
+subgroups at each prime may be prescribed independently.
 
-The public proof endpoint is
-[`LisiSabatini/OddOrderProof.lean`](LisiSabatini/OddOrderProof.lean).  Its main
-theorem is:
+The public endpoint is
+[`LisiSabatini/SolvableThreeSylowSynchronization.lean`](LisiSabatini/SolvableThreeSylowSynchronization.lean).
+Its main theorem is:
 
 ```lean
-theorem strongLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
-    (hodd : Odd (Nat.card G)) :
-    StrongLisiSabatini.{uG, uI} G
+theorem mixedThreeSylowCoreSynchronization_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    HasMixedThreeSylowCoreSynchronization.{uG, uI} G
 ```
 
-Here `StrongLisiSabatini G` says that, for every finite index type `I`, every
-injective family of primes `p : I → ℕ`, and every prescribed family
-`P : ∀ i, Sylow (p i) G`, there is one `x : G` such that
+After expanding the definition, this says that for every finite index type
+`I`, every injective family of primes `p : I → ℕ`, and every three prescribed
+families
 
 ```lean
-sylowInter (P i) x = pCore (p i) G
+P Q R : ∀ i, Sylow (p i) G
 ```
 
-for every `i`.  Mathlib's conjugation action used by `sylowInter` is
-`x P x⁻¹`.  Since `pCore (p i) G` lies in every such intersection, this
-immediately implies the original inclusion-minimal conclusion:
+there are common elements `x y : G` such that, simultaneously for every
+`i`,
 
 ```lean
-theorem hasLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
-    (hodd : Odd (Nat.card G)) :
-    HasLisiSabatini.{uG, uI} G
+mixedSylowTripleInter (P i) (Q i) (R i) x y =
+  pCore (p i) G
 ```
 
-## Scope
+Here
 
-Solubility is an explicit hypothesis.  The mathematical Feit–Thompson
-theorem would remove it for groups of odd order, but Feit–Thompson has not
-been imported or postulated in this development.
+```text
+mixedSylowTripleInter P Q R x y = P ∩ xQx⁻¹ ∩ yRy⁻¹.
+```
 
-This repository is deliberately restricted to the transitive source
-dependency closure of `OddOrderProof.lean`.  It excludes earlier bounded-rank
-approaches, compatibility wrappers, experimental files, audits, and the
-paper write-up.
+Taking `P = Q = R` gives the same-row three-conjugates theorem:
 
-## Proof structure
+```lean
+theorem threeConjugatesSylowSynchronization_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    HasThreeConjugatesSylowSynchronization.{uG, uI} G
+```
 
-The formal proof has two main inductions.
+## Further formalized consequences
 
-1. `PrimewiseAffineRegularityCore.lean` proves a marked simultaneous affine
-   regularity theorem for normal prime-power subgroups of an irreducible
-   linear group in odd characteristic.  Quasiprimitive actions are controlled
-   by a mixed fixed-space budget; imprimitive actions are handled recursively
-   using a binary list-colouring argument over the unique possible active
-   primitive top.
-2. `OddOrderProof.lean` inducts on `Nat.card G`.  A minimal normal subgroup is
-   realised as an elementary abelian chief factor, the affine theorem is
-   applied to its faithful irreducible conjugation action, and the quotient
-   witness is lifted to `G`.
+The repository also contains:
 
-## Building
+- the mixed two-row theorem for finite solvable groups of odd order;
+- the original strong Lisi–Sabatini theorem for finite solvable groups of
+  odd order;
+- the mixed three-row theorem for solvable groups whose Sylow
+  `2`-subgroups are commutative;
+- the Fitting-subgroup consequence for three independently prescribed
+  nilpotent subgroups:
+
+```lean
+theorem threeNilpotentIntersectionInFitting_of_solvable
+    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
+    ThreeNilpotentIntersectionInFitting G
+```
+
+The last statement says that for nilpotent subgroups `H`, `K`, and `M`,
+there are `x y : G` with
+
+```text
+H ∩ xKx⁻¹ ∩ yMy⁻¹ ≤ F(G).
+```
+
+## Proof organization
+
+The proof has four layers.
+
+1. `ThreeConjugatesSynchronization.lean` defines the mixed two-row,
+   mixed three-row, and same-row properties.
+2. `ThreeSylowSolvableReduction.lean` reduces the solvable theorem, by
+   induction through an elementary-abelian chief factor, to a simultaneous
+   affine two-base statement.
+3. The affine files prove the required estimates for the characteristic
+   and odd-prime branches and reduce the remaining noncommuting `2`-core
+   branch to a precise two-group classification.
+4. `HallBergerClassificationAssembly.lean` completes that classification
+   and `SolvableThreeSylowSynchronization.lean` substitutes it into the
+   solvable reduction.
+
+`NilpotentIntersectionCorollaries.lean` contains only the general
+Sylow-to-Fitting implications.  Concrete odd-order and commutative-Sylow-`2`
+applications are separated into `NilpotentIntersectionApplications.lean`.
+
+## Verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
 
@@ -71,22 +98,30 @@ lake exe cache get
 lake build
 ```
 
-To compile only the publication endpoint with warnings treated as errors:
+The publication endpoint can be checked independently with warnings treated
+as errors:
 
 ```text
-lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
+lake env lean -DwarningAsError=true \
+  LisiSabatini/SolvableThreeSylowSynchronization.lean
 ```
 
-## Repository layout
+The focused axiom audit is:
 
-- `LisiSabatini.lean` — minimal library entrypoint.
-- `LisiSabatini/OddOrderProof.lean` — group-theoretic induction and public
-  theorems.
-- `LisiSabatini/PrimewiseAffineRegularityCore.lean` — linear induction.
-- `LisiSabatini/OddOrderChiefFactorCore.lean` — minimal-normal chief-factor
-  construction.
-- `LisiSabatini/NormalComponentReductionCore.lean` — exact affine lifting
-  interface.
+```text
+lake env lean -DwarningAsError=true \
+  LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean
+```
 
-All other Lean files in the repository occur in the import closure of these
-modules.
+Every public result listed above depends only on Lean's standard logical
+axioms: `propext`, `Classical.choice`, and `Quot.sound`.
+
+## Scope
+
+Solvability is an explicit hypothesis.  This branch contains no
+almost-simple or CFSG-family development, no GAP census, and no external
+classification assumption.  Proposition-valued intermediate interfaces are
+inhabited by Lean proofs before they are used by the public endpoint.
+
+The repository contains the source dependency closure of the proved
+solvable and odd-order results, plus the two focused axiom-audit modules.
