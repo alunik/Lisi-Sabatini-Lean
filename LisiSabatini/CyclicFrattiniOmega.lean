@@ -1,6 +1,8 @@
-import LisiSabatini.CyclicPGroupAutomorphism
-import LisiSabatini.ClassTwoFrattini
-import LisiSabatini.HallPGroupStructure
+module
+
+public import LisiSabatini.CyclicPGroupAutomorphism
+public import LisiSabatini.ClassTwoFrattini
+public import LisiSabatini.HallPGroupStructure
 
 /-!
 # The prime-order layer of a cyclic Frattini subgroup
@@ -12,6 +14,8 @@ Consequently the prime-order layer of a cyclic Frattini subgroup of a finite
 `p`-group is central.  Moreover every commutator with the Frattini subgroup
 belongs to that layer.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -32,7 +36,7 @@ private theorem zmod_pow_primePow
   | succ n ih =>
       rw [pow_succ, pow_mul, ih, ZMod.pow_card]
 
-private theorem cyclicIsMulCommutative
+theorem cyclicIsMulCommutative
     {A : Type*} [Group A] (hA : IsCyclic A) : IsMulCommutative A := by
   letI : IsCyclic A := hA
   exact ⟨IsCyclic.commutative⟩

@@ -1,9 +1,11 @@
-import Lean.Elab.Tactic.Omega
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.Ring
+module
+
+public import Lean.Elab.Tactic.Omega
+public import Mathlib.Data.Nat.Prime.Basic
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for an odd extraspecial basic component
@@ -21,6 +23,8 @@ standard extraspecial divisibility and multiplicity hypotheses.  The sharp
 elementary observation is that, for odd `p` and odd `r`, divisibility
 `p ∣ r ^ a - 1` forces `2 * p + 1 ≤ r ^ a`.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

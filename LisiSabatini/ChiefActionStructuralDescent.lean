@@ -1,4 +1,6 @@
-import LisiSabatini.ChiefActionStructuralDichotomy
+module
+
+public import LisiSabatini.ChiefActionStructuralDichotomy
 
 /-!
 # Strict dimension descent in the chief-action dichotomy
@@ -13,6 +15,8 @@ The public endpoint strengthens the quasiprimitive/imprimitive dichotomy by
 packaging the strict dimension decrease with the internal presentation.  No
 new structural or representation-theoretic hypothesis is introduced.
 -/
+
+@[expose] public section
 
 noncomputable section
 

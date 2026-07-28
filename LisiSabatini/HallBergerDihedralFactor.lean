@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerInvolutionExtraction
+module
+
+public import LisiSabatini.HallBergerInvolutionExtraction
 
 /-!
 # The dihedral factor extracted in the BKN proof
@@ -8,6 +10,8 @@ central of order two generate a copy of the dihedral group of order
 eight.  This file proves that statement directly, beginning with the
 order-four rotation normal form.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -19,7 +23,7 @@ open scoped commutatorElement
 
 universe u
 
-private theorem mem_zpowers_generator_in_zpowers
+theorem mem_zpowers_generator_in_zpowers
     {D : Type u} [Group D] (a : D) :
     ∀ q : Subgroup.zpowers a,
       q ∈ Subgroup.zpowers
@@ -31,7 +35,7 @@ private theorem mem_zpowers_generator_in_zpowers
 
 /-- The canonical order-four rotation subgroup, coordinatized by
 `ZMod 4`. -/
-private noncomputable def rotationEquivFour
+noncomputable def rotationEquivFour
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4) :
     Multiplicative (ZMod 4) ≃*
@@ -53,14 +57,14 @@ private theorem coe_rotationEquivFour_one
   simp [rotationEquivFour]
 
 /-- The ambient value of the rotation coordinate. -/
-private noncomputable def rotationValue
+noncomputable def rotationValue
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4)
     (i : ZMod 4) : D :=
   rotationEquivFour a haOrder (Multiplicative.ofAdd i)
 
 @[simp]
-private theorem rotationValue_zero
+theorem rotationValue_zero
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4) :
     rotationValue a haOrder 0 = 1 := by
@@ -72,7 +76,7 @@ private theorem rotationValue_zero
   rfl
 
 @[simp]
-private theorem rotationValue_one
+theorem rotationValue_one
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4) :
     rotationValue a haOrder 1 = a :=
@@ -90,7 +94,7 @@ private theorem rotationValue_add
       (Multiplicative.ofAdd i)
       (Multiplicative.ofAdd j))
 
-private theorem rotationValue_injective
+theorem rotationValue_injective
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4) :
     Function.Injective (rotationValue a haOrder) := by
@@ -104,7 +108,7 @@ private theorem rotationValue_injective
   exact congrArg Multiplicative.toAdd
     ((rotationEquivFour a haOrder).injective hsub)
 
-private theorem rotationValue_mem_zpowers
+theorem rotationValue_mem_zpowers
     {D : Type u} [Group D] (a : D)
     (haOrder : orderOf a = 4)
     (i : ZMod 4) :
@@ -153,7 +157,7 @@ private theorem involution_flips_rotationValue
 
 /-- The dihedral presentation determined by an order-four rotation and
 an involution that inverts it. -/
-private noncomputable def dihedralFourHom
+noncomputable def dihedralFourHom
     {D : Type u} [Group D]
     {a x : D}
     (haOrder : orderOf a = 4)

@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeHeadField
-import LisiSabatini.QuasiprimitivePrimeCoreCore
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeHeadField
+public import LisiSabatini.QuasiprimitivePrimeCoreCore
 
 /-!
 # Assembly of the mixed head-field degree
@@ -8,6 +10,8 @@ This file combines the homogeneous extraspecial restriction, the exact
 extraspecial Schur degree, and the free rotation action on the
 multiplicity space.
 -/
+
+@[expose] public section
 
 noncomputable section
 

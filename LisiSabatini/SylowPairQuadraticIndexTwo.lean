@@ -1,6 +1,8 @@
-import LisiSabatini.SylowPairQuadraticBound
-import Mathlib.Data.Real.Basic
-import Mathlib.GroupTheory.SpecificGroups.Alternating
+module
+
+public import LisiSabatini.SylowPairQuadraticBound
+public import Mathlib.Data.Real.Basic
+public import Mathlib.GroupTheory.SpecificGroups.Alternating
 
 /-!
 # Quadratic Sylow-row costs across an index-two subgroup
@@ -12,6 +14,8 @@ normalization this loses a factor two; normalization by group order loses one
 more factor two.  Thus the normalized quadratic cost loses at most a factor
 four.
 -/
+
+@[expose] public section
 
 noncomputable section
 

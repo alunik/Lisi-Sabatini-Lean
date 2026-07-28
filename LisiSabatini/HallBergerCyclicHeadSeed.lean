@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerSquareImageGenerator
+module
+
+public import LisiSabatini.HallBergerSquareImageGenerator
 
 /-!
 # The cyclic-head seed in the remaining Hall--Berger branch
@@ -16,6 +18,8 @@ relations used by Berger--Kovács--Newman:
 This file packages those relations independently of the later
 classification of finite `2`-groups with a cyclic maximal subgroup.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,10 +1,12 @@
-import LisiSabatini.SectionConstructionCore
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Card
+module
+
+public import LisiSabatini.SectionConstructionCore
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Card
 
 /-!
 # Centralizers of normal subgroups of prime-squared order
@@ -17,6 +19,8 @@ If `N` is cyclic, the order of `Aut(N)` is `p * (p - 1)`.  Otherwise
 one factor of `p`.  In either case the conjugation image has order at
 most `p`, so the centralizer of `N` has index at most `p`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

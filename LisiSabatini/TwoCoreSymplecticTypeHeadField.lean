@@ -1,7 +1,9 @@
-import LisiSabatini.TwoCoreSymplecticTypeHeadRotation
-import LisiSabatini.TwoCoreExtraspecialSchurDegree
-import LisiSabatini.TwoCoreSymplecticTypeExtraspecialCount
-import Mathlib.GroupTheory.GroupAction.CardCommute
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeHeadRotation
+public import LisiSabatini.TwoCoreExtraspecialSchurDegree
+public import LisiSabatini.TwoCoreSymplecticTypeExtraspecialCount
+public import Mathlib.GroupTheory.GroupAction.CardCommute
 
 /-!
 # The head-field degree in a mixed symplectic-type two-core
@@ -25,6 +27,8 @@ Consequently its order divides `r^(a*b)-1`.  Finally `b ≠ 1`, since for
 `b = 1` the noncommuting head would embed in the commutative Schur
 field of `U`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -294,7 +298,7 @@ variable {r d : ℕ} [Fact r.Prime]
     (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
   [Fintype P]
 
-private abbrev ambientRepresentation :
+abbrev ambientRepresentation :
     Representation (ZMod r) P (Fin d → ZMod r) :=
   linearSubgroupRepresentation P
 

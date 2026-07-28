@@ -1,8 +1,10 @@
-import LisiSabatini.LinearAction
-import LisiSabatini.PCore
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.GroupTheory.GroupAction.ConjAct
-import Mathlib.GroupTheory.Subgroup.Centralizer
+module
+
+public import LisiSabatini.LinearAction
+public import LisiSabatini.PCore
+public import Mathlib.Data.Nat.Prime.Basic
+public import Mathlib.GroupTheory.GroupAction.ConjAct
+public import Mathlib.GroupTheory.Subgroup.Centralizer
 
 /-!
 # Coordinatized elementary-abelian normal sections
@@ -13,6 +15,8 @@ data needed by the affine lift explicit.  In particular, no canonical scalar
 action is imposed on an abstract normal subgroup: additive coordinates and
 the corresponding linear conjugation action are supplied as data.
 -/
+
+@[expose] public section
 
 noncomputable section
 

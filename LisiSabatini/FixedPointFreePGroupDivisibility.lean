@@ -1,9 +1,13 @@
-import LisiSabatini.FixedPointFreeOrbitAvoidanceCore
-import LisiSabatini.FiniteLinearSubgroup
+module
+
+public import LisiSabatini.FixedPointFreeOrbitAvoidanceCore
+public import LisiSabatini.FiniteLinearSubgroup
 
 /-!
 # Divisibility from a fixed-point-free p-group action
 -/
+
+@[expose] public section
 
 noncomputable section
 

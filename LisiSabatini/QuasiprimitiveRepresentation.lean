@@ -1,8 +1,10 @@
-import LisiSabatini.ChiefActionCore
-import Mathlib.RepresentationTheory.Maschke
-import Mathlib.RingTheory.IntegralDomain
-import Mathlib.RingTheory.LittleWedderburn
-import Mathlib.RingTheory.SimpleModule.Isotypic
+module
+
+public import LisiSabatini.ChiefActionCore
+public import Mathlib.RepresentationTheory.Maschke
+public import Mathlib.RingTheory.IntegralDomain
+public import Mathlib.RingTheory.LittleWedderburn
+public import Mathlib.RingTheory.SimpleModule.Isotypic
 
 /-!
 # Homogeneous restrictions of quasiprimitive linear actions
@@ -22,6 +24,8 @@ fixed-point-free linear group is cyclic.  The proof passes to a simple
 constituent, embeds the group in its Schur endomorphism division ring, and
 uses Wedderburn's little theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

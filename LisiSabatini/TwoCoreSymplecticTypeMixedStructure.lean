@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeFrontier
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeFrontier
 
 /-!
 # Fixed-space structure of a mixed symplectic-type two-core
@@ -14,6 +16,8 @@ an involutory noncentral product forces `h` to be a noncentral involution;
 the explicit dihedral, semidihedral, and quaternion normal forms supply
 the corresponding cycle (or rule the case out).
 -/
+
+@[expose] public section
 
 noncomputable section
 

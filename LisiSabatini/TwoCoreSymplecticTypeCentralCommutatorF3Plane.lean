@@ -1,6 +1,8 @@
-import LisiSabatini.TwoCoreSymplecticTypeRepresentationComparison
-import LisiSabatini.HallBergerDihedralFactor
-import LisiSabatini.F3Plane
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeRepresentationComparison
+public import LisiSabatini.HallBergerDihedralFactor
+public import LisiSabatini.F3Plane
 
 /-!
 # The sharp central-commutator edge in `GL₂(F₃)`
@@ -18,6 +20,8 @@ then gives group order at most eight.  Finally, Hall's omega-one argument
 extends an active involution to a generating dihedral pair, and the
 already formalized `D₈` count gives the result.
 -/
+
+@[expose] public section
 
 noncomputable section
 

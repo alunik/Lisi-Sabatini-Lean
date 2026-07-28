@@ -1,7 +1,9 @@
-import LisiSabatini.TwoCoreSymplecticTypeExtraspecialCount
-import LisiSabatini.TwoCoreSymplecticTypeHeadFieldAssembly
-import LisiSabatini.TwoCoreSymplecticTypeMixedArithmetic
-import LisiSabatini.TwoCoreSymplecticTypeRepresentationComparison
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeExtraspecialCount
+public import LisiSabatini.TwoCoreSymplecticTypeHeadFieldAssembly
+public import LisiSabatini.TwoCoreSymplecticTypeMixedArithmetic
+public import LisiSabatini.TwoCoreSymplecticTypeRepresentationComparison
 
 /-!
 # Assembly of the mixed symplectic-type two-core bounds
@@ -11,6 +13,8 @@ here.  After the intrinsic extraspecial square count, the sole remaining
 input is the characteristic-two Stone--von Neumann/head-field degree
 datum.
 -/
+
+@[expose] public section
 
 noncomputable section
 

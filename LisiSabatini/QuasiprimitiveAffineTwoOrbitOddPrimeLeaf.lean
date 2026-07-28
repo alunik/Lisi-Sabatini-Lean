@@ -1,7 +1,9 @@
-import LisiSabatini.AffineTwoBaseOrbitAvoidance
-import LisiSabatini.MappedPCoreFrattini
-import LisiSabatini.MappedPCoreCyclicCenterClassTwo
-import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
+module
+
+public import LisiSabatini.AffineTwoBaseOrbitAvoidance
+public import LisiSabatini.MappedPCoreFrattini
+public import LisiSabatini.MappedPCoreCyclicCenterClassTwo
+public import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
 
 /-!
 # The strong odd-prime quasiprimitive affine leaf
@@ -15,6 +17,8 @@ two-orbit reserve on the doubled module.
 This file makes that implication explicit and transfers it from the normal
 prime cores to arbitrary normal prime subgroups.
 -/
+
+@[expose] public section
 
 noncomputable section
 

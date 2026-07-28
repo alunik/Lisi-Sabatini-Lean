@@ -1,8 +1,10 @@
-import LisiSabatini.AlternatingSylowCycleProfile
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.ZMod.Basic
-import Mathlib.GroupTheory.RegularWreathProduct
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+module
+
+public import LisiSabatini.AlternatingSylowCycleProfile
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.GroupTheory.RegularWreathProduct
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 
 /-!
 # Prime-cycle support in the iterated Sylow wreath product
@@ -11,6 +13,8 @@ This file proves the coefficient recurrence at the remaining genuine
 group-theoretic source: the action of the iterated regular wreath
 product on `p^k` points.
 -/
+
+@[expose] public section
 
 noncomputable section
 

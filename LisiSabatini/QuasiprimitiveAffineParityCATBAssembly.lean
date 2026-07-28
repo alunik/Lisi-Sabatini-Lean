@@ -1,4 +1,6 @@
-import LisiSabatini.QuasiprimitiveAffineParityCATB
+module
+
+public import LisiSabatini.QuasiprimitiveAffineParityCATB
 
 /-!
 # Assembly of the quasiprimitive affine parity leaves
@@ -15,6 +17,8 @@ This file contains no classification assertion.  It turns the exact
 `TwoCoreSymplecticTypeHalfDensityData` publication boundary into the full
 quasiprimitive CATB conclusion.
 -/
+
+@[expose] public section
 
 noncomputable section
 

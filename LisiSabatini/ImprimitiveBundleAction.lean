@@ -1,5 +1,7 @@
-import LisiSabatini.ImprimitiveIndexedBaseColor
-import LisiSabatini.SemiregularTopCore
+module
+
+public import LisiSabatini.ImprimitiveIndexedBaseColor
+public import LisiSabatini.SemiregularTopCore
 
 /-!
 # The exact action on the bundle of block vectors
@@ -15,6 +17,8 @@ exact bundle action, and proves a single-marker stabilizer theorem.  A unique
 bundle orbit at one block kills a semiregular top, while block-indexed base
 regularity kills the remaining kernel.
 -/
+
+@[expose] public section
 
 noncomputable section
 

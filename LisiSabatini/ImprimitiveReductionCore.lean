@@ -1,5 +1,7 @@
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Proof core for imprimitive linear actions
@@ -7,6 +9,8 @@ import Mathlib.LinearAlgebra.Pi
 The monomial action data, local-orbit colour stabilizer, and induced action
 of a point stabilizer used by the odd-order proof.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

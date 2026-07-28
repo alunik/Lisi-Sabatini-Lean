@@ -1,6 +1,8 @@
-import LisiSabatini.ClassTwoCommutator
-import Mathlib.GroupTheory.Frattini
-import Mathlib.GroupTheory.Sylow
+module
+
+public import LisiSabatini.ClassTwoCommutator
+public import Mathlib.GroupTheory.Frattini
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # Frattini control of class-two p-groups
@@ -15,6 +17,8 @@ needed exponent bound on the derived subgroup.  Consequently
 `frattini G ≤ Z(G)` implies `(G')^p = 1`.  This isolates the next Hall step
 as a subgroup inclusion rather than an elementwise spectrum assumption.
 -/
+
+@[expose] public section
 
 noncomputable section
 

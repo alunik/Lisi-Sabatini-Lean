@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerResidualUniqueInvolution
-import LisiSabatini.HallBergerResidualExtraspecial
+module
+
+public import LisiSabatini.HallBergerResidualUniqueInvolution
+public import LisiSabatini.HallBergerResidualExtraspecial
 
 /-!
 # The cyclic residual in the Hall--Berger decomposition
@@ -11,6 +13,8 @@ by itself imply commutativity.  The classification-free residual theorem
 shows that a noncommutative residual would itself be extraspecial, so it
 could be absorbed into the chosen maximal factor.
 -/
+
+@[expose] public section
 
 noncomputable section
 

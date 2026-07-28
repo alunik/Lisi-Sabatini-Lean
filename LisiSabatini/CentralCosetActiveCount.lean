@@ -1,6 +1,8 @@
-import LisiSabatini.ActiveFixedSpaceSpectrum
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import LisiSabatini.ActiveFixedSpaceSpectrum
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Counting active elements one central coset at a time
@@ -17,6 +19,8 @@ prime-core orbit rows.  This file is deliberately only a counting bridge:
 the representation-theoretic assertion that a coset contains at most `q`
 active scalar twists remains a separate input.
 -/
+
+@[expose] public section
 
 noncomputable section
 

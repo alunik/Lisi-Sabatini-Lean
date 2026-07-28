@@ -1,4 +1,6 @@
-import LisiSabatini.AffineReductionCore
+module
+
+public import LisiSabatini.AffineReductionCore
 
 /-!
 # Normal components in the affine chief-factor reduction
@@ -17,6 +19,8 @@ This file also states normal-component affine synchronization (NCAS) in the
 form consumed by the group-theoretic reduction and proves the corresponding
 elementary-abelian lifting theorem.  NCAS itself remains the new linear input.
 -/
+
+@[expose] public section
 
 noncomputable section
 

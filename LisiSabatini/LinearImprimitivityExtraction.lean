@@ -1,5 +1,7 @@
-import LisiSabatini.LinearImprimitivityOrbitCoarsening
-import Mathlib.Algebra.Module.Submodule.Pointwise
+module
+
+public import LisiSabatini.LinearImprimitivityOrbitCoarsening
+public import Mathlib.Algebra.Module.Submodule.Pointwise
 
 /-!
 # Extracting a linear imprimitivity system from one submodule orbit
@@ -20,6 +22,8 @@ last theorem then feeds the extracted system into the maximal orbit-block
 construction of `LinearImprimitivityOrbitCoarsening`: a maximal coarse block
 system exists and its concrete permutation top is primitive.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import Lean.Elab.Tactic.Omega
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Ring
+module
+
+public import Lean.Elab.Tactic.Omega
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 /-!
 # The distinguished-two joint budget
@@ -23,6 +25,8 @@ those two estimates.  In particular, half-density alone is not silently
 treated as sufficient: after replacing `2*A` by `q-1`, one still has to
 pay the explicit term `4*C`.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

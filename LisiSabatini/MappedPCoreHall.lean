@@ -1,4 +1,6 @@
-import LisiSabatini.QuasiprimitiveHallBridgeCore
+module
+
+public import LisiSabatini.QuasiprimitiveHallBridgeCore
 
 /-!
 # Hall's hypothesis on mapped quasiprimitive prime cores
@@ -8,6 +10,8 @@ proof.  It is separated from the whole-core Hall development so that the
 block-stabilizer tower does not import the later centralizer and index
 arguments merely to move Hall's hypothesis across a group isomorphism.
 -/
+
+@[expose] public section
 
 noncomputable section
 

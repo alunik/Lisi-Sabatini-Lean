@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeMixedStructure
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeMixedStructure
 
 /-!
 # Active-involution bookkeeping for a mixed two-core
@@ -13,6 +15,8 @@ those finite normal-form counts are supplied, the internal central
 product bookkeeping gives the uniform envelope needed by the
 odd-characteristic arithmetic.
 -/
+
+@[expose] public section
 
 noncomputable section
 

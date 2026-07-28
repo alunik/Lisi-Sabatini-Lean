@@ -148,6 +148,10 @@ principles used throughout mathlib: `propext`, `Classical.choice`, and
 ## Building and verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
+All 214 library sources use Lean's module system, so ordinary imports load
+compact public interfaces without loading all private proof terms. The two
+standalone `#print axioms` audit leaves remain in the legacy format required
+by this Lean version.
 
 ```text
 lake exe cache get
@@ -155,9 +159,11 @@ LEAN_NUM_THREADS=4 lake build
 ```
 
 `LEAN_NUM_THREADS=4` is the recommended setting on machines with about
-16 GB of memory.  It prevents several large Lean processes from competing
-for compressed memory; machines with substantially more memory may omit it
-or choose a higher value.  See
+16 GB of memory. A controlled cold project build on the audit machine fell
+from 51m 00.2s in the legacy format to 5m 47.5s with modules; an exact-final
+repeat under heavier desktop load took 6m 42.6s. A six-worker run was slower
+because of contention. Machines with substantially different resources
+should benchmark their own worker count. See
 [`BUILD_PERFORMANCE.md`](BUILD_PERFORMANCE.md) for the import-graph and
 build-time audit.
 

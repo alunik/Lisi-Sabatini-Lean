@@ -1,5 +1,7 @@
-import LisiSabatini.AffineTwoBaseOrbitAvoidance
-import LisiSabatini.TwoOrbitAvoidingLinearEquiv
+module
+
+public import LisiSabatini.AffineTwoBaseOrbitAvoidance
+public import LisiSabatini.TwoOrbitAvoidingLinearEquiv
 
 /-!
 # Coordinate invariance of diagonal affine two-orbit avoidance
@@ -8,6 +10,8 @@ Changing coordinates on a module conjugates its diagonal action on two
 copies by the product coordinate equivalence.  Consequently the recursively
 stable affine two-base invariant is intrinsic to the linear representation.
 -/
+
+@[expose] public section
 
 noncomputable section
 

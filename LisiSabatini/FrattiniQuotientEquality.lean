@@ -1,4 +1,6 @@
-import Mathlib.GroupTheory.Frattini
+module
+
+public import Mathlib.GroupTheory.Frattini
 
 /-!
 # Frattini subgroups and quotients
@@ -8,6 +10,8 @@ the kernel is contained in the source Frattini subgroup.  The result is stated
 first for an arbitrary surjective homomorphism; the quotient formula is then
 an immediate specialization.
 -/
+
+@[expose] public section
 
 open Subgroup
 

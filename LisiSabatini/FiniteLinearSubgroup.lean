@@ -1,7 +1,9 @@
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
-import Mathlib.Data.Finite.Card
-import Mathlib.Data.Finite.Prod
+module
+
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+public import Mathlib.Algebra.Group.Subgroup.Basic
+public import Mathlib.Data.Finite.Card
+public import Mathlib.Data.Finite.Prod
 
 /-!
 # Finiteness of concrete linear subgroups
@@ -9,6 +11,8 @@ import Mathlib.Data.Finite.Prod
 This elementary fact is kept separate from orbit-counting APIs because it is
 also needed by the structural Clifford/imprimitivity path.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

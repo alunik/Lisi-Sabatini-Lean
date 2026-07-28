@@ -1,4 +1,6 @@
-import LisiSabatini.SchurWeylBasis
+module
+
+public import LisiSabatini.SchurWeylBasis
 
 /-!
 # Quasiprimitive full-center Schur rows
@@ -13,6 +15,8 @@ The resulting full Stone--von Neumann degree row is the exact interface used
 by the odd-order proof.  The historical half-orbit consequences are retained
 in the compatibility module `SchurCenterHalfOrbit.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

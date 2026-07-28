@@ -1,7 +1,9 @@
-import LisiSabatini.LinearAction
-import LisiSabatini.NormalComponentReductionCore
-import LisiSabatini.CommonTranslateCore
-import Mathlib.LinearAlgebra.Prod
+module
+
+public import LisiSabatini.LinearAction
+public import LisiSabatini.NormalComponentReductionCore
+public import LisiSabatini.CommonTranslateCore
+public import Mathlib.LinearAlgebra.Prod
 
 /-!
 # Common affine two-base translates
@@ -14,6 +16,8 @@ normal prime-power component.
 Unlike the one-point odd-order theorem, the definition permits the prime
 `2` and imposes no parity condition on the field characteristic.
 -/
+
+@[expose] public section
 
 noncomputable section
 

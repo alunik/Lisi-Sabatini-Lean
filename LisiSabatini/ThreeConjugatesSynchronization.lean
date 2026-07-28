@@ -1,5 +1,7 @@
-import LisiSabatini.MixedSylowIntersections
-import LisiSabatini.Strong
+module
+
+public import LisiSabatini.MixedSylowIntersections
+public import LisiSabatini.Strong
 
 /-!
 # Two-row and three-row Sylow-core synchronization
@@ -14,6 +16,8 @@ The properties in this file separate three logically distinct assertions:
 No classification theorem is assumed here.  The elementary implication
 ledger is proved directly from the definitions.
 -/
+
+@[expose] public section
 
 noncomputable section
 

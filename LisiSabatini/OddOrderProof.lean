@@ -1,6 +1,8 @@
-import LisiSabatini.OddOrderChiefFactorCore
-import LisiSabatini.NormalComponentReductionCore
-import LisiSabatini.PrimewiseAffineRegularityCore
+module
+
+public import LisiSabatini.OddOrderChiefFactorCore
+public import LisiSabatini.NormalComponentReductionCore
+public import LisiSabatini.PrimewiseAffineRegularityCore
 
 /-!
 # Lisi--Sabatini for finite solvable groups of odd order
@@ -20,6 +22,8 @@ are not imported here.
 The theorem deliberately retains `[IsSolvable G]`.  Feit--Thompson is not
 hidden in either its statement or proof.
 -/
+
+@[expose] public section
 
 noncomputable section
 

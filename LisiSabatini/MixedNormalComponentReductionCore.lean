@@ -1,6 +1,8 @@
-import LisiSabatini.MixedAffineReductionCore
-import LisiSabatini.NormalComponentReductionCore
-import LisiSabatini.ThreeConjugatesSynchronization
+module
+
+public import LisiSabatini.MixedAffineReductionCore
+public import LisiSabatini.NormalComponentReductionCore
+public import LisiSabatini.ThreeConjugatesSynchronization
 
 /-!
 # Mixed-row normal-component reduction
@@ -14,6 +16,8 @@ The first prescribed Sylow row determines each normal local component in the
 common conjugation action.  The independently prescribed second row changes
 only the affine translation supplied by the mixed fibre theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

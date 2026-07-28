@@ -1,10 +1,14 @@
-import LisiSabatini.FiniteLinearSubgroup
-import Mathlib.GroupTheory.GroupAction.Basic
-import Mathlib.Data.Set.Card
+module
+
+public import LisiSabatini.FiniteLinearSubgroup
+public import Mathlib.GroupTheory.GroupAction.Basic
+public import Mathlib.Data.Set.Card
 
 /-!
 # Orbit cardinality for finite concrete linear groups
 -/
+
+@[expose] public section
 
 noncomputable section
 

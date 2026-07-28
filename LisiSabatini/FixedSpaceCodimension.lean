@@ -1,9 +1,11 @@
-import LisiSabatini.RepeatedBlockAmplification
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.LinearAlgebra.Dimension.Constructions
-import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
-import Mathlib.LinearAlgebra.FixedSubmodule
+module
+
+public import LisiSabatini.RepeatedBlockAmplification
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+public import Mathlib.LinearAlgebra.FixedSubmodule
 
 /-!
 # Fixed-space codimension bounds over prime fields
@@ -23,6 +25,8 @@ on `Fin d → ZMod r`.  The final results package this estimate for every
 nonidentity element of a subgroup and feed it directly into repeated-block
 amplification.
 -/
+
+@[expose] public section
 
 noncomputable section
 

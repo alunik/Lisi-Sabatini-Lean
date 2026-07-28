@@ -1,11 +1,15 @@
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.Data.Finite.Card
-import Mathlib.GroupTheory.Index
-import Mathlib.Algebra.Group.Subgroup.Finite
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.Data.Finite.Card
+public import Mathlib.GroupTheory.Index
+public import Mathlib.Algebra.Group.Subgroup.Finite
 
 /-!
 # Cardinality of subgroup pullbacks through finite quotients
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

@@ -1,6 +1,8 @@
-import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Tactic.Linarith
+module
+
+public import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+public import Mathlib.Data.Nat.Prime.Basic
+public import Mathlib.Tactic.Linarith
 
 /-!
 # Joint-budget residual for the central-commutator branch
@@ -14,6 +16,8 @@ The remaining comparison is therefore the transparent inequality
 to prove `8d² < r^d+6`.  This file isolates that exact theorem-level
 residual rather than conflating it with half-density.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

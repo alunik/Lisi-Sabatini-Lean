@@ -1,5 +1,7 @@
-import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
-import LisiSabatini.TwoCoreCentralCommutatorJointBudgetArithmetic
+module
+
+public import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
+public import LisiSabatini.TwoCoreCentralCommutatorJointBudgetArithmetic
 
 /-!
 # The full distinguished-two budget for a central-commutator core
@@ -22,6 +24,8 @@ four active involutions; every odd row vanishes because its prime would
 have to divide `q-1 = 8`.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 open scoped BigOperators
@@ -43,7 +47,7 @@ local instance fintypeConcreteLinearSubgroupForCentralJointBudget
     Fintype P :=
   @Fintype.ofFinite P (finite_linearSubgroup_of_finite P)
 
-private abbrev mappedCore (q : ℕ) :
+abbrev centralCommutatorJointMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)) :=
   (pCore q K).map K.subtype
@@ -52,7 +56,7 @@ private abbrev diagonalMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r)
         ((Fin d → ZMod r) × (Fin d → ZMod r))) :=
-  (mappedCore (K := K) q).map
+  (centralCommutatorJointMappedCore (K := K) q).map
     (diagonalGeneralLinearHom (ZMod r) (Fin d → ZMod r))
 
 omit [NeZero r] in
@@ -61,12 +65,12 @@ private theorem ncard_nonregular_diagonalMappedCore_eq_affineBadSet
     (nonregularVectors
       (diagonalMappedCore (K := K) q)).ncard =
       (affineTwoBaseBadSet
-        (mappedCore (K := K) q) 0 0).ncard := by
+        (centralCommutatorJointMappedCore (K := K) q) 0 0).ncard := by
   congr 1
   ext z
   simpa using
     (mem_affineTwoBaseBadSet_iff_mem_nonregularVectors_diagonal
-      (mappedCore (K := K) q) 0 0 z).symm
+      (centralCommutatorJointMappedCore (K := K) q) 0 0 z).symm
 
 private theorem sum_eq_sum_twoIndex_add_oddIndex
     {I : Type uI} [Fintype I] (p : I → ℕ) (f : I → ℕ) :
@@ -87,7 +91,7 @@ private theorem reserveData_of_jointEnvelopeBudget
     (activeBound coreOrderBound : ℕ)
     (hactive :
       (activePrimeOrderElements 2
-        (mappedCore (K := K) 2)).card ≤ activeBound)
+        (centralCommutatorJointMappedCore (K := K) 2)).card ≤ activeBound)
     (hcore :
       Nat.card (diagonalMappedCore (K := K) 2) ≤
         coreOrderBound)
@@ -95,7 +99,7 @@ private theorem reserveData_of_jointEnvelopeBudget
       DistinguishedTwoCoreJointEnvelopeBudget
         (r ^ d) activeBound coreOrderBound) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
-  let P := mappedCore (K := K) 2
+  let P := centralCommutatorJointMappedCore (K := K) 2
   let D := fun q ↦ diagonalMappedCore (K := K) q
   let q := r ^ d
   let F := mappedTwoCoreQuasiprimitiveFrontier hrTwo hqp
@@ -130,7 +134,7 @@ private theorem reserveData_of_jointEnvelopeBudget
         (fun i ↦ hcross i.1)
         (fun _i _j hij ↦ Subtype.ext (hinj hij))
         hqp
-    simpa [row, D, pO, q, diagonalMappedCore, mappedCore] using h
+    simpa [row, D, pO, q, diagonalMappedCore, centralCommutatorJointMappedCore] using h
   have htwoSum :
       (∑ i : {i : I // p i = 2}, row i.1) = B := by
     have hterm :
@@ -231,9 +235,9 @@ theorem
     (hqp : IsQuasiprimitiveLinearAction r d K)
     (hcomm :
       HasCentralCommutatorOfOrderTwo
-        (mappedCore (K := K) 2)) :
+        (centralCommutatorJointMappedCore (K := K) 2)) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
-  let P := mappedCore (K := K) 2
+  let P := centralCommutatorJointMappedCore (K := K) 2
   let D := fun q ↦ diagonalMappedCore (K := K) q
   let q := r ^ d
   let F := mappedTwoCoreQuasiprimitiveFrontier hrTwo hqp
@@ -377,9 +381,9 @@ theorem
               (mapped_pCore_frattini_isMulCommutative_of_quasiprimitive
                 (Fact.out : Nat.Prime 3) hqp hA))
     have hoddBot :
-        ∀ i : O, mappedCore (K := K) (pO i) = ⊥ := by
+        ∀ i : O, centralCommutatorJointMappedCore (K := K) (pO i) = ⊥ := by
       intro i
-      let S := mappedCore (K := K) (pO i)
+      let S := centralCommutatorJointMappedCore (K := K) (pO i)
       by_contra hS
       have hpDvd : pO i ∣ 8 := by
         have hpDvdField : pO i ∣ 3 ^ 2 - 1 := by
@@ -409,7 +413,7 @@ theorem
       apply Finset.sum_eq_zero
       intro i _hi
       have hdiagBot : D (pO i) = ⊥ := by
-        simp [D, diagonalMappedCore, mappedCore, hoddBot i]
+        simp [D, diagonalMappedCore, centralCommutatorJointMappedCore, hoddBot i]
       dsimp only [row, pO]
       rw [hdiagBot, nonregularVectors_bot, Set.ncard_empty]
     have htwoSum :

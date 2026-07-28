@@ -1,6 +1,8 @@
-import LisiSabatini.NonzeroFixedSpaceSpectrum
-import LisiSabatini.FixedSpaceCodimension
-import Mathlib.RingTheory.Finiteness.Cardinality
+module
+
+public import LisiSabatini.NonzeroFixedSpaceSpectrum
+public import LisiSabatini.FixedSpaceCodimension
+public import Mathlib.RingTheory.Finiteness.Cardinality
 
 /-!
 # Compressing the fixed-space spectrum to active elements
@@ -15,6 +17,8 @@ when every active element fixes at most `b` nonzero vectors.  Large cyclic
 scalar factors disappear from the active count, which is the feature needed
 for extraspecial central products.
 -/
+
+@[expose] public section
 
 noncomputable section
 

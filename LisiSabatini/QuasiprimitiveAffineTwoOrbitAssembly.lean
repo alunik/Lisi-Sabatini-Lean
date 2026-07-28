@@ -1,6 +1,8 @@
-import LisiSabatini.AffineTwoOrbitDimensionRecursion
-import LisiSabatini.CharacteristicTwoTwoOrbitReserve
-import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
+module
+
+public import LisiSabatini.AffineTwoOrbitDimensionRecursion
+public import LisiSabatini.CharacteristicTwoTwoOrbitReserve
+public import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
 
 /-!
 # Assembly of the quasiprimitive affine two-orbit leaf
@@ -15,6 +17,8 @@ This file names exactly that input and performs the parity/commutativity
 case split.  It does not install the Hall--Berger structural theorem as an
 axiom.
 -/
+
+@[expose] public section
 
 noncomputable section
 

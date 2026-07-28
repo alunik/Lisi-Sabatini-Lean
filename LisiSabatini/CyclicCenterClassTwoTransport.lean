@@ -1,4 +1,6 @@
-import LisiSabatini.CyclicCenterSymplectic
+module
+
+public import LisiSabatini.CyclicCenterSymplectic
 
 /-!
 # Transport of cyclic-center class-two structure
@@ -9,6 +11,8 @@ in the ambient general linear group.  This file proves that the intrinsic
 cyclic-center class-two package, its central quotient, and its canonical
 symplectic rank are invariant under a group isomorphism.
 -/
+
+@[expose] public section
 
 noncomputable section
 

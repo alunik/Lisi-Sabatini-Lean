@@ -1,6 +1,8 @@
-import Mathlib.Algebra.DirectSum.Module
-import Mathlib.GroupTheory.GroupAction.Basic
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+module
+
+public import Mathlib.Algebra.DirectSum.Module
+public import Mathlib.GroupTheory.GroupAction.Basic
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 
 /-!
 # Linear systems of imprimitivity
@@ -15,6 +17,8 @@ The principal structural result below is that an irreducible action is
 transitive on the blocks of any such system.  No field or finite-dimensional
 hypothesis is needed for that argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import LisiSabatini.SchurFieldCore
-import LisiSabatini.CyclicCenterSymplectic
-import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
+module
+
+public import LisiSabatini.SchurFieldCore
+public import LisiSabatini.CyclicCenterSymplectic
+public import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 
 /-!
 # Weyl bases over a Schur field
@@ -13,6 +15,8 @@ algebra, this gives the full symplectic prime power.  The canonical
 order-prime central kernel embeds faithfully in the Schur field, which
 supplies the required field-order divisor directly.
 -/
+
+@[expose] public section
 
 noncomputable section
 

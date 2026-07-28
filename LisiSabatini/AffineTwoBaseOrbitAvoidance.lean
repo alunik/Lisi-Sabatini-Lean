@@ -1,5 +1,7 @@
-import LisiSabatini.AffineTwoBaseTranslates
-import LisiSabatini.TwoOrbitAvoidingCountCore
+module
+
+public import LisiSabatini.AffineTwoBaseTranslates
+public import LisiSabatini.TwoOrbitAvoidingCountCore
 
 /-!
 # Orbit reserve for affine two-base synchronization
@@ -10,6 +12,8 @@ prescribed orbits of one distinguished component.  This file states that
 recursive invariant and records the square-amplification estimate which
 turns a one-point orbit reserve into the required two-point reserve.
 -/
+
+@[expose] public section
 
 noncomputable section
 

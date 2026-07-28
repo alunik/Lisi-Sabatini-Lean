@@ -1,4 +1,6 @@
-import LisiSabatini.CommonTranslateCore
+module
+
+public import LisiSabatini.CommonTranslateCore
 
 /-!
 # Translated nonregular loci
@@ -6,6 +8,8 @@ import LisiSabatini.CommonTranslateCore
 Only the translated locus and its cardinality invariance are needed by the
 odd-order orbit-avoidance argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

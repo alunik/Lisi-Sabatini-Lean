@@ -1,6 +1,8 @@
-import Mathlib.GroupTheory.Commutator.Basic
-import Mathlib.GroupTheory.Frattini
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Mathlib.GroupTheory.Commutator.Basic
+public import Mathlib.GroupTheory.Frattini
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Foundations for the odd Hall p-group structure theorem
@@ -23,6 +25,8 @@ We also introduce a project-local definition of a finite extraspecial
 `p`-group by the standard equivalent conditions `G' = Z(G)` and
 `|Z(G)| = p`, and record its elementary consequences.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import LisiSabatini.HallBergerCyclicHeadUniformInversion
-import LisiSabatini.HallBergerExtraspecialHeadAdjustment
-import LisiSabatini.HallBergerMixedDataAssembly
+module
+
+public import LisiSabatini.HallBergerCyclicHeadUniformInversion
+public import LisiSabatini.HallBergerExtraspecialHeadAdjustment
+public import LisiSabatini.HallBergerMixedDataAssembly
 
 /-!
 # Assembling the mixed Hall--Berger head
@@ -15,6 +17,8 @@ generated ambiently by the distinguished rotation.  The corrected coset
 and that rotation therefore form a maximal-class head which commutes with
 the extraspecial factor, and the two factors generate the ambient group.
 -/
+
+@[expose] public section
 
 noncomputable section
 

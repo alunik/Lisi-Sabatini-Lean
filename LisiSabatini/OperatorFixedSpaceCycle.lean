@@ -1,4 +1,6 @@
-import LisiSabatini.EigenspaceCyclingBound
+module
+
+public import LisiSabatini.EigenspaceCyclingBound
 
 /-!
 # Fixed-space cycles with operator-valued eigenvalues
@@ -19,6 +21,8 @@ use induction on its finite support, and cancel `z j - z i` on every remaining
 summand.  Iterating this isolates all summands exactly as the product
 `prod (x - z j)` would.
 -/
+
+@[expose] public section
 
 noncomputable section
 

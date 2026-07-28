@@ -1,9 +1,11 @@
-import LisiSabatini.QuasiprimitiveAffineParityCATBAssembly
-import LisiSabatini.QuasiprimitiveAffineTwoOrbitOddPrimeLeaf
-import LisiSabatini.MappedPCoreHall
-import LisiSabatini.TwoCoreSymplecticTypeNonmixedAssembly
-import LisiSabatini.TwoCoreSymplecticTypeMappedHomogeneous
-import LisiSabatini.TwoCoreSymplecticTypeCentralCommutatorF3Plane
+module
+
+public import LisiSabatini.QuasiprimitiveAffineParityCATBAssembly
+public import LisiSabatini.QuasiprimitiveAffineTwoOrbitOddPrimeLeaf
+public import LisiSabatini.MappedPCoreHall
+public import LisiSabatini.TwoCoreSymplecticTypeNonmixedAssembly
+public import LisiSabatini.TwoCoreSymplecticTypeMappedHomogeneous
+public import LisiSabatini.TwoCoreSymplecticTypeCentralCommutatorF3Plane
 
 /-!
 # The recursively stable odd-characteristic two-core leaf
@@ -30,6 +32,8 @@ therefore confined to a noncommuting `2`-core satisfying Hall's
 cyclic-characteristic-abelian condition and a fixed-point-free center.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 open scoped BigOperators
@@ -51,7 +55,7 @@ local instance fintypeConcreteLinearSubgroupForTwoCoreReserve
     Fintype P :=
   @Fintype.ofFinite P (finite_linearSubgroup_of_finite P)
 
-private abbrev diagonalMappedPCore
+abbrev diagonalMappedPCore
     (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r)

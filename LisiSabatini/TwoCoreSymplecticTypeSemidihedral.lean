@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeStructure
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeStructure
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # The semidihedral symplectic-type branch
@@ -31,6 +33,8 @@ The main consequences are:
 For `k = 1` this gives the sharp four-active-involution estimate for
 `QD16`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

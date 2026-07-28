@@ -1,9 +1,11 @@
-import LisiSabatini.AlternatingSylowWreathSupport
-import LisiSabatini.AlternatingSylowCoefficientBridge
-import Mathlib.Data.Nat.Choose.Factorization
-import Mathlib.Data.List.GetD
-import Mathlib.Data.List.Indexes
-import Mathlib.GroupTheory.Perm.Subgroup
+module
+
+public import LisiSabatini.AlternatingSylowWreathSupport
+public import LisiSabatini.AlternatingSylowCoefficientBridge
+public import Mathlib.Data.Nat.Choose.Factorization
+public import Mathlib.Data.List.GetD
+public import Mathlib.Data.List.Indexes
+public import Mathlib.GroupTheory.Perm.Subgroup
 
 /-!
 # Base-`p` block assembly for symmetric Sylow subgroups
@@ -14,6 +16,8 @@ nonzero base-`p` digit of `n`.  This file realizes that product as a
 faithful permutation group on the corresponding disjoint union of
 prime-power blocks.
 -/
+
+@[expose] public section
 
 noncomputable section
 

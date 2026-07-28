@@ -1,6 +1,8 @@
-import LisiSabatini.LinearImprimitivitySystem
-import Mathlib.Algebra.DirectSum.Module
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import LisiSabatini.LinearImprimitivitySystem
+public import Mathlib.Algebra.DirectSum.Module
+public import Mathlib.Data.Fintype.EquivFin
 
 /-!
 # Equivariant coarsening of linear systems of imprimitivity
@@ -20,6 +22,8 @@ No primitivity or irreducibility is assumed here.  Those are selection
 properties of a particular quotient; this module proves the previously
 missing linear-algebraic coarsening step once that finite quotient is chosen.
 -/
+
+@[expose] public section
 
 noncomputable section
 

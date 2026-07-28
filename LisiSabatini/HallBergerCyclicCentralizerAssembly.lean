@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerCyclicHeadUniformCoset
-import LisiSabatini.HallBergerHeadTransport
+module
+
+public import LisiSabatini.HallBergerCyclicHeadUniformCoset
+public import LisiSabatini.HallBergerHeadTransport
 
 /-!
 # Assembly when the Hall--Berger Frattini centralizer is cyclic
@@ -10,6 +12,8 @@ this is simply the entire centralizer.  Once the uniform outside action has
 shown that the centralizer has index two, the seed head is therefore the
 whole ambient group.
 -/
+
+@[expose] public section
 
 noncomputable section
 

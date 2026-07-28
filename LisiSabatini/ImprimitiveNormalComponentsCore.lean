@@ -1,5 +1,7 @@
-import LisiSabatini.ImprimitiveReductionCore
-import Mathlib.GroupTheory.PGroup
+module
+
+public import LisiSabatini.ImprimitiveReductionCore
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Normal components in a common imprimitive action
@@ -17,6 +19,8 @@ both normality and the prime-group property.  Consequently a regular abelian
 normal subgroup of the common top, together with distinct prime labels,
 forces at most one restricted component to have nontrivial top image.
 -/
+
+@[expose] public section
 
 noncomputable section
 

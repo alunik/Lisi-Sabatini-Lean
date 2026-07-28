@@ -1,9 +1,11 @@
-import LisiSabatini.NormalPrimeSquareCentralizer
-import LisiSabatini.NormalPGroupFlags
-import LisiSabatini.FrattiniQuotientEquality
-import LisiSabatini.ClassTwoFrattini
-import LisiSabatini.CyclicFrattiniOmega
-import LisiSabatini.HallPGroupStructure
+module
+
+public import LisiSabatini.NormalPrimeSquareCentralizer
+public import LisiSabatini.NormalPGroupFlags
+public import LisiSabatini.FrattiniQuotientEquality
+public import LisiSabatini.ClassTwoFrattini
+public import LisiSabatini.CyclicFrattiniOmega
+public import LisiSabatini.HallPGroupStructure
 
 /-!
 # Proof core for Hobby's theorem on Frattini subgroups of finite p-groups
@@ -21,6 +23,8 @@ of order `p ^ 3` is necessarily commutative.  The remaining induction is
 built above these reusable statements.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 namespace LisiSabatini
@@ -29,7 +33,7 @@ set_option backward.isDefEq.respectTransparency false
 
 open Subgroup
 
-private theorem isMulCommutative_of_isCyclic
+theorem isMulCommutative_of_isCyclic
     {A : Type*} [Group A] (hA : IsCyclic A) : IsMulCommutative A := by
   letI : IsCyclic A := hA
   exact ⟨IsCyclic.commutative⟩

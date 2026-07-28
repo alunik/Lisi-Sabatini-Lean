@@ -1,5 +1,7 @@
-import LisiSabatini.SemiregularTopCore
-import Mathlib.GroupTheory.Subgroup.Centralizer
+module
+
+public import LisiSabatini.SemiregularTopCore
+public import Mathlib.GroupTheory.Subgroup.Centralizer
 
 /-!
 # Centralizers of regular abelian permutation groups
@@ -17,6 +19,8 @@ that the two permutations agree everywhere.  Consequently the full ambient
 centralizer of a regular abelian permutation group is the group itself.  In
 particular, if `A ≤ T`, then the centralizer of `A` inside `T` is `A`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

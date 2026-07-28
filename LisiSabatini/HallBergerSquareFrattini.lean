@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerFrattiniDichotomy
+module
+
+public import LisiSabatini.HallBergerFrattiniDichotomy
 
 /-!
 # Squares and the Frattini subgroup of a finite `2`-group
@@ -8,6 +10,8 @@ exponent two and is therefore commutative.  Thus the derived subgroup is
 already contained in the square closure, and the Burnside--Frattini
 identity simplifies to `Φ(G) = G²`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,9 @@
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Data.Nat.Prime.Factorial
-import Mathlib.GroupTheory.Perm.Centralizer
-import Mathlib.RingTheory.Polynomial.Basic
+module
+
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.Data.Nat.Prime.Factorial
+public import Mathlib.GroupTheory.Perm.Centralizer
+public import Mathlib.RingTheory.Polynomial.Basic
 
 /-!
 # Exact Sylow cycle profiles for symmetric and alternating groups
@@ -24,6 +26,8 @@ group-theoretic identification of profile coefficients with actual
 Sylow/class intersections is deliberately kept out of this arithmetic
 module.
 -/
+
+@[expose] public section
 
 noncomputable section
 

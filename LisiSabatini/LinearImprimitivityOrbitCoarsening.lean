@@ -1,7 +1,9 @@
-import LisiSabatini.LinearImprimitivityCoarsening
-import Mathlib.Data.Fintype.Powerset
-import Mathlib.GroupTheory.GroupAction.Primitive
-import Mathlib.Order.Atoms.Finite
+module
+
+public import LisiSabatini.LinearImprimitivityCoarsening
+public import Mathlib.Data.Fintype.Powerset
+public import Mathlib.GroupTheory.GroupAction.Primitive
+public import Mathlib.Order.Atoms.Finite
 
 /-!
 # Canonical coarsening from a block of the permutation top
@@ -18,6 +20,8 @@ image.  The map from fine indices sends an index to the unique translate of
 prove surjectivity and equivariance of the containing-block map, and finally
 obtain the corresponding coarsened linear system.
 -/
+
+@[expose] public section
 
 noncomputable section
 

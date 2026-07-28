@@ -1,4 +1,6 @@
-import Mathlib.Data.ZMod.Basic
+module
+
+public import Mathlib.Data.ZMod.Basic
 
 /-!
 # The two-dimensional vector space over `F₃`
@@ -6,6 +8,8 @@ import Mathlib.Data.ZMod.Basic
 This neutral alias is shared by uniform two-core arguments and isolated
 finite equality cases.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

@@ -1,8 +1,10 @@
-import LisiSabatini.ChiefActionCore
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.LinearAlgebra.Dimension.Free
+module
+
+public import LisiSabatini.ChiefActionCore
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # Minimal chief-factor input for the odd-order theorem
@@ -16,6 +18,8 @@ The historical abstract lifting interfaces remain in
 `OddOrderReductionCore.lean`, outside the import closure of the unconditional
 odd-order theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

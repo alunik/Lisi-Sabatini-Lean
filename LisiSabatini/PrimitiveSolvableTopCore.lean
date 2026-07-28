@@ -1,5 +1,7 @@
-import Mathlib.GroupTheory.GroupAction.Primitive
-import Mathlib.GroupTheory.Subgroup.Centralizer
+module
+
+public import Mathlib.GroupTheory.GroupAction.Primitive
+public import Mathlib.GroupTheory.Subgroup.Centralizer
 
 /-!
 # Primitive permutation action core
@@ -8,6 +10,8 @@ Only the regular-action predicate and the elementary action lemmas consumed
 by the odd-order proof are kept in this module. The solvable-group
 consequences remain available from `PrimitiveSolvableTop`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,5 +1,7 @@
-import LisiSabatini.AlternatingSylowBasePBlocks
-import LisiSabatini.SylowPairQuadraticIndexTwo
+module
+
+public import LisiSabatini.AlternatingSylowBasePBlocks
+public import LisiSabatini.SylowPairQuadraticIndexTwo
 
 /-!
 # Exact quadratic class sums for symmetric Sylow rows
@@ -14,6 +16,8 @@ vanishes.  Second, the base-`p` block Sylow construction identifies the
 intersection cardinal of that class with the corresponding coefficient
 of `sylowCycleProfile`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

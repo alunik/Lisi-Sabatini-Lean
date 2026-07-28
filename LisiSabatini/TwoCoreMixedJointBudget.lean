@@ -1,5 +1,7 @@
-import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
-import LisiSabatini.TwoCoreMixedJointBudgetArithmetic
+module
+
+public import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
+public import LisiSabatini.TwoCoreMixedJointBudgetArithmetic
 
 /-!
 # The full distinguished-two budget for a mixed two-core
@@ -10,6 +12,8 @@ The factor map gives the deliberately coarse but sufficient order bound
 `|P| ≤ 4 N e²`; no cardinality formula for an internal central product is
 needed.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -191,7 +195,7 @@ local instance fintypeConcreteLinearSubgroupForMixedJointBudget
     Fintype P :=
   @Fintype.ofFinite P (finite_linearSubgroup_of_finite P)
 
-private abbrev mappedCore (q : ℕ) :
+abbrev mixedJointMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)) :=
   (pCore q K).map K.subtype
@@ -200,7 +204,7 @@ private abbrev diagonalMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r)
         ((Fin d → ZMod r) × (Fin d → ZMod r))) :=
-  (mappedCore (K := K) q).map
+  (mixedJointMappedCore (K := K) q).map
     (diagonalGeneralLinearHom (ZMod r) (Fin d → ZMod r))
 
 omit [NeZero r] in
@@ -209,12 +213,12 @@ private theorem ncard_nonregular_diagonalMappedCore_eq_affineBadSet
     (nonregularVectors
       (diagonalMappedCore (K := K) q)).ncard =
       (affineTwoBaseBadSet
-        (mappedCore (K := K) q) 0 0).ncard := by
+        (mixedJointMappedCore (K := K) q) 0 0).ncard := by
   congr 1
   ext z
   simpa using
     (mem_affineTwoBaseBadSet_iff_mem_nonregularVectors_diagonal
-      (mappedCore (K := K) q) 0 0 z).symm
+      (mixedJointMappedCore (K := K) q) 0 0 z).symm
 
 private theorem sum_eq_sum_twoIndex_add_oddIndex
     {I : Type uI} [Fintype I] (p : I → ℕ) (f : I → ℕ) :
@@ -233,12 +237,12 @@ theorem
     (hrTwo : r ≠ 2) (hd : 0 < d)
     (hqp : IsQuasiprimitiveLinearAction r d K)
     (data : BergerMixedCentralProductData
-      (mappedCore (K := K) 2))
+      (mixedJointMappedCore (K := K) 2))
     (e : ℕ) (he : 2 ≤ e)
     (hcard :
       Nat.card data.extraspecialPart = 2 * e * e) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
-  let P := mappedCore (K := K) 2
+  let P := mixedJointMappedCore (K := K) 2
   let D := fun q ↦ diagonalMappedCore (K := K) q
   let q := r ^ d
   let N := data.head.rotationOrder
@@ -338,7 +342,7 @@ theorem
         (fun i ↦ hcross i.1)
         (fun _i _j hij ↦ Subtype.ext (hinj hij))
         hqp
-    simpa [row, D, pO, q, diagonalMappedCore, mappedCore] using h
+    simpa [row, D, pO, q, diagonalMappedCore, mixedJointMappedCore] using h
   have htwoSum :
       (∑ i : {i : I // p i = 2}, row i.1) = B := by
     have hterm :
@@ -388,7 +392,7 @@ theorem
     (hrTwo : r ≠ 2) (hd : 0 < d)
     (hqp : IsQuasiprimitiveLinearAction r d K)
     (data : BergerMixedCentralProductData
-      (mappedCore (K := K) 2)) :
+      (mixedJointMappedCore (K := K) 2)) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
   obtain ⟨e, he, hcard⟩ :=
     data.extraspecial.exists_degree_card_eq_two_mul_sq

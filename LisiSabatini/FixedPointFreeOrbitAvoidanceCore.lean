@@ -1,6 +1,8 @@
-import LisiSabatini.FixedPointFreeNCASCore
-import Mathlib.GroupTheory.GroupAction.Quotient
-import Mathlib.GroupTheory.GroupAction.SubMulAction
+module
+
+public import LisiSabatini.FixedPointFreeNCASCore
+public import Mathlib.GroupTheory.GroupAction.Quotient
+public import Mathlib.GroupTheory.GroupAction.SubMulAction
 
 /-!
 # Core counting bounds for fixed-point-free prime families
@@ -10,6 +12,8 @@ core records the resulting order divisibility and the sharp bounds on the
 number of active, distinctly odd-prime-labelled components.  The later
 orbit-avoidance adapters remain in `FixedPointFreeOrbitAvoidance.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

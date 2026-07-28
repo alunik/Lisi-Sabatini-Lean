@@ -1,9 +1,13 @@
-import LisiSabatini.HallClassTwoCore
-import LisiSabatini.QuasiprimitivePrimeCoreCore
+module
+
+public import LisiSabatini.HallClassTwoCore
+public import LisiSabatini.QuasiprimitivePrimeCoreCore
 
 /-!
 # Minimal Hall input for quasiprimitive prime cores
 -/
+
+@[expose] public section
 
 noncomputable section
 

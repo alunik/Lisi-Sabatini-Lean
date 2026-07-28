@@ -1,4 +1,6 @@
-import LisiSabatini.ImprimitiveReductionCore
+module
+
+public import LisiSabatini.ImprimitiveReductionCore
 
 /-!
 # The one-orbit avoiding common-translate predicate
@@ -7,6 +9,8 @@ This proof-only core contains the strengthened local regularity predicate.
 The later single-top synchronization adapters remain in
 `OrbitAvoidingPalette.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

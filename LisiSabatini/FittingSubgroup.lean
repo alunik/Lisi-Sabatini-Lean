@@ -1,5 +1,7 @@
-import LisiSabatini.PCore
-import Mathlib.GroupTheory.Nilpotent
+module
+
+public import LisiSabatini.PCore
+public import Mathlib.GroupTheory.Nilpotent
 
 /-!
 # The Fitting subgroup and nilpotent Sylow generation
@@ -9,6 +11,8 @@ define it as the supremum of all normal nilpotent subgroups.  The
 three-conjugates programme uses its universal property, the inclusion of
 every prime core, and a finite-nilpotent containment principle.
 -/
+
+@[expose] public section
 
 noncomputable section
 

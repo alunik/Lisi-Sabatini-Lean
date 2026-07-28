@@ -1,8 +1,10 @@
-import LisiSabatini.ChiefActionStructuralDescent
-import LisiSabatini.PCore
-import LisiSabatini.ImprimitiveBundleAction
-import LisiSabatini.ImprimitiveBundleMarkerCore
-import Mathlib.GroupTheory.Solvable
+module
+
+public import LisiSabatini.ChiefActionStructuralDescent
+public import LisiSabatini.PCore
+public import LisiSabatini.ImprimitiveBundleAction
+public import LisiSabatini.ImprimitiveBundleMarkerCore
+public import Mathlib.GroupTheory.Solvable
 
 /-!
 # The local action of an imprimitive block stabilizer
@@ -20,6 +22,8 @@ prime component inside it as a normal prime subgroup.  The construction is
 also transported to the common `Fin e → ZMod r` coordinates of an internal
 prime-field presentation.
 -/
+
+@[expose] public section
 
 noncomputable section
 

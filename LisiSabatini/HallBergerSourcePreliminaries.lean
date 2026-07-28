@@ -1,6 +1,8 @@
-import LisiSabatini.HallBergerOmegaOne
-import LisiSabatini.HobbyFrattiniTheoremCore
-import LisiSabatini.FrattiniCentrality
+module
+
+public import LisiSabatini.HallBergerOmegaOne
+public import LisiSabatini.HobbyFrattiniTheoremCore
+public import LisiSabatini.FrattiniCentrality
 
 /-!
 # Elementary preliminaries in the Berger--Kovács--Newman proof
@@ -18,6 +20,8 @@ first two deductions in that proof:
 
 These are direct inputs to the central-product decomposition of `C`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,9 @@
-import LisiSabatini.NormalComponentOrbitAvoidingCore
-import LisiSabatini.PrimitiveImprimitiveComponentsCore
-import LisiSabatini.ImprimitiveBundleMarkerCore
-import LisiSabatini.ImprimitiveBundleGraph
+module
+
+public import LisiSabatini.NormalComponentOrbitAvoidingCore
+public import LisiSabatini.PrimitiveImprimitiveComponentsCore
+public import LisiSabatini.ImprimitiveBundleMarkerCore
+public import LisiSabatini.ImprimitiveBundleGraph
 
 /-!
 # Core mixed prime-core one-orbit frontier
@@ -11,6 +13,8 @@ by the direct dimension induction.  The old quasiprimitive-leaf record,
 generic recursive wrappers, labelled certificates, and obstruction examples
 remain outside the proof closure.
 -/
+
+@[expose] public section
 
 noncomputable section
 

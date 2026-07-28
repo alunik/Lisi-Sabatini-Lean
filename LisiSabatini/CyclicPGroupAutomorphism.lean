@@ -1,7 +1,9 @@
-import Mathlib.GroupTheory.PGroup
-import Mathlib.NumberTheory.Multiplicity
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.FieldTheory.Finite.Basic
+module
+
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.NumberTheory.Multiplicity
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.FieldTheory.Finite.Basic
 
 /-!
 # Odd prime-order automorphisms of cyclic prime groups
@@ -10,6 +12,8 @@ These elementary automorphism lemmas are used by the cyclic-Frattini
 argument.  They are independent of the later Hall index-descent machinery,
 so isolating them keeps Hobby's theorem out of that legacy dependency cone.
 -/
+
+@[expose] public section
 
 noncomputable section
 

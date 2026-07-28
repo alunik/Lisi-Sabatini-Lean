@@ -1,4 +1,6 @@
-import LisiSabatini.CyclicCenterClassTwo
+module
+
+public import LisiSabatini.CyclicCenterClassTwo
 
 /-!
 # Hall's cyclic-center class-two endpoint under central Frattini control
@@ -7,6 +9,8 @@ This is the group-theoretic endpoint used by the publication proof.  It is
 independent of the later whole-core centralizer dichotomy and Hall-index
 descent infrastructure.
 -/
+
+@[expose] public section
 
 noncomputable section
 

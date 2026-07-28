@@ -1,6 +1,8 @@
-import LisiSabatini.AffineTwoBaseTranslates
-import LisiSabatini.MixedAffineReductionCore
-import LisiSabatini.ThreeConjugatesSynchronization
+module
+
+public import LisiSabatini.AffineTwoBaseTranslates
+public import LisiSabatini.MixedAffineReductionCore
+public import LisiSabatini.ThreeConjugatesSynchronization
 
 /-!
 # Three-row affine chief-factor reduction
@@ -15,6 +17,8 @@ rows.
 No linear existence theorem is asserted here.  The final lift takes
 `CommonAffineTwoBaseTranslates` as an explicit hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

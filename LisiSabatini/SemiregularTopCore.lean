@@ -1,4 +1,6 @@
-import Mathlib.GroupTheory.GroupAction.Basic
+module
+
+public import Mathlib.GroupTheory.GroupAction.Basic
 
 /-!
 # Semiregular permutation subgroups
@@ -6,6 +8,8 @@ import Mathlib.GroupTheory.GroupAction.Basic
 The two proof-level predicates used by the odd-order imprimitive argument.
 The marker constructions built from them remain in `SemiregularTop`.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

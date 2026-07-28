@@ -1,11 +1,13 @@
-import LisiSabatini.PrimitiveTopPrimeCoreDominationCore
-import LisiSabatini.MixedPrimeCoreOneRowEstimates
-import LisiSabatini.QuasiprimitivePrimeCoreCore
-import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
-import LisiSabatini.FixedPointFreePGroupDivisibility
-import LisiSabatini.FixedPointFreePalette
-import LisiSabatini.OrbitAvoidingCountCore
-import LisiSabatini.ExtraspecialFamilyHalfBudget
+module
+
+public import LisiSabatini.PrimitiveTopPrimeCoreDominationCore
+public import LisiSabatini.MixedPrimeCoreOneRowEstimates
+public import LisiSabatini.QuasiprimitivePrimeCoreCore
+public import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
+public import LisiSabatini.FixedPointFreePGroupDivisibility
+public import LisiSabatini.FixedPointFreePalette
+public import LisiSabatini.OrbitAvoidingCountCore
+public import LisiSabatini.ExtraspecialFamilyHalfBudget
 
 /-!
 # Mixed prime-core domination at quasiprimitive local leaves
@@ -22,6 +24,8 @@ sets and actual distinguished orbit.  The already formalized prime-core
 containment then transfers one-orbit avoidance to arbitrary normal prime
 subgroups without any structural transport to those subgroups.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -173,7 +177,7 @@ def ofQuasiprimitive
 
 /-! ## Exact mixed family arithmetic -/
 
-private abbrev NoncommutativeIndex
+abbrev NoncommutativeIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : J → ℕ) : Type uJ :=
@@ -181,7 +185,7 @@ private abbrev NoncommutativeIndex
     (pCore (p j) K).map K.subtype ≠ ⊥ ∧
       ¬ IsCommutingPrimeCore (p j) K}
 
-private abbrev CommutativeIndex
+abbrev CommutativeIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : J → ℕ) : Type uJ :=
@@ -189,13 +193,13 @@ private abbrev CommutativeIndex
     (pCore (p j) K).map K.subtype ≠ ⊥ ∧
       IsCommutingPrimeCore (p j) K}
 
-private noncomputable instance fintypeNoncommutativeIndex
+noncomputable instance fintypeNoncommutativeIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : J → ℕ) : Fintype (NoncommutativeIndex K p) :=
   Fintype.ofFinite _
 
-private noncomputable instance fintypeCommutativeIndex
+noncomputable instance fintypeCommutativeIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : J → ℕ) : Fintype (CommutativeIndex K p) :=

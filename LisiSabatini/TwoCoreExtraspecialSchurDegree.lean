@@ -1,5 +1,7 @@
-import LisiSabatini.SchurWeylBasis
-import LisiSabatini.TwoCoreSymplecticTypeInnerRestriction
+module
+
+public import LisiSabatini.SchurWeylBasis
+public import LisiSabatini.TwoCoreSymplecticTypeInnerRestriction
 
 /-!
 # Stone--von Neumann degree for extraspecial two-groups
@@ -21,6 +23,8 @@ field.  Jacobson density supplies spanning.  Hence, if
 
 then the Schur-linear dimension of a simple constituent is exactly `e`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

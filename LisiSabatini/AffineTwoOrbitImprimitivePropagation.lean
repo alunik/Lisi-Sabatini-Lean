@@ -1,7 +1,9 @@
-import LisiSabatini.ActiveTopTwoOrbitComposition
-import LisiSabatini.BlockStabilizerLocalAction
-import LisiSabatini.DiagonalAffineTwoOrbitLinearEquiv
-import LisiSabatini.DiagonalPairImprimitiveAction
+module
+
+public import LisiSabatini.ActiveTopTwoOrbitComposition
+public import LisiSabatini.BlockStabilizerLocalAction
+public import LisiSabatini.DiagonalAffineTwoOrbitLinearEquiv
+public import LisiSabatini.DiagonalPairImprimitiveAction
 
 /-!
 # Strong affine two-orbit propagation through imprimitivity
@@ -12,6 +14,8 @@ top theorem therefore propagates the recursively stable two-orbit
 invariant from the faithful block-stabilizer local actions to the original
 action.
 -/
+
+@[expose] public section
 
 noncomputable section
 

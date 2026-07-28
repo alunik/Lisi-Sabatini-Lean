@@ -1,7 +1,9 @@
-import LisiSabatini.TwoCoreSymplecticTypeFrontier
-import LisiSabatini.SchurWeylBasis
-import Mathlib.LinearAlgebra.Center
-import Mathlib.LinearAlgebra.Determinant
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeFrontier
+public import LisiSabatini.SchurWeylBasis
+public import Mathlib.LinearAlgebra.Center
+public import Mathlib.LinearAlgebra.Determinant
 
 /-!
 # The representation comparison for symplectic-type two-cores
@@ -22,6 +24,8 @@ derived subgroup, while its action is `-1`; hence `dim V` is even.  These
 two facts give the required numerical comparison outside the single
 module `F₃²`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -122,7 +126,7 @@ private theorem twoCoreCommutatorSign_injective
 
 /-- The operator attached to a chosen representative of a central
 coset. -/
-private def twoCoreCentralCosetOperator
+def twoCoreCentralCosetOperator
     {r d : ℕ}
     (P : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))

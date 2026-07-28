@@ -1,9 +1,11 @@
-import LisiSabatini.TripleAffineReductionCore
-import LisiSabatini.ChiefActionCore
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.LinearAlgebra.Dimension.Free
+module
+
+public import LisiSabatini.TripleAffineReductionCore
+public import LisiSabatini.ChiefActionCore
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # Solvable three-Sylow reduction to common affine two-base translates
@@ -18,6 +20,8 @@ The required linear statement is an explicit hypothesis below.  This file
 does not assert it, does not add an axiom, and in particular does not claim
 an unconditional three-Sylow theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,6 @@
-import LisiSabatini.ImprimitiveBaseComponents
+module
+
+public import LisiSabatini.ImprimitiveBaseComponents
 
 /-!
 # The common base action of an imprimitive linear group
@@ -14,6 +16,8 @@ crossed homomorphisms on the whole imprimitive group, but become honest group
 homomorphisms on the common permutation kernel; the homomorphism laws are
 derived directly from `action_apply`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

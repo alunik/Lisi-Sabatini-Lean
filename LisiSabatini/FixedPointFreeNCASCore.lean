@@ -1,5 +1,7 @@
-import LisiSabatini.FixedPointFreeOffZero
-import Mathlib.GroupTheory.PGroup
+module
+
+public import LisiSabatini.FixedPointFreeOffZero
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Prime-size bounds for fixed-point-free linear groups
@@ -9,6 +11,8 @@ fixed-point-free prime subgroup used by the odd-order argument.  The
 active-family bounds and the NCAS compatibility criterion remain in
 `FixedPointFreeNCAS.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

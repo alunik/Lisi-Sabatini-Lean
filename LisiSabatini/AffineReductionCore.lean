@@ -1,8 +1,10 @@
-import LisiSabatini.CoprimeNormal
-import LisiSabatini.ElementarySection
-import LisiSabatini.OddOrder
-import LisiSabatini.Quotient
-import LisiSabatini.Strong
+module
+
+public import LisiSabatini.CoprimeNormal
+public import LisiSabatini.ElementarySection
+public import LisiSabatini.OddOrder
+public import LisiSabatini.Quotient
+public import LisiSabatini.Strong
 
 /-!
 # The group-theoretic affine reduction
@@ -17,6 +19,8 @@ for the restricted linear conjugation action.  The action kernel is the
 pointwise centralizer of `N`; consequently equality with that kernel is
 equivalent to regularity in the faithful action image.
 -/
+
+@[expose] public section
 
 noncomputable section
 

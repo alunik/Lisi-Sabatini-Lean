@@ -1,6 +1,8 @@
-import LisiSabatini.AlternatingSylowQuadraticEnvelope
-import LisiSabatini.AlternatingSylowQuadraticFormula
-import LisiSabatini.SylowPairQuadraticAssembly
+module
+
+public import LisiSabatini.AlternatingSylowQuadraticEnvelope
+public import LisiSabatini.AlternatingSylowQuadraticFormula
+public import LisiSabatini.SylowPairQuadraticAssembly
 
 /-!
 # The Lisi--Sabatini conjecture for alternating groups of degree at least 40
@@ -12,6 +14,8 @@ the unrestricted transfer.  Their exact quadratic costs are the alternating
 cycle profiles.  The uniform profile envelope leaves a strict factor-four
 budget, so the quadratic bad-conjugator union cannot cover `A_n`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

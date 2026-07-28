@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerCentralFactor
+module
+
+public import LisiSabatini.HallBergerCentralFactor
 
 /-!
 # Extracting a noncommuting involution in the BKN proof
@@ -9,6 +11,8 @@ uses the following consequence of its exact hypothesis.  If
 `Z(Ω₁(C))`; hence it fails to commute with one of the involutions that
 generate `Ω₁(C)`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

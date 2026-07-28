@@ -1,6 +1,8 @@
-import LisiSabatini.QuasiprimitiveRepresentation
-import LisiSabatini.FixedPointFreeOffZero
-import LisiSabatini.FiniteLinearSubgroup
+module
+
+public import LisiSabatini.QuasiprimitiveRepresentation
+public import LisiSabatini.FixedPointFreeOffZero
+public import LisiSabatini.FiniteLinearSubgroup
 
 /-!
 # Core prime-core consequences of quasiprimitivity
@@ -9,6 +11,8 @@ This module contains only the structural fixed-point-free, cyclicity, center,
 and admissibility facts used by the publication proof. Automatic mixed-profile
 constructors remain in the compatibility profile module.
 -/
+
+@[expose] public section
 
 noncomputable section
 

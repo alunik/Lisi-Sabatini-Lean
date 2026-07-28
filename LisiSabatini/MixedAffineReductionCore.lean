@@ -1,5 +1,7 @@
-import LisiSabatini.AffineReductionCore
-import LisiSabatini.MixedSylowIntersections
+module
+
+public import LisiSabatini.AffineReductionCore
+public import LisiSabatini.MixedSylowIntersections
 
 /-!
 # Mixed-row affine reduction
@@ -13,6 +15,8 @@ conjugator in the existing same-row affine-fibre theorem.  This file records
 the exact intersection and quotient transports and derives the mixed
 one-prime affine reduction without duplicating its group-theoretic core.
 -/
+
+@[expose] public section
 
 noncomputable section
 

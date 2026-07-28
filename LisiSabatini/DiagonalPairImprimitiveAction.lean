@@ -1,5 +1,7 @@
-import LisiSabatini.AffineTwoBaseTranslates
-import LisiSabatini.ImprimitiveBundleMarkerCore
+module
+
+public import LisiSabatini.AffineTwoBaseTranslates
+public import LisiSabatini.ImprimitiveBundleMarkerCore
 
 /-!
 # Diagonal pairs of imprimitive linear actions
@@ -9,6 +11,8 @@ two copies of the module.  For an imprimitive action on `I → W`, this file
 identifies that doubled representation with `I → (W × W)` and transports the
 imprimitive action data through the identification.
 -/
+
+@[expose] public section
 
 noncomputable section
 

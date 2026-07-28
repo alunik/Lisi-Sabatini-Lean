@@ -1,5 +1,7 @@
-import LisiSabatini.OddRegularListColoringArithmetic
-import Mathlib.GroupTheory.Perm.Centralizer
+module
+
+public import LisiSabatini.OddRegularListColoringArithmetic
+public import Mathlib.GroupTheory.Perm.Centralizer
 
 /-!
 # Binary list colourings for odd semiregular permutation groups
@@ -16,6 +18,8 @@ relations.  In the imprimitive application the relation says that two
 chosen block values lie in the exact common-base fibre associated to a
 fixed top permutation.
 -/
+
+@[expose] public section
 
 noncomputable section
 

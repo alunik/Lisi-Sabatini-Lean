@@ -1,4 +1,6 @@
-import Mathlib.GroupTheory.Sylow
+module
+
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # The Lisi–Sabatini property
@@ -8,6 +10,8 @@ Lisi–Sabatini conjecture.  In particular, it does not replace a minimal
 intersection by the `p`-core, since that lower bound need not be attained by
 the intersection of two Sylow subgroups.
 -/
+
+@[expose] public section
 
 noncomputable section
 

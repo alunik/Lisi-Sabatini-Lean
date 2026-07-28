@@ -1,5 +1,7 @@
-import LisiSabatini.QuasiprimitiveRepresentation
-import Mathlib.LinearAlgebra.Dimension.Constructions
+module
+
+public import LisiSabatini.QuasiprimitiveRepresentation
+public import Mathlib.LinearAlgebra.Dimension.Constructions
 
 /-!
 # The elementary dimension factorization for homogeneous representations
@@ -9,6 +11,8 @@ copies of one simple constituent.  This file records only that elementary
 multiplicity statement.  In particular, it makes no assertion about the
 dimension of the simple constituent arising from an extraspecial prime core.
 -/
+
+@[expose] public section
 
 noncomputable section
 

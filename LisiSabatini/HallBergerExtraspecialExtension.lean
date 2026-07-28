@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerDihedralFactor
-import Mathlib.Algebra.Group.Subgroup.Pointwise
+module
+
+public import LisiSabatini.HallBergerDihedralFactor
+public import Mathlib.Algebra.Group.Subgroup.Pointwise
 
 /-!
 # Enlarging the extraspecial factor in the Hall--Berger argument
@@ -15,6 +17,8 @@ This file proves those statements intrinsically for subgroups.  They are
 the group-theoretic mechanism behind the contradiction to the maximal
 choice of the product of dihedral factors in the published proof.
 -/
+
+@[expose] public section
 
 noncomputable section
 

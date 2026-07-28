@@ -1,11 +1,13 @@
-import LisiSabatini.CyclicCenterClassTwo
-import LisiSabatini.AlternatingDimension
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.TransferInstance
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.LinearAlgebra.Matrix.BilinearForm
-import Mathlib.LinearAlgebra.Matrix.Nondegenerate
+module
+
+public import LisiSabatini.CyclicCenterClassTwo
+public import LisiSabatini.AlternatingDimension
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.TransferInstance
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.LinearAlgebra.Matrix.BilinearForm
+public import Mathlib.LinearAlgebra.Matrix.Nondegenerate
 
 /-!
 # The symplectic quotient of an unsplit cyclic-center core
@@ -21,6 +23,8 @@ This file linearizes the kernel-valued pairing from
 
 for a positive `n`, without choosing or assuming an extraspecial factor.
 -/
+
+@[expose] public section
 
 noncomputable section
 

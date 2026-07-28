@@ -1,5 +1,7 @@
-import LisiSabatini.ClassTwoFrattini
-import LisiSabatini.HallPGroupStructure
+module
+
+public import LisiSabatini.ClassTwoFrattini
+public import LisiSabatini.HallPGroupStructure
 
 /-!
 # The class-two core in Hall's odd p-group argument
@@ -24,6 +26,8 @@ group-theoretic step is precisely to split the possibly larger cyclic center
 and extract a subgroup whose center and derived subgroup are the canonical
 order-`p` kernel.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import LisiSabatini.PrimitiveSolvableTopCore
-import LisiSabatini.RegularAbelianTop
-import Mathlib.GroupTheory.PGroup
+module
+
+public import LisiSabatini.PrimitiveSolvableTopCore
+public import LisiSabatini.RegularAbelianTop
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Normal prime subgroups of primitive permutation groups
@@ -18,6 +20,8 @@ in `Equiv.Perm Ω` as a `IsRegularAbelianPermutationSubgroup`, hence in
 particular as the semiregular top required by the single-marker imprimitive
 reduction.
 -/
+
+@[expose] public section
 
 noncomputable section
 

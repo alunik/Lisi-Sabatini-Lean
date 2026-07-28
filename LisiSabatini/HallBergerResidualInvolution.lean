@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerInternalFactorComposition
+module
+
+public import LisiSabatini.HallBergerInternalFactorComposition
 
 /-!
 # Projecting the Hall--Berger involution into a residual centralizer
@@ -14,6 +16,8 @@ This file formalizes exactly that projection-and-correction step.  In
 particular, it does not make the invalid assumption that the residual
 centralizer inherits the omega-center hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

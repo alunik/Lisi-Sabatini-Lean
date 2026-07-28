@@ -1,5 +1,7 @@
-import LisiSabatini.CyclicCenterSymplectic
-import Mathlib.LinearAlgebra.BilinearForm.Properties
+module
+
+public import LisiSabatini.CyclicCenterSymplectic
+public import Mathlib.LinearAlgebra.BilinearForm.Properties
 
 /-!
 # Central automorphisms of extraspecial two-groups
@@ -11,6 +13,8 @@ and the central error `α(x) * x⁻¹` is a linear functional on this quotient.
 The linear equivalence `LinearMap.BilinForm.toDual` then supplies the
 conjugating element.
 -/
+
+@[expose] public section
 
 noncomputable section
 

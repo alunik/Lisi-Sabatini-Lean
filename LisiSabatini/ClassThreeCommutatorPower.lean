@@ -1,5 +1,7 @@
-import LisiSabatini.ClassTwoCommutator
-import Mathlib.Data.Nat.Choose.Basic
+module
+
+public import LisiSabatini.ClassTwoCommutator
+public import Mathlib.Data.Nat.Choose.Basic
 
 /-!
 # A class-three commutator power identity
@@ -21,6 +23,8 @@ For an odd exponent `p`, `p ∣ p.choose 2`; hence a triple commutator killed by
 `p` contributes no correction term.  The final corollaries expose this form
 for the Hall index-prime lifting argument.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

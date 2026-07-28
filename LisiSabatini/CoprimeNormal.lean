@@ -1,5 +1,7 @@
-import LisiSabatini.PCore
-import Mathlib.GroupTheory.Subgroup.Centralizer
+module
+
+public import LisiSabatini.PCore
+public import Mathlib.GroupTheory.Subgroup.Centralizer
 
 /-!
 # Normal subgroups at different primes
@@ -8,6 +10,8 @@ This file records the elementary coprime-normal subgroup facts used by the
 affine reduction.  They are independent of any affine or representation-
 theoretic hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

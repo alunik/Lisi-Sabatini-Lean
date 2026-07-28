@@ -1,5 +1,7 @@
-import LisiSabatini.InnerNormalRestrictionHomogeneous
-import Mathlib.Algebra.MonoidAlgebra.MapDomain
+module
+
+public import LisiSabatini.InnerNormalRestrictionHomogeneous
+public import Mathlib.Algebra.MonoidAlgebra.MapDomain
 
 /-!
 # Homogeneity after passage to a faithful subgroup image
@@ -9,6 +11,8 @@ subgroup.  The counting arguments use its faithful image in the ambient
 general linear group.  This file records the harmless, but type-theoretically
 nontrivial, transport across the canonical group equivalence.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -84,7 +88,7 @@ variable {k : Type uK} {A : Type uA} {B : Type uB} {V : Type uV}
 variable [Field k] [Group A] [Group B]
 variable [AddCommGroup V] [Module k V]
 
-private abbrev compMulEquivRepresentation
+abbrev compMulEquivRepresentation
     (rho : Representation k B V)
     (e : A ≃* B) :
     Representation k A V :=

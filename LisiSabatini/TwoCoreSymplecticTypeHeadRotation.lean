@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeFrontier
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeFrontier
 
 /-!
 # The distinguished rotation in a maximal-class head
@@ -9,6 +11,8 @@ head.  In every case the chosen rotation has order `rotationOrder`, its
 half-power is the unique nonidentity central involution, and a standard
 coset element does not commute with it.
 -/
+
+@[expose] public section
 
 noncomputable section
 

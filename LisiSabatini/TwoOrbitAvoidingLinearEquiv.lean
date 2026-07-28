@@ -1,5 +1,7 @@
-import LisiSabatini.NormalComponentOrbitAvoidingCore
-import LisiSabatini.TwoOrbitAvoidingPaletteCore
+module
+
+public import LisiSabatini.NormalComponentOrbitAvoidingCore
+public import LisiSabatini.TwoOrbitAvoidingPaletteCore
 
 /-!
 # Linear-equivalence invariance of two-orbit avoidance
@@ -9,6 +11,8 @@ Imprimitive composition instead uses the linearly equivalent blockwise-pair
 model.  This file records the exact transport of simultaneous regularity and
 both forbidden component orbits through an arbitrary linear equivalence.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerSourcePreliminaries
+module
+
+public import LisiSabatini.HallBergerSourcePreliminaries
 
 /-!
 # The small-Frattini case of Hall--Berger
@@ -9,6 +11,8 @@ subgroup is central, so its centralizer is the whole group.  The group is
 then either cyclic or already has the central-commutator structure used by
 the affine counting argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

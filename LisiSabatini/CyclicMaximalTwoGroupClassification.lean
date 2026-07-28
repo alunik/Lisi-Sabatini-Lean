@@ -1,6 +1,8 @@
-import LisiSabatini.HallBergerCyclicMaximalSubgroup
-import LisiSabatini.CyclicMaximalTwoAdicArithmetic
-import Mathlib.GroupTheory.SpecificGroups.Quaternion
+module
+
+public import LisiSabatini.HallBergerCyclicMaximalSubgroup
+public import LisiSabatini.CyclicMaximalTwoAdicArithmetic
+public import Mathlib.GroupTheory.SpecificGroups.Quaternion
 
 /-!
 # Finite two-groups with a cyclic maximal subgroup
@@ -10,6 +12,8 @@ noncentral-square form needed by the Hall--Berger reduction.  The proof keeps
 the distinguished rotation and coset representative from
 `CyclicMaximalTwoGroupData` throughout.
 -/
+
+@[expose] public section
 
 noncomputable section
 
