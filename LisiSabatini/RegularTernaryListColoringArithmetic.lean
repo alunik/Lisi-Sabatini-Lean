@@ -1,4 +1,6 @@
-import Mathlib
+import Lean.Elab.Tactic.Omega
+import Mathlib.Tactic.IntervalCases
+import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for regular ternary list colourings

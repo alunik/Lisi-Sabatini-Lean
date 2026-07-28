@@ -2,6 +2,7 @@ import LisiSabatini.AffineTwoBaseTranslates
 import LisiSabatini.ActiveFixedSpaceSpectrum
 import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
 import LisiSabatini.ExtraspecialFamilyArithmeticCore
+import Mathlib.Tactic.NormNum.Prime
 
 /-!
 # Direct pair-spectrum bounds for affine two-base loci

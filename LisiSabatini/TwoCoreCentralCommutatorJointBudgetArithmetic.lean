@@ -1,4 +1,6 @@
 import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Tactic.Linarith
 
 /-!
 # Joint-budget residual for the central-commutator branch

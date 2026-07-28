@@ -1,6 +1,9 @@
+import Lean.Elab.Tactic.Omega
 import Mathlib.Data.Nat.Factorization.PrimePow
 import Mathlib.Data.Nat.ModEq
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 /-!
 # Two-adic arithmetic for cyclic maximal subgroups

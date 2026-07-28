@@ -1,4 +1,5 @@
 import LisiSabatini.ExtraspecialArithmetic
+import Mathlib.Data.Fintype.EquivFin
 
 /-!
 # Arithmetic core for the odd-order extraspecial half-space estimate

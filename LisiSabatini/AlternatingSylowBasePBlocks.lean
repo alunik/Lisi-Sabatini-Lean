@@ -51,11 +51,6 @@ noncomputable local instance iteratedPrimeCycleFintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
   Fintype.ofFinite _
 
-noncomputable local instance basePBlockWreathProductDecidableEq
-    (n p : ℕ) [Fact p.Prime] :
-    DecidableEq (BasePBlockWreathProduct n p) :=
-  Classical.decEq _
-
 theorem length_digits_le_succ
     (n p : ℕ) (hp : 2 ≤ p) :
     (p.digits n).length ≤ n + 1 := by
@@ -406,12 +401,6 @@ def basePBlockCycleProfile
     (n p : ℕ) [hp : Fact p.Prime] :
     Polynomial ℕ := by
   classical
-  letI : NeZero p := ⟨hp.out.ne_zero⟩
-  letI (i : BasePBlockIndex n p) :
-      Fintype
-        (IteratedWreathProduct
-          (PrimeCycleGroup p) (i.1 : ℕ)) :=
-    Fintype.ofFinite _
   exact
     ∑ w : BasePBlockWreathProduct n p,
       ∏ i : BasePBlockIndex n p,
@@ -423,12 +412,6 @@ theorem basePBlockCycleProfile_eq_prod
       ∏ i : BasePBlockIndex n p,
         iteratedWreathCycleProfile p (i.1 : ℕ) := by
   classical
-  letI : NeZero p := ⟨hp.out.ne_zero⟩
-  letI (i : BasePBlockIndex n p) :
-      Fintype
-        (IteratedWreathProduct
-          (PrimeCycleGroup p) (i.1 : ℕ)) :=
-    Fintype.ofFinite _
   rw [basePBlockCycleProfile]
   rw [← Fintype.prod_sum]
   apply Finset.prod_congr rfl
@@ -476,9 +459,11 @@ theorem prod_iteratedWreathCycleWeight_eq
     (w : BasePBlockWreathProduct n p) :
     (∏ i : BasePBlockIndex n p,
       iteratedWreathCycleWeight p (i.1 : ℕ) (w i)) =
-        if w ^ p = 1 then
-          Polynomial.X ^ basePBlockCycleCount n p w
-        else 0 := by
+        (by
+          classical
+          exact if w ^ p = 1 then
+            Polynomial.X ^ basePBlockCycleCount n p w
+          else 0) := by
   classical
   by_cases hw : w ^ p = 1
   · rw [if_pos hw]
@@ -504,17 +489,14 @@ theorem prod_iteratedWreathCycleWeight_eq
 theorem basePBlockCycleProfile_eq_sum_monomials
     (n p : ℕ) [hp : Fact p.Prime] :
     basePBlockCycleProfile n p =
-      ∑ w : BasePBlockWreathProduct n p,
-        if w ^ p = 1 then
-          Polynomial.X ^ basePBlockCycleCount n p w
-        else 0 := by
+      (by
+        classical
+        exact
+          ∑ w : BasePBlockWreathProduct n p,
+            if w ^ p = 1 then
+              Polynomial.X ^ basePBlockCycleCount n p w
+            else 0) := by
   classical
-  letI : NeZero p := ⟨hp.out.ne_zero⟩
-  letI (i : BasePBlockIndex n p) :
-      Fintype
-        (IteratedWreathProduct
-          (PrimeCycleGroup p) (i.1 : ℕ)) :=
-    Fintype.ofFinite _
   rw [basePBlockCycleProfile]
   apply Finset.sum_congr rfl
   intro w _hw
@@ -664,8 +646,9 @@ theorem cycleType_card_basePBlockPermHom
 prime cycles in the block action. -/
 def basePBlockCycleCountFinset
     (n p j : ℕ) [Fact p.Prime] :
-    Finset (BasePBlockWreathProduct n p) :=
-  Finset.univ.filter fun w ↦
+    Finset (BasePBlockWreathProduct n p) := by
+  classical
+  exact Finset.univ.filter fun w ↦
     w ^ p = 1 ∧ basePBlockCycleCount n p w = j
 
 theorem coeff_basePBlockCycleProfile

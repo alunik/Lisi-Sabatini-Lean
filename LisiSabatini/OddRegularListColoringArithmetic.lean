@@ -1,4 +1,7 @@
-import Mathlib
+import Lean.Elab.Tactic.Omega
+import Mathlib.Tactic.IntervalCases
+import Mathlib.Tactic.NormNum.Parity
+import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for odd regular list colourings

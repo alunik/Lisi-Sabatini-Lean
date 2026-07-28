@@ -47,7 +47,7 @@ def IsQuasiprimitive
     {k A V : Type*} [Field k] [Group A]
     [AddCommGroup V] [Module k V]
     (rho : Representation k A V) : Prop :=
-  rho.IsIrreducible ∧
+  IsSimpleOrder (Subrepresentation rho) ∧
     ∀ H : Subgroup A, H.Normal → IsHomogeneous (rho.comp H.subtype)
 
 end Representation

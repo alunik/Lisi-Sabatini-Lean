@@ -151,24 +151,34 @@ The project is pinned to Lean and mathlib `v4.29.1`.
 
 ```text
 lake exe cache get
-lake build
+LEAN_NUM_THREADS=4 lake build
 ```
 
-The public endpoints can be checked independently with warnings treated as
-errors:
+`LEAN_NUM_THREADS=4` is the recommended setting on machines with about
+16 GB of memory.  It prevents several large Lean processes from competing
+for compressed memory; machines with substantially more memory may omit it
+or choose a higher value.  See
+[`BUILD_PERFORMANCE.md`](BUILD_PERFORMANCE.md) for the import-graph and
+build-time audit.
+
+The complete public result set and its focused axiom audit can be checked in
+one warnings-fatal build:
 
 ```text
-lake env lean -DwarningAsError=true LisiSabatini/OddOrderProof.lean
+LEAN_NUM_THREADS=4 lake build --wfail \
+  +LisiSabatini:olean \
+  +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean \
+  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
+```
+
+The library root and two audit roots above cover the alternating theorem,
+every solvable-group endpoint advertised in this README, the nilpotent
+consequences, every project source module, and both focused `#print axioms`
+checks.  Individual endpoints can still be re-elaborated directly when
+desired, for example:
+
+```text
 lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
-lake env lean -DwarningAsError=true LisiSabatini/SolvableThreeSylowSynchronization.lean
-```
-
-The focused axiom audit for the solvable three-intersection theorem and its
-public consequences is:
-
-```text
-lake env lean -DwarningAsError=true \
-  LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean
 ```
 
 ## Repository guide

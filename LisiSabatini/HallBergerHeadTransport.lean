@@ -1,4 +1,4 @@
-import LisiSabatini.TwoCoreSymplecticTypeHeadRotation
+import LisiSabatini.TwoCoreSymplecticTypeFrontier
 
 /-!
 # Transporting Hall--Berger maximal-class heads

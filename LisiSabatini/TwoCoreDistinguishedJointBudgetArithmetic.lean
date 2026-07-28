@@ -1,4 +1,6 @@
-import Mathlib
+import Lean.Elab.Tactic.Omega
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 /-!
 # The distinguished-two joint budget

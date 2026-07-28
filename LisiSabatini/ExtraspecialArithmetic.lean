@@ -1,4 +1,9 @@
-import Mathlib
+import Lean.Elab.Tactic.Omega
+import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for an odd extraspecial basic component

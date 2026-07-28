@@ -1,4 +1,5 @@
 import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+import Mathlib.Tactic.Linarith
 
 /-!
 # Joint-budget arithmetic for a mixed symplectic-type two-core

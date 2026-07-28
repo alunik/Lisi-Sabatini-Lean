@@ -1,6 +1,6 @@
 import LisiSabatini.SectionConstructionCore
 import LisiSabatini.MinimalNormalCore
-import Mathlib.RepresentationTheory.Irreducible
+import Mathlib.Algebra.Module.Submodule.Lattice
 
 /-!
 # The irreducible action of a chief elementary-abelian section

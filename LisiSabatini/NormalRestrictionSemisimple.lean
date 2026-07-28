@@ -1,4 +1,5 @@
 import LisiSabatini.QuasiprimitiveRepresentation
+import Mathlib.RepresentationTheory.Irreducible
 import Mathlib.RepresentationTheory.Submodule
 import Mathlib.RingTheory.Artinian.Module
 
