@@ -27,6 +27,7 @@ jobs:
             +LisiSabatini:olean
             +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean
             +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
+            +LisiSabatini.SymmetricAxiomAudit:olean
           use-mathlib-cache: true
           leanchecker: false
           nanoda: false
