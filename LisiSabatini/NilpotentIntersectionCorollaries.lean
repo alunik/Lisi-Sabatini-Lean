@@ -6,13 +6,15 @@ public import LisiSabatini.ThreeConjugatesSynchronization
 /-!
 # Nilpotent-intersection corollaries
 
-This file contains only the general implications from synchronized Sylow
-intersections to Fitting-subgroup containment.  Concrete applications are
-collected in `NilpotentIntersectionApplications`.
+This file contains the general implications from synchronized Sylow
+intersections to bounds on intersections of nilpotent subgroups, including
+Fitting-subgroup containment and trivial-intersection results.  Concrete
+solvable-group applications are collected in
+`NilpotentIntersectionApplications`.
 
-In both proofs the ambient Sylow rows are chosen from the nilpotent
-subgroups before synchronization supplies the conjugator.  Thus the choice
-does not depend on the eventual intersection.
+In the underlying reduction, the ambient Sylow rows are chosen from the
+nilpotent subgroups before synchronization supplies the conjugator.  Thus
+the choice does not depend on the eventual intersection.
 -/
 
 @[expose] public section
@@ -39,6 +41,13 @@ def MixedNilpotentIntersectionInFitting
   ∀ (H K : Subgroup G), Group.IsNilpotent H → Group.IsNilpotent K →
     ∃ x : G, H ⊓ ((MulAut.conj x) • K) ≤ fittingSubgroup G
 
+/-- Any two nilpotent subgroups admit a relative conjugate with trivial
+intersection. -/
+def MixedNilpotentIntersectionTrivial
+    (G : Type uG) [Group G] [Finite G] : Prop :=
+  ∀ (H K : Subgroup G), Group.IsNilpotent H → Group.IsNilpotent K →
+    ∃ x : G, H ⊓ ((MulAut.conj x) • K) = ⊥
+
 /-- Any three nilpotent subgroups admit two relative conjugates whose common
 intersection lies in the Fitting subgroup. -/
 def ThreeNilpotentIntersectionInFitting
@@ -51,6 +60,19 @@ def ThreeNilpotentIntersectionInFitting
         (H ⊓ ((MulAut.conj x) • K)) ⊓
             ((MulAut.conj y) • M) ≤
           fittingSubgroup G
+
+/-- Any three nilpotent subgroups admit two relative conjugates with trivial
+common intersection. -/
+def ThreeNilpotentIntersectionTrivial
+    (G : Type uG) [Group G] [Finite G] : Prop :=
+  ∀ (H K M : Subgroup G),
+    Group.IsNilpotent H →
+    Group.IsNilpotent K →
+    Group.IsNilpotent M →
+      ∃ x y : G,
+        (H ⊓ ((MulAut.conj x) • K)) ⊓
+            ((MulAut.conj y) • M) =
+          ⊥
 
 /-- Strong synchronized Sylow intersections imply the nilpotent
 self-intersection Fitting containment. -/
@@ -135,14 +157,22 @@ theorem nilpotentSelfIntersectionInFitting_of_strongLS
     exact ⟨hyP, hyConjP⟩
   exact pCore_le_fittingSubgroup hyCore
 
-/-- Mixed two-row synchronized Sylow intersections imply the mixed
-nilpotent-intersection Fitting containment. -/
-theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
+/-- A uniform bound for synchronized mixed Sylow intersections extends to
+the corresponding intersection of any two nilpotent subgroups. -/
+theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
     {G : Type uG} [Group G] [Finite G]
-    (hmixed : HasMixedTwoSylowCoreSynchronization.{uG, 0} G) :
-    MixedNilpotentIntersectionInFitting G := by
+    (D : Subgroup G)
+    (hsync :
+      ∀ {I : Type} [Fintype I] (p : I → ℕ),
+        (∀ i, Nat.Prime (p i)) →
+        Function.Injective p →
+        ∀ P Q : ∀ i, Sylow (p i) G,
+          ∃ x : G, ∀ i, mixedSylowInter (P i) (Q i) x ≤ D)
+    (H K : Subgroup G)
+    (hHnil : Group.IsNilpotent H)
+    (hKnil : Group.IsNilpotent K) :
+    ∃ x : G, H ⊓ ((MulAut.conj x) • K) ≤ D := by
   classical
-  intro H K hHnil hKnil
   letI : Group.IsNilpotent H := hHnil
   letI : Group.IsNilpotent K := hKnil
   let ps := (Nat.card H).primeFactors
@@ -172,7 +202,7 @@ theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
   have hSKPK : ∀ i : ps, (SK i : Subgroup K).map K.subtype ≤
       (PK i : Subgroup G) :=
     fun i ↦ Classical.choose_spec (PKexists i)
-  obtain ⟨x, hx⟩ := hmixed (fun i : ps ↦ (i : ℕ))
+  obtain ⟨x, hx⟩ := hsync (fun i : ps ↦ (i : ℕ))
     (fun i ↦ Nat.prime_of_mem_primeFactors i.2)
     (fun _ _ hij ↦ Subtype.ext hij) PH PK
   refine ⟨x, ?_⟩
@@ -184,8 +214,8 @@ theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
   letI : Group.IsNilpotent Lin := inferInstance
   let eL : Lin ≃* L := Subgroup.subgroupOfEquivOfLe hLH
   have hLnil : Group.IsNilpotent L := nilpotent_of_mulEquiv eL
-  change L ≤ fittingSubgroup G
-  apply nilpotentSubgroup_le_of_sylow_map_le L (fittingSubgroup G) hLnil
+  change L ≤ D
+  apply nilpotentSubgroup_le_of_sylow_map_le L D hLnil
   intro q Q
   have hqprime : Nat.Prime (q : ℕ) :=
     Nat.prime_of_mem_primeFactors q.2
@@ -240,10 +270,49 @@ theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
       ((x • PK i : Sylow (i : ℕ) G) : Subgroup G) := by
     rw [Sylow.coe_subgroup_smul]
     exact Subgroup.mem_pointwise_smul_iff_inv_smul_mem.mpr hyInvPK
-  have hyCore : (y : G) ∈ pCore (i : ℕ) G := by
-    rw [← hx i]
-    exact ⟨hyPH, hyConjPK⟩
-  exact pCore_le_fittingSubgroup hyCore
+  exact hx i ⟨hyPH, hyConjPK⟩
+
+/-- Mixed two-row synchronized Sylow intersections imply the mixed
+nilpotent-intersection Fitting containment. -/
+theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
+    {G : Type uG} [Group G] [Finite G]
+    (hmixed : HasMixedTwoSylowCoreSynchronization.{uG, 0} G) :
+    MixedNilpotentIntersectionInFitting G := by
+  intro H K hHnil hKnil
+  apply mixedNilpotentIntersection_le_of_synchronizedSylow_le
+    (fittingSubgroup G) _ H K hHnil hKnil
+  intro I _ p hp hinjective P Q
+  obtain ⟨x, hx⟩ := hmixed p hp hinjective P Q
+  refine ⟨x, fun i ↦ ?_⟩
+  rw [hx i]
+  letI : Fact (p i).Prime := ⟨hp i⟩
+  exact pCore_le_fittingSubgroup
+
+/-- Trivial mixed two-row Sylow synchronization implies trivial
+intersection for every pair of nilpotent subgroups. -/
+theorem mixedNilpotentIntersectionTrivial_of_mixedSylowBot
+    {G : Type uG} [Group G] [Finite G]
+    (hmixed : HasMixedTwoSylowBotSynchronization.{uG, 0} G) :
+    MixedNilpotentIntersectionTrivial G := by
+  intro H K hHnil hKnil
+  obtain ⟨x, hx⟩ :=
+    mixedNilpotentIntersection_le_of_synchronizedSylow_le
+      (⊥ : Subgroup G) (fun p hp hinjective P Q ↦ by
+        obtain ⟨x, hx⟩ := hmixed p hp hinjective P Q
+        exact ⟨x, fun i ↦ by rw [hx i]⟩)
+      H K hHnil hKnil
+  exact ⟨x, le_antisymm hx bot_le⟩
+
+/-- The trivial-intersection result for two nilpotent subgroups immediately
+implies the corresponding result for three subgroups. -/
+theorem threeNilpotentIntersectionTrivial_of_mixedTwo
+    {G : Type uG} [Group G] [Finite G]
+    (hmixed : MixedNilpotentIntersectionTrivial G) :
+    ThreeNilpotentIntersectionTrivial G := by
+  intro H K M hHnil hKnil _hMnil
+  obtain ⟨x, hx⟩ := hmixed H K hHnil hKnil
+  refine ⟨x, 1, ?_⟩
+  simp only [hx, bot_inf_eq]
 
 /-- Mixed three-row synchronized Sylow intersections imply the
 three-nilpotent-subgroup Fitting containment. -/
