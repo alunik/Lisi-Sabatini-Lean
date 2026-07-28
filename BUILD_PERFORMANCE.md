@@ -215,9 +215,17 @@ performance work.
 
 ## CI and reproducibility
 
-CI uses the warnings-fatal root-and-audits union above, followed by Lean's
-independent checker. This covers all 216 project files without redundantly
-re-elaborating already-covered endpoint files.
+CI first builds the warnings-fatal root-and-audits union above, then runs
+Lean's independent checker in a separate dependent job using the completed
+build cache. This gives elaboration and independent checking separate runner
+budgets while retaining both gates. The union covers all 216 project files
+without redundantly re-elaborating already-covered endpoint files.
+
+On the audit machine, `lake env leanchecker` completed successfully in
+1,529.59 seconds (25m 29.6s) with a maximum resident set size of
+2,419,032,064 bytes. This independent kernel traversal is therefore kept as
+a required gate, but it is not included in the project-elaboration timings
+above.
 
 To reproduce a cold project build without discarding the downloaded
 dependency cache, move the project's `.lake/build` directory aside and run:

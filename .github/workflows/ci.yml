@@ -13,12 +13,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     env:
       LEAN_NUM_THREADS: 4
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
         with:
+          auto-config: false
           build: true
           build-args: >-
             --wfail
@@ -26,5 +28,26 @@ jobs:
             +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean
             +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
           use-mathlib-cache: true
+          leanchecker: false
+          nanoda: false
+
+  independent-checker:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Restore the completed Lean build
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .lake
+          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.sha }}
+          fail-on-cache-miss: true
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          auto-config: false
+          build: false
+          use-github-cache: false
+          use-mathlib-cache: false
           leanchecker: true
           nanoda: false
