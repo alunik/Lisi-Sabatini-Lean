@@ -2,6 +2,7 @@ module
 
 public import LisiSabatini.Alternating
 public import LisiSabatini.NilpotentIntersectionApplications
+public import LisiSabatini.Symmetric
 
 /-!
 # Formalized Sylow-intersection results
@@ -9,7 +10,8 @@ public import LisiSabatini.NilpotentIntersectionApplications
 The library exposes two related but distinct developments:
 
 * the original Lisi--Sabatini property for finite solvable groups of odd
-  order and for alternating groups of degree at least forty; and
+  order, and for alternating and symmetric groups of degree at least forty;
+  and
 * mixed three-Sylow-core synchronization, hence the same-row
   three-conjugates property, for every finite solvable group.
 

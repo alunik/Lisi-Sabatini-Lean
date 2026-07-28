@@ -9,6 +9,7 @@ should not be identified with the Lisi–Sabatini conjecture.
 | --- | --- | --- |
 | Original Lisi–Sabatini property | finite solvable groups of odd order | `hasLisiSabatini_of_solvable_of_odd` |
 | Original Lisi–Sabatini property | alternating groups `A_n`, `n ≥ 40` | `hasLisiSabatini_alternatingGroup_ge_forty` |
+| Original Lisi–Sabatini property | symmetric groups `S_n`, `n ≥ 40` | `hasLisiSabatini_symmetricGroup_ge_forty` |
 | Mixed three-intersection synchronization | all finite solvable groups | `mixedThreeSylowCoreSynchronization_of_solvable` |
 | Huang's same-row three-intersection property | all finite solvable groups | `threeConjugatesSylowSynchronization_of_solvable` |
 
@@ -121,6 +122,45 @@ degree `40` onward. It uses no GAP census or project-specific axiom. See
 [`ALTERNATING_GROUPS_PROOF.md`](ALTERNATING_GROUPS_PROOF.md) for the
 mathematical proof structure and verification report.
 
+### Symmetric groups in degree at least 40
+
+[`LisiSabatini/Symmetric.lean`](LisiSabatini/Symmetric.lean) proves the
+stronger simultaneous trivial-intersection statement
+
+```lean
+universe uI
+
+theorem exists_common_sylowInter_bot_symmetricGroup_ge_forty
+    (n : ℕ) (hn : 40 ≤ n)
+    {I : Type uI} [Finite I]
+    (p : I → ℕ)
+    (hp : ∀ i, Nat.Prime (p i))
+    (hinjective : Function.Injective p)
+    (P : ∀ i, Sylow (p i) (Equiv.Perm (Fin n))) :
+    ∃ x : Equiv.Perm (Fin n), ∀ i, sylowInter (P i) x = ⊥
+```
+
+Thus one permutation `x`, common to every prime row, works simultaneously.
+In particular:
+
+```lean
+theorem strongLisiSabatini_symmetricGroup_ge_forty
+    (n : ℕ) (hn : 40 ≤ n) :
+    StrongLisiSabatini.{0, uI} (Equiv.Perm (Fin n))
+
+theorem hasLisiSabatini_symmetricGroup_ge_forty
+    (n : ℕ) (hn : 40 ≤ n) :
+    HasLisiSabatini.{0, uI} (Equiv.Perm (Fin n))
+```
+
+The proof uses the same quadratic conjugacy-class/fixed-point-ratio union
+bound as the alternating result. The full binary profile has cost less than
+`3/4` from degree `40` onward, while the already established odd-prime
+profiles have total cost less than `1/4`. Their strict combined budget
+therefore leaves a common good conjugator. No classification theorem, GAP
+census, or project-specific axiom is used. The exceptional pair
+`n = 8`, `p = 2` is outside the asserted range.
+
 ## Related formalized endpoints
 
 The repository also contains:
@@ -135,10 +175,10 @@ The repository also contains:
 ## Scope and trust boundary
 
 All group-theoretic endpoints above concern finite groups. The
-three-intersection theorem assumes solvability; the alternating result is a
-theorem about the original Lisi–Sabatini property, not the
-three-intersection property. The project does not claim either result for
-all finite groups or for all almost simple groups.
+three-intersection theorem assumes solvability; the alternating and
+symmetric results are theorems about the original Lisi–Sabatini property,
+not the three-intersection property. The project does not claim these
+results for all finite groups or for all almost simple groups.
 
 There are no `sorry`, `admit`, or project-specific axioms in the public proof
 chain. The focused endpoint audit reports only Lean's standard logical
@@ -148,8 +188,8 @@ principles used throughout mathlib: `propext`, `Classical.choice`, and
 ## Building and verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
-All 214 library sources use Lean's module system, so ordinary imports load
-compact public interfaces without loading all private proof terms. The two
+All 216 library sources use Lean's module system, so ordinary imports load
+compact public interfaces without loading all private proof terms. The three
 standalone `#print axioms` audit leaves remain in the legacy format required
 by this Lean version.
 
@@ -174,14 +214,15 @@ one warnings-fatal build:
 LEAN_NUM_THREADS=4 lake build --wfail \
   +LisiSabatini:olean \
   +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean \
-  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
+  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean \
+  +LisiSabatini.SymmetricAxiomAudit:olean
 ```
 
-The library root and two audit roots above cover the alternating theorem,
-every solvable-group endpoint advertised in this README, the nilpotent
-consequences, every project source module, and both focused `#print axioms`
-checks.  Individual endpoints can still be re-elaborated directly when
-desired, for example:
+The library root and three audit roots above cover the alternating and
+symmetric theorems, every solvable-group endpoint advertised in this README,
+the nilpotent consequences, every project source module, and all three
+focused `#print axioms` checks. Individual endpoints can still be
+re-elaborated directly when desired, for example:
 
 ```text
 lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
@@ -195,6 +236,11 @@ lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
 - `LisiSabatini/OddOrderProof.lean` — odd-order solvable endpoint.
 - `LisiSabatini/Alternating.lean` — alternating endpoint for `n ≥ 40`.
 - `ALTERNATING_GROUPS_PROOF.md` — detailed alternating proof note.
+- `LisiSabatini/SymmetricSylowQuadraticEnvelope.lean` — binary and
+  all-prime symmetric quadratic bounds.
+- `LisiSabatini/Symmetric.lean` — symmetric endpoint for `n ≥ 40`.
+- `LisiSabatini/SymmetricAxiomAudit.lean` — focused symmetric-endpoint
+  axiom audit.
 - `LisiSabatini/ThreeConjugatesSynchronization.lean` — definitions for
   the mixed and same-row three-intersection problems.
 - `LisiSabatini/SolvableThreeSylowSynchronization.lean` — all-solvable

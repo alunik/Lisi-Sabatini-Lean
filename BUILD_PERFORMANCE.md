@@ -8,6 +8,9 @@ results advertised in the README:
   order, including its stronger Sylow-core form;
 - the original Lisi--Sabatini theorem for alternating groups in degree at
   least 40;
+- the stronger simultaneous trivial-intersection theorem, and hence the
+  original Lisi--Sabatini theorem, for symmetric groups in degree at least
+  40;
 - mixed and same-row three-Sylow synchronization for all finite solvable
   groups; and
 - the nilpotent-intersection consequences and related endpoints listed in
@@ -18,9 +21,9 @@ mathematical assumption.
 
 ## Protected build closure
 
-The combined library root reaches 214 of the repository's 216 Lean source
-files. The only two files outside that closure are deliberate
-`#print axioms` entrypoints, both built separately by CI. Thus the exact CI
+The combined library root reaches 216 of the repository's 219 Lean source
+files. The only three files outside that closure are deliberate
+`#print axioms` entrypoints, all built separately by CI. Thus the exact CI
 union covers every project source file and every advertised endpoint.
 
 After the import repairs described below, a static traversal of import
@@ -28,10 +31,10 @@ headers gives this root closure:
 
 | Kind | Modules |
 | --- | ---: |
-| Project modules | 214 |
+| Project modules | 216 |
 | Mathlib modules | 2,527 |
 | Other vendored dependency modules | 191 |
-| Total package-source modules | 2,932 |
+| Total package-source modules | 2,934 |
 
 The 191 other modules comprise Aesop (86), Batteries (74), Qq (12),
 Plausible (11), ProofWidgets (5), ImportGraph (2), and LeanSearchClient (1).
@@ -66,18 +69,20 @@ project-local Hall--Berger edge was narrowed in the same way.
 
 The repaired graph contains no direct `import Mathlib` or
 `import Mathlib.Tactic`. A same-parser simulation of the old graph gives
-8,380 package-source nodes, compared with 2,932 now. The observed default
-Lake graph fell from 8,462 jobs to 3,037 jobs.
+8,380 package-source nodes, compared with 2,934 now after adding the two
+symmetric-group modules. The observed default Lake graph is now 3,038 jobs;
+the module-migration benchmark below used the preceding 3,037-job graph.
 
 ## Second cause: legacy OLean loading
 
 After the import graph was narrowed, the project still used Lean's legacy
-file format in all 216 source files. A legacy importer must load theorem
+file format in all 216 source files then present. A legacy importer must load theorem
 proofs and editor data together with the public declarations it needs. On
 this project that repeatedly loaded hundreds of megabytes into each Lean
 process and produced severe memory compression and swapping.
 
-The 214 files in the library closure now use Lean's module system:
+The 214 files in the library closure at the time of the migration, and the
+two symmetric-group modules added afterward, use Lean's module system:
 
 ```lean
 module
@@ -91,7 +96,7 @@ Public declarations are stored separately from private proof and server
 artifacts. Ordinary downstream compilation therefore loads the public
 interface without loading every imported proof term.
 
-The two axiom-audit files intentionally remain legacy files. Lean 4.29.1
+The three axiom-audit files intentionally remain legacy files. Lean 4.29.1
 rejects `#print axioms` inside a module file, and the audits are leaf targets
 that no project source imports.
 
@@ -101,8 +106,8 @@ without changing their statements or proofs. Five generic `mappedCore`
 abbreviations then acquired branch-specific names to avoid a public namespace
 collision. These are visibility and naming repairs only.
 
-For the same 213 non-audit files below `LisiSabatini/`, aggregate public
-OLean size changed as follows:
+For the same 213 non-audit files below `LisiSabatini/` in the measured
+migration, aggregate public OLean size changed as follows:
 
 | Format | Public OLean size |
 | --- | ---: |
@@ -186,27 +191,29 @@ benchmark rather than assume that more workers are faster.
 
 ## Correctness and trust checks
 
-After the module migration, the full 3,037-job root build passed with
-warnings treated as errors. The exact 3,038-job CI union also passed:
+After the symmetric-group extension, the full 3,038-job root build passed
+with warnings treated as errors. The exact 3,041-job CI union also passed:
 
 ```text
 LEAN_NUM_THREADS=4 lake build --wfail \
   +LisiSabatini:olean \
   +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean \
-  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
+  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean \
+  +LisiSabatini.SymmetricAxiomAudit:olean
 ```
 
-Both focused audit leaves report only:
+All three focused audit leaves report only:
 
 ```text
 propext, Classical.choice, Quot.sound
 ```
 
 A fresh module-mode consumer importing only `LisiSabatini` successfully
-checked all four headline endpoints:
+checked all five headline endpoints:
 
 - `hasLisiSabatini_of_solvable_of_odd`;
 - `hasLisiSabatini_alternatingGroup_ge_forty`;
+- `hasLisiSabatini_symmetricGroup_ge_forty`;
 - `mixedThreeSylowCoreSynchronization_of_solvable`; and
 - `threeConjugatesSylowSynchronization_of_solvable`.
 
@@ -218,7 +225,7 @@ performance work.
 CI first builds the warnings-fatal root-and-audits union above, then runs
 Lean's independent checker in a separate dependent job using the completed
 build cache. This gives elaboration and independent checking separate runner
-budgets while retaining both gates. The union covers all 216 project files
+budgets while retaining both gates. The union covers all 219 project files
 without redundantly re-elaborating already-covered endpoint files.
 
 On the audit machine, `lake env leanchecker` completed successfully in
