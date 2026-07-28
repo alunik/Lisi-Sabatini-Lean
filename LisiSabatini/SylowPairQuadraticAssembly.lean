@@ -29,19 +29,21 @@ local instance quadraticAssemblyDecidableRel
   fun _ _ ↦ Classical.propDecidable _
 
 /-- A strict normalized sum of same-row quadratic costs leaves a conjugator
-outside every bad row.
+outside every prescribed mixed bad row.
 
 The proof explicitly passes through the corresponding strict inequality in
 `ℕ`; in particular, no rounding principle for real-valued probabilities is
-being assumed. -/
-theorem exists_common_sylowInter_bot_of_normalized_cost_sum_lt_one
+being assumed.  The second Sylow row does not change the cost because all
+Sylow subgroups at a fixed prime meet every conjugacy class in the same
+number of elements. -/
+theorem exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one
     {G : Type uG} [Group G] [Fintype G]
     {I : Type uI} [Fintype I]
     (p : I → ℕ) (hp : ∀ i, Nat.Prime (p i))
-    (P : ∀ i, Sylow (p i) G)
+    (P Q : ∀ i, Sylow (p i) G)
     (hcost :
       (∑ i, normalizedSameRowSylowQuadraticCost G (P i)) < 1) :
-    ∃ x : G, ∀ i, sylowInter (P i) x = ⊥ := by
+    ∃ x : G, ∀ i, mixedSylowInter (P i) (Q i) x = ⊥ := by
   let rowTotal : I → ℕ := fun i ↦
     ∑ C : ConjClasses G,
       mixedSylowPairQuadraticClassTerm (P i) (P i) C
@@ -58,8 +60,43 @@ theorem exists_common_sylowInter_bot_of_normalized_cost_sum_lt_one
     exact (div_lt_one hcardPosReal).mp hreal
   have hnat : (∑ i, rowTotal i) < Nat.card G := by
     exact_mod_cast hcast
-  apply exists_common_sylowInter_bot_of_quadraticClass_sum_lt p hp P
-  simpa only [rowTotal] using hnat
+  have hclass :
+      (∑ i, ∑ C : ConjClasses G,
+        mixedSylowPairQuadraticClassTerm (P i) (Q i) C) <
+          Nat.card G := by
+    calc
+      (∑ i, ∑ C : ConjClasses G,
+          mixedSylowPairQuadraticClassTerm (P i) (Q i) C) =
+          ∑ i, rowTotal i := by
+        apply Finset.sum_congr rfl
+        intro i _hi
+        letI : Fact (p i).Prime := ⟨hp i⟩
+        apply Finset.sum_congr rfl
+        intro C _hC
+        exact
+          mixedSylowPairQuadraticClassTerm_eq_sameRow
+            (P i) (Q i) (P i) C
+      _ < Nat.card G := hnat
+  exact
+    exists_common_mixedSylowInter_bot_of_quadraticClass_sum_lt
+      p hp P Q hclass
+
+/-- Same-row specialization of
+`exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one`. -/
+theorem exists_common_sylowInter_bot_of_normalized_cost_sum_lt_one
+    {G : Type uG} [Group G] [Fintype G]
+    {I : Type uI} [Fintype I]
+    (p : I → ℕ) (hp : ∀ i, Nat.Prime (p i))
+    (P : ∀ i, Sylow (p i) G)
+    (hcost :
+      (∑ i, normalizedSameRowSylowQuadraticCost G (P i)) < 1) :
+    ∃ x : G, ∀ i, sylowInter (P i) x = ⊥ := by
+  obtain ⟨x, hx⟩ :=
+    exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one
+      p hp P P hcost
+  exact
+    ⟨x, fun i ↦ by
+      simpa only [mixedSylowInter, sylowInter] using hx i⟩
 
 /-- Uniform normalized-budget criterion for the Lisi--Sabatini property.
 

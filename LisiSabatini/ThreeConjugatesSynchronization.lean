@@ -6,9 +6,10 @@ public import LisiSabatini.Strong
 /-!
 # Two-row and three-row Sylow-core synchronization
 
-The properties in this file separate three logically distinct assertions:
+The properties in this file separate four logically distinct assertions:
 
 * mixed two-row synchronization, with independently prescribed `P` and `Q`;
+* mixed two-row synchronization with trivial intersections;
 * mixed three-row synchronization, with independently prescribed `P`, `Q`,
   and `R`;
 * same-row three-conjugates synchronization.
@@ -35,6 +36,18 @@ def HasMixedTwoSylowCoreSynchronization
     ∀ P Q : ∀ i, Sylow (p i) G,
       ∃ x : G, ∀ i,
         mixedSylowInter (P i) (Q i) x = pCore (p i) G
+
+/-- Mixed two-row synchronization with trivial intersections: one
+conjugator works simultaneously for independently prescribed Sylow rows at
+all distinct labelled primes. -/
+def HasMixedTwoSylowBotSynchronization
+    (G : Type uG) [Group G] [Finite G] : Prop :=
+  ∀ {I : Type uI} [Fintype I] (p : I → ℕ),
+    (∀ i, Nat.Prime (p i)) →
+    Function.Injective p →
+    ∀ P Q : ∀ i, Sylow (p i) G,
+      ∃ x : G, ∀ i,
+        mixedSylowInter (P i) (Q i) x = ⊥
 
 /-- Mixed three-row synchronization: two conjugators work simultaneously for
 three independently prescribed Sylow rows at all distinct labelled primes. -/

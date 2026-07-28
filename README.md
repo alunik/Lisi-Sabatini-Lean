@@ -12,6 +12,8 @@ should not be identified with the Lisi–Sabatini conjecture.
 | Original Lisi–Sabatini property | symmetric groups `S_n`, `n ≥ 40` | `hasLisiSabatini_symmetricGroup_ge_forty` |
 | Mixed three-intersection synchronization | all finite solvable groups | `mixedThreeSylowCoreSynchronization_of_solvable` |
 | Huang's same-row three-intersection property | all finite solvable groups | `threeConjugatesSylowSynchronization_of_solvable` |
+| Mixed two-row trivial Sylow intersections | `A_n` and `S_n`, `n ≥ 40` | `mixedTwoSylowBotSynchronization_*_ge_forty` |
+| Trivial intersections of arbitrary nilpotent subgroups | `A_n` and `S_n`, `n ≥ 40` | `mixedNilpotentIntersectionTrivial_*_ge_forty` |
 
 ## Three intersections in finite solvable groups
 
@@ -161,6 +163,38 @@ therefore leaves a common good conjugator. No classification theorem, GAP
 census, or project-specific axiom is used. The exceptional pair
 `n = 8`, `p = 2` is outside the asserted range.
 
+## Nilpotent subgroups of alternating and symmetric groups
+
+The quadratic cost is independent of the second prescribed Sylow row.
+For `G = A_n` or `S_n`, with `n ≥ 40`, the library therefore proves
+
+```text
+∀ p_i, P_i, Q_i, ∃ x, ∀ i, P_i ∩ xQ_i x⁻¹ = 1,
+```
+
+where the `p_i` are distinct primes and `P_i,Q_i` are independently
+prescribed Sylow `p_i`-subgroups. The public endpoints are
+
+```lean
+mixedTwoSylowBotSynchronization_alternatingGroup_ge_forty
+mixedTwoSylowBotSynchronization_symmetricGroup_ge_forty
+```
+
+Choosing ambient Sylow rows containing the Sylow components of arbitrary
+nilpotent subgroups gives:
+
+```lean
+mixedNilpotentIntersectionTrivial_alternatingGroup_ge_forty
+mixedNilpotentIntersectionTrivial_symmetricGroup_ge_forty
+threeNilpotentIntersectionTrivial_alternatingGroup_ge_forty
+threeNilpotentIntersectionTrivial_symmetricGroup_ge_forty
+```
+
+Thus for nilpotent `A,B ≤ G` there is an `x` with
+`A ∩ xBx⁻¹ = 1`. The three-subgroup statement follows by taking the
+second conjugator to be the identity after making the first two subgroups
+intersect trivially; no additional probabilistic estimate is used.
+
 ## Related formalized endpoints
 
 The repository also contains:
@@ -175,10 +209,11 @@ The repository also contains:
 ## Scope and trust boundary
 
 All group-theoretic endpoints above concern finite groups. The
-three-intersection theorem assumes solvability; the alternating and
-symmetric results are theorems about the original Lisi–Sabatini property,
-not the three-intersection property. The project does not claim these
-results for all finite groups or for all almost simple groups.
+Sylow-core three-intersection theorem for arbitrary rows assumes solvability.
+For alternating and symmetric groups in degree at least forty, the project
+proves both the original Lisi–Sabatini property and the mixed
+trivial-intersection consequences stated above. The project does not claim
+these results for all finite groups or for all almost simple groups.
 
 There are no `sorry`, `admit`, or project-specific axioms in the public proof
 chain. The focused endpoint audit reports only Lean's standard logical
@@ -188,8 +223,8 @@ principles used throughout mathlib: `propext`, `Classical.choice`, and
 ## Building and verification
 
 The project is pinned to Lean and mathlib `v4.29.1`.
-All 216 library sources use Lean's module system, so ordinary imports load
-compact public interfaces without loading all private proof terms. The three
+The library sources use Lean's module system, so ordinary imports load
+compact public interfaces without loading all private proof terms. The four
 standalone `#print axioms` audit leaves remain in the legacy format required
 by this Lean version.
 
@@ -215,12 +250,13 @@ LEAN_NUM_THREADS=4 lake build --wfail \
   +LisiSabatini:olean \
   +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean \
   +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean \
-  +LisiSabatini.SymmetricAxiomAudit:olean
+  +LisiSabatini.SymmetricAxiomAudit:olean \
+  +LisiSabatini.NilpotentTrivialIntersectionAxiomAudit:olean
 ```
 
-The library root and three audit roots above cover the alternating and
+The library root and four audit roots above cover the alternating and
 symmetric theorems, every solvable-group endpoint advertised in this README,
-the nilpotent consequences, every project source module, and all three
+the nilpotent consequences, every project source module, and all four
 focused `#print axioms` checks. Individual endpoints can still be
 re-elaborated directly when desired, for example:
 
@@ -241,6 +277,8 @@ lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
 - `LisiSabatini/Symmetric.lean` — symmetric endpoint for `n ≥ 40`.
 - `LisiSabatini/SymmetricAxiomAudit.lean` — focused symmetric-endpoint
   axiom audit.
+- `LisiSabatini/NilpotentTrivialIntersectionAxiomAudit.lean` — focused
+  mixed-Sylow and nilpotent trivial-intersection axiom audit.
 - `LisiSabatini/ThreeConjugatesSynchronization.lean` — definitions for
   the mixed and same-row three-intersection problems.
 - `LisiSabatini/SolvableThreeSylowSynchronization.lean` — all-solvable
