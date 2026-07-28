@@ -1,6 +1,8 @@
-import LisiSabatini.CommonTranslateCore
-import Mathlib.Data.Finite.Prod
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import LisiSabatini.CommonTranslateCore
+public import Mathlib.Data.Finite.Prod
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Repeated-block amplification of fixed-point bounds
@@ -20,6 +22,8 @@ blocks raises each elementwise fixed-point bound to its `m`th power.  The
 results are stated for an arbitrary finite index type and specialized to
 `Fin m` at the end.
 -/
+
+@[expose] public section
 
 noncomputable section
 

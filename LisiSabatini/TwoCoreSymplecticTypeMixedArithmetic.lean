@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeMixedCount
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeMixedCount
 
 /-!
 # Arithmetic for mixed symplectic-type two-cores
@@ -20,6 +22,8 @@ nonzero vectors:
 Thus the remaining mixed gaps are structural/representation-theoretic,
 not arithmetic.
 -/
+
+@[expose] public section
 
 noncomputable section
 

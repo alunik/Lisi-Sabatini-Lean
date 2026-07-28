@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerFrattiniCentralizerDecomposition
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.HallBergerFrattiniCentralizerDecomposition
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # The two Frattini positions in the Hall--Berger proof
@@ -10,6 +12,8 @@ cyclic.  The Frattini subgroup lies in `Z(C)`, while every square from
 finite cyclic `2`-group has index at most two, there is no intermediate
 possibility.
 -/
+
+@[expose] public section
 
 noncomputable section
 

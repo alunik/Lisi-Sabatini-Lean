@@ -1,5 +1,7 @@
-import LisiSabatini.CommonTranslateCore
-import Mathlib.Data.Nat.Prime.Basic
+module
+
+public import LisiSabatini.CommonTranslateCore
+public import Mathlib.Data.Nat.Prime.Basic
 
 /-!
 # Fixed-point-free linear actions away from zero
@@ -7,6 +9,8 @@ import Mathlib.Data.Nat.Prime.Basic
 This is the sole interface from the rank-five block-model development used by
 the odd-order proof.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

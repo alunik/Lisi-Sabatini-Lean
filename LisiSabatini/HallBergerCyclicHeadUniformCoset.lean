@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerCyclicMaximalSubgroup
-import Mathlib.GroupTheory.IndexNormal
+module
+
+public import LisiSabatini.HallBergerCyclicMaximalSubgroup
+public import Mathlib.GroupTheory.IndexNormal
 
 /-!
 # Uniform outside-coset action in the Hall--Berger square-image branch
@@ -13,6 +15,8 @@ Hall--Berger seed.  Second, if every outside element inverts the distinguished
 generator of `Φ(G)`, then `C_G(Φ(G))` has index two.  These statements do not
 depend on the classification itself.
 -/
+
+@[expose] public section
 
 noncomputable section
 

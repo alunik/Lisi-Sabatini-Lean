@@ -1,8 +1,10 @@
-import LisiSabatini.OrbitAvoidingPaletteCore
-import LisiSabatini.TranslatedNonregularVectors
-import LisiSabatini.FiniteLinearSubgroup
-import LisiSabatini.FiniteLinearOrbit
-import Mathlib.Data.Fintype.BigOperators
+module
+
+public import LisiSabatini.OrbitAvoidingPaletteCore
+public import LisiSabatini.TranslatedNonregularVectors
+public import LisiSabatini.FiniteLinearSubgroup
+public import LisiSabatini.FiniteLinearOrbit
+public import Mathlib.Data.Fintype.BigOperators
 
 /-!
 # Core counting criteria for one-orbit avoidance
@@ -10,6 +12,8 @@ import Mathlib.Data.Fintype.BigOperators
 This file contains exactly the translated-orbit loci and union bounds used by
 the odd-order proof.
 -/
+
+@[expose] public section
 
 noncomputable section
 

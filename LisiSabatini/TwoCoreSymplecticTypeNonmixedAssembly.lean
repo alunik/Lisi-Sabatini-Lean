@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeMixedAssembly
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeMixedAssembly
 
 /-!
 # Assembly for the nonmixed maximal-class heads
@@ -9,6 +11,8 @@ on nonzero vectors free.  Hence its order divides the number of nonzero
 vectors.  For a semidihedral head, the exact active-involution count is
 half the rotation order, which immediately gives half-density.
 -/
+
+@[expose] public section
 
 noncomputable section
 

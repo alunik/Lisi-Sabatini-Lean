@@ -1,8 +1,10 @@
-import LisiSabatini.TwoCoreCentralCommutatorJointBudget
-import LisiSabatini.TwoCoreDihedralJointBudget
-import LisiSabatini.TwoCoreSemidihedralJointBudget
-import LisiSabatini.TwoCoreGeneralizedQuaternionJointBudget
-import LisiSabatini.TwoCoreMixedJointBudget
+module
+
+public import LisiSabatini.TwoCoreCentralCommutatorJointBudget
+public import LisiSabatini.TwoCoreDihedralJointBudget
+public import LisiSabatini.TwoCoreSemidihedralJointBudget
+public import LisiSabatini.TwoCoreGeneralizedQuaternionJointBudget
+public import LisiSabatini.TwoCoreMixedJointBudget
 
 /-!
 # Dispatching a Hall--Berger shape to the exact two-orbit reserve
@@ -12,6 +14,8 @@ This file contains the deliberately small case split that turns a supplied
 shape of the mapped `2`-core into the uniform reserve datum consumed by the
 quasiprimitive affine assembly.
 -/
+
+@[expose] public section
 
 noncomputable section
 

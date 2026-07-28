@@ -1,5 +1,7 @@
-import LisiSabatini.HallClassTwoCore
-import LisiSabatini.ClassTwoCommutator
+module
+
+public import LisiSabatini.HallClassTwoCore
+public import LisiSabatini.ClassTwoCommutator
 
 /-!
 # A sharper Frattini reduction in the Hall class-two core
@@ -24,6 +26,8 @@ critical-subgroup/Hobby step.  Nor do we assert that class two and cyclic
 center alone suffice: higher-exponent Heisenberg-type groups show they do
 not.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,7 @@
-import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+module
+
+public import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+public import Mathlib.Tactic.Linarith
 
 /-!
 # Joint-budget arithmetic for a mixed symplectic-type two-core
@@ -14,6 +17,8 @@ slack for both the active rectangle envelope and two full core orbits.
 This is stronger than applying half-density and the order estimate
 separately.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

@@ -1,5 +1,7 @@
-import LisiSabatini.Alternating
-import LisiSabatini.NilpotentIntersectionApplications
+module
+
+public import LisiSabatini.Alternating
+public import LisiSabatini.NilpotentIntersectionApplications
 
 /-!
 # Formalized Sylow-intersection results

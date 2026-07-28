@@ -1,6 +1,8 @@
-import LisiSabatini.ClassThreeCommutatorPower
-import LisiSabatini.CyclicFrattiniOmega
-import LisiSabatini.FrattiniCentrality
+module
+
+public import LisiSabatini.ClassThreeCommutatorPower
+public import LisiSabatini.CyclicFrattiniOmega
+public import LisiSabatini.FrattiniCentrality
 
 /-!
 # Core centrality of cyclic Frattini subgroups at odd primes
@@ -9,6 +11,8 @@ This file assembles the odd-prime, class-three commutator calculation needed
 to lift the structured Frattini-centralizer descent back to the ambient
 `p`-group.
 -/
+
+@[expose] public section
 
 noncomputable section
 

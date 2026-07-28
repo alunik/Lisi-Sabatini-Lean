@@ -1,5 +1,7 @@
-import LisiSabatini.ImprimitiveBundleAction
-import LisiSabatini.ImprimitiveCommonBaseAction
+module
+
+public import LisiSabatini.ImprimitiveBundleAction
+public import LisiSabatini.ImprimitiveCommonBaseAction
 
 /-!
 # Exact bundle-marker infrastructure used by the odd-order proof
@@ -9,6 +11,8 @@ and the two local-image lemmas used to pass from ambient to intrinsic
 block actions.  Higher-level marker constructions remain in the compatibility
 module `ImprimitiveBundleMarker`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

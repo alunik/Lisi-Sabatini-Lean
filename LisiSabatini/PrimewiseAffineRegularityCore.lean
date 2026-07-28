@@ -1,8 +1,10 @@
-import LisiSabatini.BlockStabilizerLocalAction
-import LisiSabatini.MappedPCoreFrattini
-import LisiSabatini.MappedPCoreCyclicCenterClassTwo
-import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
-import LisiSabatini.ActiveTopOneOrbitComposition
+module
+
+public import LisiSabatini.BlockStabilizerLocalAction
+public import LisiSabatini.MappedPCoreFrattini
+public import LisiSabatini.MappedPCoreCyclicCenterClassTwo
+public import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
+public import LisiSabatini.ActiveTopOneOrbitComposition
 
 /-!
 # Direct primewise affine regularity
@@ -18,6 +20,8 @@ a strict primitive-top presentation and the induction hypotheses for its
 faithful block-stabilizer local actions feed directly into the active-top
 composition theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

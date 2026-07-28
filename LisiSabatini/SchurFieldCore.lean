@@ -1,7 +1,9 @@
-import LisiSabatini.HomogeneousDimension
-import Mathlib.Algebra.Field.TransferInstance
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.RingTheory.LittleWedderburn
+module
+
+public import LisiSabatini.HomogeneousDimension
+public import Mathlib.Algebra.Field.TransferInstance
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.RingTheory.LittleWedderburn
 
 /-!
 # The finite Schur field of a simple constituent
@@ -12,6 +14,8 @@ ring, the central action on a constituent, and a separate carrier for the
 finite Schur field.  Determinant-based compatibility results live in
 `SchurFieldDegree.lean` and are deliberately not imported here.
 -/
+
+@[expose] public section
 
 noncomputable section
 

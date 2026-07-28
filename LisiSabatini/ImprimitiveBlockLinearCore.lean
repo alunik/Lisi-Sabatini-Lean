@@ -1,4 +1,6 @@
-import LisiSabatini.ImprimitiveReductionCore
+module
+
+public import LisiSabatini.ImprimitiveReductionCore
 
 /-!
 # The block-factor cocycle
@@ -8,6 +10,8 @@ homomorphism.  Keeping this elementary consequence of `action_apply` below
 the component and bundle layers lets every restriction to a permutation
 kernel reuse the same proof.
 -/
+
+@[expose] public section
 
 noncomputable section
 

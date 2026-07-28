@@ -1,6 +1,8 @@
-import LisiSabatini.NormalPrimeSquareCentralizer
-import LisiSabatini.QuotientCardinalityCore
-import Mathlib.GroupTheory.Sylow
+module
+
+public import LisiSabatini.NormalPrimeSquareCentralizer
+public import LisiSabatini.QuotientCardinalityCore
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # Short ambient-normal flags in finite p-groups
@@ -19,6 +21,8 @@ commutativity nor exponent `p` is needed.  After choosing the central
 order-`p` term, apply the order-`p` existence theorem to the image of the
 given subgroup in the quotient and pull the result back.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeStructure
-import Mathlib.GroupTheory.SpecificGroups.Dihedral
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeStructure
+public import Mathlib.GroupTheory.SpecificGroups.Dihedral
 
 /-!
 # The dihedral symplectic-type branch
@@ -15,6 +17,8 @@ Thus an active involution in a fixed-point-free-center linear copy of
 `DihedralGroup (4*k)` has a half-dimensional fixed space.  We also bound
 the number of active involutions by the number of reflections.
 -/
+
+@[expose] public section
 
 noncomputable section
 

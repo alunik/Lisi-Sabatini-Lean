@@ -1,5 +1,7 @@
-import LisiSabatini.AffineTwoOrbitImprimitivePropagation
-import LisiSabatini.ThreeSylowSolvableReduction
+module
+
+public import LisiSabatini.AffineTwoOrbitImprimitivePropagation
+public import LisiSabatini.ThreeSylowSolvableReduction
 
 /-!
 # Direct dimension recursion for the strong affine two-orbit invariant
@@ -10,6 +12,8 @@ presentation propagates it by strong induction on dimension.  The
 resulting theorem applies to every irreducible chief action, without a
 solvability assumption on the ambient finite group.
 -/
+
+@[expose] public section
 
 noncomputable section
 

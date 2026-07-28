@@ -1,5 +1,7 @@
-import LisiSabatini.FittingSubgroup
-import LisiSabatini.ThreeConjugatesSynchronization
+module
+
+public import LisiSabatini.FittingSubgroup
+public import LisiSabatini.ThreeConjugatesSynchronization
 
 /-!
 # Nilpotent-intersection corollaries
@@ -12,6 +14,8 @@ In both proofs the ambient Sylow rows are chosen from the nilpotent
 subgroups before synchronization supplies the conjugator.  Thus the choice
 does not depend on the eventual intersection.
 -/
+
+@[expose] public section
 
 open scoped Pointwise
 

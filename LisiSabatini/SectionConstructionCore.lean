@@ -1,9 +1,13 @@
-import LisiSabatini.ElementarySection
-import Mathlib.Algebra.Module.ZMod
+module
+
+public import LisiSabatini.ElementarySection
+public import Mathlib.Algebra.Module.ZMod
 
 /-!
 # Constructing an elementary-abelian section from coordinates
 -/
+
+@[expose] public section
 
 noncomputable section
 

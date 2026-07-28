@@ -1,6 +1,9 @@
-import LisiSabatini.QuasiprimitiveRepresentation
-import Mathlib.RepresentationTheory.Submodule
-import Mathlib.RingTheory.Artinian.Module
+module
+
+public import LisiSabatini.QuasiprimitiveRepresentation
+public import Mathlib.RepresentationTheory.Irreducible
+public import Mathlib.RepresentationTheory.Submodule
+public import Mathlib.RingTheory.Artinian.Module
 
 /-!
 # Semisimplicity of normal restrictions
@@ -9,6 +12,8 @@ This file records the modular Clifford-theoretic socle argument: the
 restriction of a finite-dimensional irreducible representation to a normal
 subgroup is semisimple, with no cross-characteristic hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -40,7 +45,7 @@ theorem actionLinearEquiv_symm_apply (rho : Representation k G V) (g : G) (x : V
 
 variable (rho : Representation k G V) (H : Subgroup G) [H.Normal]
 
-private abbrev restricted : Representation k H V := rho.comp H.subtype
+abbrev restricted : Representation k H V := rho.comp H.subtype
 
 /-- Conjugation by `g` sends an `H`-invariant subspace to an
 `H`-invariant subspace when `H` is normal. -/
@@ -123,7 +128,7 @@ theorem conjugateRestrictedSubmoduleOrderIso_simple_iff (g : G)
     exact (isSimpleModule_iff_isAtom (R := k[H])
       (M := (restricted rho H).asModule) (m := C N)).mpr ((C.isAtom_iff N).mpr ha)
 
-private def restrictedSocle : Submodule k[H] (restricted rho H).asModule :=
+def restrictedSocle : Submodule k[H] (restricted rho H).asModule :=
   sSup {N : Submodule k[H] (restricted rho H).asModule |
     IsSimpleModule k[H] N}
 

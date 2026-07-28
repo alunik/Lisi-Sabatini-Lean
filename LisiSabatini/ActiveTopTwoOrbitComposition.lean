@@ -1,6 +1,8 @@
-import LisiSabatini.ActiveTopOneOrbitComposition
-import LisiSabatini.RegularTernaryListColoring
-import LisiSabatini.TwoOrbitAvoidingPaletteCore
+module
+
+public import LisiSabatini.ActiveTopOneOrbitComposition
+public import LisiSabatini.RegularTernaryListColoring
+public import LisiSabatini.TwoOrbitAvoidingPaletteCore
 
 /-!
 # Two-orbit composition through a primitive imprimitive top
@@ -15,6 +17,8 @@ at one marker block are instead spent directly on the two external targets.
 The remaining blocks use one exclusion to make the marker bundle orbit
 unique.  This also supplies regularity for the possible active component.
 -/
+
+@[expose] public section
 
 noncomputable section
 

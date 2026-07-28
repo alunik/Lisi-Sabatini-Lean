@@ -1,8 +1,10 @@
-import LisiSabatini.ImprimitiveReductionCore
-import LisiSabatini.NCASLinearEquiv
-import LisiSabatini.LinearImprimitivitySystem
-import Mathlib.LinearAlgebra.Pi
-import Mathlib.GroupTheory.GroupAction.Primitive
+module
+
+public import LisiSabatini.ImprimitiveReductionCore
+public import LisiSabatini.NCASLinearEquiv
+public import LisiSabatini.LinearImprimitivitySystem
+public import Mathlib.LinearAlgebra.Pi
+public import Mathlib.GroupTheory.GroupAction.Primitive
 
 /-!
 # Structural bridge to imprimitive action data
@@ -34,6 +36,8 @@ prove that a maximal proper permutation block gives a primitive coarse top.
 Primitivity is retained below as explicit presentation data so this bridge can
 be used independently of the particular maximal-block construction.
 -/
+
+@[expose] public section
 
 noncomputable section
 

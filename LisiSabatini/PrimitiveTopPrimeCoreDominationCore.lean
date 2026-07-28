@@ -1,8 +1,10 @@
-import LisiSabatini.SchurCenterHalfOrbitCore
-import LisiSabatini.FiniteLinearSubgroup
-import LisiSabatini.OrbitAvoidingPaletteCore
-import LisiSabatini.PCore
-import LisiSabatini.CyclicCenterClassTwoTransport
+module
+
+public import LisiSabatini.SchurCenterHalfOrbitCore
+public import LisiSabatini.FiniteLinearSubgroup
+public import LisiSabatini.OrbitAvoidingPaletteCore
+public import LisiSabatini.PCore
+public import LisiSabatini.CyclicCenterClassTwoTransport
 
 /-!
 # Core primitive-top control by local prime cores
@@ -29,6 +31,8 @@ cyclic core can have one orbit containing every nonzero vector, so prime-core
 orbit domination alone cannot give the required forbidden-orbit conclusion
 without an additional mixed-family argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

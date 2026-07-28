@@ -1,5 +1,7 @@
-import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
-import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
+module
+
+public import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
+public import LisiSabatini.TwoCoreDistinguishedJointBudgetArithmetic
 
 /-!
 # The full distinguished-two budget for a semidihedral normal core
@@ -15,6 +17,8 @@ quotient is one, every active odd prime core would force an odd prime
 divisor of `r^d-1 = 8*k`; this is impossible because `16*k` is the order
 of a `2`-group.  Hence all odd rows vanish in the boundary case.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -37,7 +41,7 @@ local instance fintypeConcreteLinearSubgroupForSemidihedralJointBudget
     Fintype P :=
   @Fintype.ofFinite P (finite_linearSubgroup_of_finite P)
 
-private abbrev mappedCore (q : ℕ) :
+abbrev semidihedralJointMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)) :=
   (pCore q K).map K.subtype
@@ -46,7 +50,7 @@ private abbrev diagonalMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r)
         ((Fin d → ZMod r) × (Fin d → ZMod r))) :=
-  (mappedCore (K := K) q).map
+  (semidihedralJointMappedCore (K := K) q).map
     (diagonalGeneralLinearHom (ZMod r) (Fin d → ZMod r))
 
 omit [NeZero r] in
@@ -55,12 +59,12 @@ private theorem ncard_nonregular_diagonalMappedCore_eq_affineBadSet
     (nonregularVectors
       (diagonalMappedCore (K := K) q)).ncard =
       (affineTwoBaseBadSet
-        (mappedCore (K := K) q) 0 0).ncard := by
+        (semidihedralJointMappedCore (K := K) q) 0 0).ncard := by
   congr 1
   ext z
   simpa using
     (mem_affineTwoBaseBadSet_iff_mem_nonregularVectors_diagonal
-      (mappedCore (K := K) q) 0 0 z).symm
+      (semidihedralJointMappedCore (K := K) q) 0 0 z).symm
 
 private theorem sum_eq_sum_twoIndex_add_oddIndex
     {I : Type uI} [Fintype I] (p : I → ℕ) (f : I → ℕ) :
@@ -98,9 +102,9 @@ theorem
     (k : ℕ) (hk : 0 < k)
     (presentation :
       IsSemidihedralPresentation
-        (mappedCore (K := K) 2) k) :
+        (semidihedralJointMappedCore (K := K) 2) k) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
-  let P := mappedCore (K := K) 2
+  let P := semidihedralJointMappedCore (K := K) 2
   let D := fun q ↦ diagonalMappedCore (K := K) q
   let q := r ^ d
   let F := mappedTwoCoreQuasiprimitiveFrontier hrTwo hqp
@@ -220,9 +224,9 @@ theorem
               (mapped_pCore_frattini_isMulCommutative_of_quasiprimitive
                 (Fact.out : Nat.Prime r) hqp hA))
     have hoddBot :
-        ∀ i : O, mappedCore (K := K) (pO i) = ⊥ := by
+        ∀ i : O, semidihedralJointMappedCore (K := K) (pO i) = ⊥ := by
       intro i
-      let Q := mappedCore (K := K) (pO i)
+      let Q := semidihedralJointMappedCore (K := K) (pO i)
       by_contra hQ
       have hpDvd : pO i ∣ q - 1 := by
         by_cases hcomm : IsCommutingPrimeCore (pO i) K
@@ -257,7 +261,7 @@ theorem
       apply Finset.sum_eq_zero
       intro i _hi
       have hdiagBot : D (pO i) = ⊥ := by
-        simp [D, diagonalMappedCore, mappedCore, hoddBot i]
+        simp [D, diagonalMappedCore, semidihedralJointMappedCore, hoddBot i]
       dsimp only [row, pO]
       rw [hdiagBot, nonregularVectors_bot, Set.ncard_empty]
     have hown :
@@ -285,7 +289,7 @@ theorem
           (fun i ↦ hcross i.1)
           (fun _i _j hij ↦ Subtype.ext (hinj hij))
           hqp
-      simpa [row, D, pO, q, diagonalMappedCore, mappedCore] using h
+      simpa [row, D, pO, q, diagonalMappedCore, semidihedralJointMappedCore] using h
     have hbudget :
         DistinguishedTwoCoreJointEnvelopeBudget
           q (4 * k) (16 * k) :=

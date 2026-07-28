@@ -1,5 +1,7 @@
-import LisiSabatini.HobbyFrattiniTheoremCore
-import LisiSabatini.MappedPCoreHall
+module
+
+public import LisiSabatini.HobbyFrattiniTheoremCore
+public import LisiSabatini.MappedPCoreHall
 
 /-!
 # Hobby's theorem for mapped quasiprimitive prime cores
@@ -8,6 +10,8 @@ This is the single Hobby consequence used at the quasiprimitive leaves of
 the block-stabilizer tower.  Keeping it separate prevents the publication
 proof from importing the legacy all-dimensional Frattini frontier.
 -/
+
+@[expose] public section
 
 noncomputable section
 

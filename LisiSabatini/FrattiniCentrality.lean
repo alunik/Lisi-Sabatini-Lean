@@ -1,8 +1,10 @@
-import LisiSabatini.HallFrattiniReduction
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import LisiSabatini.HallFrattiniReduction
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # From central prime powers to central Frattini subgroup
@@ -25,6 +27,8 @@ class-two `p`-group with cyclic Frattini subgroup has central Frattini
 subgroup.  Under Hall's hypothesis it therefore suffices to establish that
 the Frattini subgroup is abelian.
 -/
+
+@[expose] public section
 
 noncomputable section
 

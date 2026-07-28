@@ -1,4 +1,7 @@
-import LisiSabatini.ExtraspecialArithmetic
+module
+
+public import LisiSabatini.ExtraspecialArithmetic
+public import Mathlib.Data.Fintype.EquivFin
 
 /-!
 # Arithmetic core for the odd-order extraspecial half-space estimate
@@ -7,6 +10,8 @@ This module contains exactly the arithmetic lemmas used by
 `ExtraspecialFamilyHalfBudget`: the uniform one-row order estimates, the
 exponential cofactor estimate, and the distinct-prime multiplicity bound.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

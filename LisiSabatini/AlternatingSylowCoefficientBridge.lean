@@ -1,6 +1,8 @@
-import LisiSabatini.AlternatingSylowCycleProfile
-import Mathlib.GroupTheory.Perm.Cycle.PossibleTypes
-import Mathlib.GroupTheory.Sylow
+module
+
+public import LisiSabatini.AlternatingSylowCycleProfile
+public import Mathlib.GroupTheory.Perm.Cycle.PossibleTypes
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # From Sylow cycle-profile coefficients to symmetric-group rows
@@ -11,6 +13,8 @@ Sylow subgroup of `S_n` with one prime-cycle type, and
 `HasSymmetricSylowCycleProfileCoefficients` says that a single Sylow
 subgroup realizes all coefficients of the arithmetic profile.
 -/
+
+@[expose] public section
 
 noncomputable section
 

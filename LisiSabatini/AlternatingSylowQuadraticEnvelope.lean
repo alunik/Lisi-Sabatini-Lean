@@ -1,6 +1,8 @@
-import LisiSabatini.AlternatingSylowNegativeBinomial
-import Mathlib.GroupTheory.Perm.Cycle.Type
-import Mathlib.Logic.Equiv.Fintype
+module
+
+public import LisiSabatini.AlternatingSylowNegativeBinomial
+public import Mathlib.GroupTheory.Perm.Cycle.Type
+public import Mathlib.Logic.Equiv.Fintype
 
 /-!
 # A global quadratic envelope for alternating Sylow rows
@@ -16,6 +18,8 @@ for every `n ≥ 40`, the sum of the majorants is strictly below `1/4`.
 This leaves enough room for the factor-four index-two transfer from
 `S_n` to `A_n`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

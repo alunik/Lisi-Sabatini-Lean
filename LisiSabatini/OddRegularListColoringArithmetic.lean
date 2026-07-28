@@ -1,4 +1,9 @@
-import Mathlib
+module
+
+public import Lean.Elab.Tactic.Omega
+public import Mathlib.Tactic.IntervalCases
+public import Mathlib.Tactic.NormNum.Parity
+public import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for odd regular list colourings
@@ -10,6 +15,8 @@ The list-colouring count at an odd regular permutation top leaves at least
 regular selections.  The lemma below records that this is strictly larger
 than one full orbit when `m` is odd and nontrivial.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

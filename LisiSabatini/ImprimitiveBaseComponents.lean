@@ -1,5 +1,7 @@
-import LisiSabatini.ImprimitiveNormalComponentsCore
-import LisiSabatini.ImprimitiveBlockLinearCore
+module
+
+public import LisiSabatini.ImprimitiveNormalComponentsCore
+public import LisiSabatini.ImprimitiveBlockLinearCore
 
 /-!
 # Base components of an imprimitive normal component
@@ -16,6 +18,8 @@ no wreath-product identification and no extra compatibility axiom for
 `blockLinear` is assumed: the homomorphism laws are derived from
 `action_apply`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

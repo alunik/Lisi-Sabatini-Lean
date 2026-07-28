@@ -1,8 +1,10 @@
-import LisiSabatini.AffineTwoBasePairSpectrumArithmetic
-import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
-import LisiSabatini.MappedPCoreFrattini
-import LisiSabatini.MappedPCoreCyclicCenterClassTwo
-import LisiSabatini.TwoCoreAffineTwoBaseHalfDensity
+module
+
+public import LisiSabatini.AffineTwoBasePairSpectrumArithmetic
+public import LisiSabatini.PrimitiveTopMixedPrimeCoreDominationCore
+public import LisiSabatini.MappedPCoreFrattini
+public import LisiSabatini.MappedPCoreCyclicCenterClassTwo
+public import LisiSabatini.TwoCoreAffineTwoBaseHalfDensity
 
 /-!
 # Quasiprimitive affine CATB parity leaves
@@ -12,6 +14,8 @@ characteristic-two quasiprimitive leaf.  In odd characteristic, the mapped
 normal two-core estimate is combined below with the exact remaining
 odd-prime pair-spectrum arithmetic proposition.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -37,7 +41,7 @@ local instance finiteConcreteLinearSubgroup
     Finite P :=
   finite_linearSubgroup_of_finite P
 
-private abbrev NoncommutingIndex
+abbrev NoncommutingIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : I → ℕ) : Type uI :=
@@ -45,7 +49,7 @@ private abbrev NoncommutingIndex
     (pCore (p i) K).map K.subtype ≠ ⊥ ∧
       ¬ IsCommutingPrimeCore (p i) K}
 
-private abbrev CommutingIndex
+abbrev CommutingIndex
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)))
     (p : I → ℕ) : Type uI :=

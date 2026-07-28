@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerSquareFrattini
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.HallBergerSquareFrattini
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # Extracting a square generator
@@ -9,6 +11,8 @@ If the normal closure of all squares in an ambient group is a cyclic
 precise finite-cyclic step used in the first branch of the
 Berger--Kovács--Newman Frattini dichotomy.
 -/
+
+@[expose] public section
 
 noncomputable section
 

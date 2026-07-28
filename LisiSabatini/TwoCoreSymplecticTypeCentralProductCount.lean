@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeStructure
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeStructure
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # Active involutions in the extraspecial--cyclic central-product branch
@@ -24,6 +26,8 @@ extraspecial--cyclic central-product branch.  It leaves only the
 representation-size comparison between `|P/Z(P)|` and the odd
 characteristic module.
 -/
+
+@[expose] public section
 
 noncomputable section
 

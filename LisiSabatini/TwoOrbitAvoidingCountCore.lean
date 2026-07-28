@@ -1,5 +1,7 @@
-import LisiSabatini.OrbitAvoidingCountCore
-import LisiSabatini.TwoOrbitAvoidingPaletteCore
+module
+
+public import LisiSabatini.OrbitAvoidingCountCore
+public import LisiSabatini.TwoOrbitAvoidingPaletteCore
 
 /-!
 # Counting criteria for two-orbit avoidance
@@ -7,6 +9,8 @@ import LisiSabatini.TwoOrbitAvoidingPaletteCore
 The bad union consists of the translated nonregular locus for every row and
 the two actual translated orbit loci at the distinguished row.
 -/
+
+@[expose] public section
 
 noncomputable section
 

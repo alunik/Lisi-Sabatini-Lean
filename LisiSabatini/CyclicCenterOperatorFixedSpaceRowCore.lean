@@ -1,7 +1,9 @@
-import LisiSabatini.CyclicCenterSymplectic
-import LisiSabatini.OperatorFixedSpaceCycle
-import LisiSabatini.CentralCosetActiveCount
-import LisiSabatini.QuasiprimitivePrimeCoreCore
+module
+
+public import LisiSabatini.CyclicCenterSymplectic
+public import LisiSabatini.OperatorFixedSpaceCycle
+public import LisiSabatini.CentralCosetActiveCount
+public import LisiSabatini.QuasiprimitivePrimeCoreCore
 
 /-!
 # Unsplit cyclic-center rows from fixed-point-free center action
@@ -18,6 +20,8 @@ prime-core row, `q ∣ r - 1` remains an explicit arithmetic input: center
 fixed-point-freeness alone does not imply it (a nonsplit cyclic action can
 have degree greater than one).
 -/
+
+@[expose] public section
 
 noncomputable section
 

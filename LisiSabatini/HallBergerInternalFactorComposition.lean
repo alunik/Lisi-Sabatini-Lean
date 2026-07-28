@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerExtraspecialExtension
+module
+
+public import LisiSabatini.HallBergerExtraspecialExtension
 
 /-!
 # Composing internal central factors
@@ -7,6 +9,8 @@ The Hall--Berger maximality argument enlarges a central factor `E` by a
 central factor found inside its residual centralizer.  This file records
 that transitivity step intrinsically for subgroups.
 -/
+
+@[expose] public section
 
 noncomputable section
 

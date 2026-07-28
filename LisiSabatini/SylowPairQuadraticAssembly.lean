@@ -1,5 +1,7 @@
-import LisiSabatini.SylowPairQuadraticIndexTwo
-import Mathlib.Algebra.BigOperators.Field
+module
+
+public import LisiSabatini.SylowPairQuadraticIndexTwo
+public import Mathlib.Algebra.BigOperators.Field
 
 /-!
 # Assembling normalized quadratic Sylow-row budgets
@@ -10,6 +12,8 @@ normalized real budget into the integral inequality required by
 `exists_common_sylowInter_bot_of_quadraticClass_sum_lt`, then packages the
 result as a criterion for the Lisi--Sabatini property.
 -/
+
+@[expose] public section
 
 noncomputable section
 

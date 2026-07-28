@@ -1,6 +1,8 @@
-import LisiSabatini.ActiveFixedSpaceSpectrum
-import Mathlib.Algebra.DirectSum.Module
-import Mathlib.LinearAlgebra.Eigenspace.Basic
+module
+
+public import LisiSabatini.ActiveFixedSpaceSpectrum
+public import Mathlib.Algebra.DirectSum.Module
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
 
 /-!
 # Fixed-space bounds from cycling distinct eigenspaces
@@ -16,6 +18,8 @@ The prime-field corollary is stated in exactly the cardinal form required by
 the extraspecial prime-core row interface.  A later group-theoretic argument
 only has to construct the eigenvalue cycle and its linear equivalences.
 -/
+
+@[expose] public section
 
 noncomputable section
 

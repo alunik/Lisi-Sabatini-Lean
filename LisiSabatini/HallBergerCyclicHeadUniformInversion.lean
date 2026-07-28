@@ -1,5 +1,7 @@
-import LisiSabatini.CyclicMaximalTwoGroupClassification
-import LisiSabatini.HallBergerCyclicCentralizerAssembly
+module
+
+public import LisiSabatini.CyclicMaximalTwoGroupClassification
+public import LisiSabatini.HallBergerCyclicCentralizerAssembly
 
 /-!
 # Applying cyclic-maximal classification uniformly outside the centralizer
@@ -10,6 +12,8 @@ rotation.  Replacing that representative by each element outside
 `C_G(Φ(G))` therefore supplies the uniform inversion hypothesis of the
 index-two theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,9 @@
-import LisiSabatini.TwoCoreSymplecticTypeDihedral
-import LisiSabatini.TwoCoreSymplecticTypeSemidihedral
-import LisiSabatini.TwoCoreSymplecticTypeCentralProductCount
-import LisiSabatini.MappedPCoreHall
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeDihedral
+public import LisiSabatini.TwoCoreSymplecticTypeSemidihedral
+public import LisiSabatini.TwoCoreSymplecticTypeCentralProductCount
+public import LisiSabatini.MappedPCoreHall
 
 /-!
 # The exact Hall--Berger two-core frontier
@@ -25,6 +27,8 @@ three genuinely missing mixed inputs:
 None of those statements, and not the Hall--Berger classification itself,
 is asserted as an axiom or theorem here.
 -/
+
+@[expose] public section
 
 noncomputable section
 

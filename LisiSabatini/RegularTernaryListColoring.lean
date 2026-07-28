@@ -1,5 +1,7 @@
-import LisiSabatini.RegularTernaryListColoringArithmetic
-import Mathlib.GroupTheory.Perm.Centralizer
+module
+
+public import LisiSabatini.RegularTernaryListColoringArithmetic
+public import Mathlib.GroupTheory.Perm.Centralizer
 
 /-!
 # Ternary list colourings for regular permutation groups
@@ -16,6 +18,8 @@ choice which simultaneously distinguishes the top and avoids two prescribed
 external orbits.  This is the finite combinatorial input required by an
 even-top affine two-base propagation.
 -/
+
+@[expose] public section
 
 noncomputable section
 

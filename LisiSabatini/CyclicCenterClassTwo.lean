@@ -1,4 +1,6 @@
-import LisiSabatini.HallClassTwoCore
+module
+
+public import LisiSabatini.HallClassTwoCore
 
 /-!
 # Odd class-two cores with cyclic center
@@ -18,6 +20,8 @@ commutator pairing, with values in the canonical order-`p` central kernel.
 The subsequent linearization can therefore work with a cyclic central
 factor directly, without first choosing a central-product complement.
 -/
+
+@[expose] public section
 
 noncomputable section
 

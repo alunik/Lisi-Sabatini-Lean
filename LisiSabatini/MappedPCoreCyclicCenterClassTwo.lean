@@ -1,6 +1,8 @@
-import LisiSabatini.CyclicFrattiniCentralityCore
-import LisiSabatini.HallFrattiniCyclicCenterCore
-import LisiSabatini.MappedPCoreHall
+module
+
+public import LisiSabatini.CyclicFrattiniCentralityCore
+public import LisiSabatini.HallFrattiniCyclicCenterCore
+public import LisiSabatini.MappedPCoreHall
 
 /-!
 # Cyclic-center class-two structure for mapped quasiprimitive prime cores
@@ -9,6 +11,8 @@ This file packages the exact structural consequence consumed at a
 quasiprimitive leaf.  It is separated from the small-order Hobby regression
 theorems that historically shared its module.
 -/
+
+@[expose] public section
 
 noncomputable section
 

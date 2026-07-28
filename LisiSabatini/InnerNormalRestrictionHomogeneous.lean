@@ -1,4 +1,6 @@
-import LisiSabatini.NormalRestrictionSemisimple
+module
+
+public import LisiSabatini.NormalRestrictionSemisimple
 
 /-!
 # Homogeneity of inner normal restrictions
@@ -12,6 +14,8 @@ The theorem below proves precisely this elementary form.  It is useful for
 an internal central product `G = EH`: if `E` and `H` commute, then every
 ambient conjugation on `E` is already conjugation by an element of `E`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -78,7 +82,7 @@ end HasInnerConjugationOn
 variable (rho : Representation k G V)
 variable (H : Subgroup G)
 
-private abbrev restrictedRepresentation :
+abbrev restrictedRepresentation :
     Representation k H V :=
   rho.comp H.subtype
 

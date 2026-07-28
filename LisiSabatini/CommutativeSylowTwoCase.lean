@@ -1,4 +1,6 @@
-import LisiSabatini.QuasiprimitiveAffineTwoOrbitAssembly
+module
+
+public import LisiSabatini.QuasiprimitiveAffineTwoOrbitAssembly
 
 /-!
 # The solvable case with commutative Sylow two-subgroups
@@ -15,6 +17,8 @@ solvable chief-factor induction.  At each quasiprimitive leaf the `2`-core
 is contained in a commutative Sylow subgroup, so the already proved
 commuting-`2`-core theorem applies.
 -/
+
+@[expose] public section
 
 noncomputable section
 

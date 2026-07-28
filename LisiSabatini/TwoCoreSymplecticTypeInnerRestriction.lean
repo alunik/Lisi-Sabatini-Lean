@@ -1,5 +1,7 @@
-import LisiSabatini.InnerNormalRestrictionHomogeneous
-import LisiSabatini.TwoCoreSymplecticTypeMixedStructure
+module
+
+public import LisiSabatini.InnerNormalRestrictionHomogeneous
+public import LisiSabatini.TwoCoreSymplecticTypeMixedStructure
 
 /-!
 # The homogeneous extraspecial restriction in a mixed central product
@@ -13,6 +15,8 @@ restricts homogeneously to `E`.
 This is the Clifford-theoretic bridge needed before applying the
 extraspecial Stone--von Neumann degree theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

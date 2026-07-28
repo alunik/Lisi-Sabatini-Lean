@@ -1,4 +1,6 @@
-import LisiSabatini.FixedPointFreeOffZero
+module
+
+public import LisiSabatini.FixedPointFreeOffZero
 
 /-!
 # Translated palettes for fixed-point-free linear actions
@@ -12,6 +14,8 @@ regular translate, independently of the module dimension.
 The active-index version counts only nontrivial acting groups.  This is the
 form suited to families in which some local images vanish.
 -/
+
+@[expose] public section
 
 noncomputable section
 

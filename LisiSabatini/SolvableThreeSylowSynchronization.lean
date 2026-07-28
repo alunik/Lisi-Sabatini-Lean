@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerClassificationAssembly
-import LisiSabatini.SolvableThreeSylowOfHallBergerClassification
+module
+
+public import LisiSabatini.HallBergerClassificationAssembly
+public import LisiSabatini.SolvableThreeSylowOfHallBergerClassification
 
 /-!
 # Mixed three-row Sylow synchronization for all finite solvable groups
@@ -9,6 +11,8 @@ noncommuting `2`-core input in the affine reduction.  Substituting it into
 the already-assembled shape dispatcher closes the theorem for every finite
 solvable group, without an odd-order or commutative-Sylow-`2` hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

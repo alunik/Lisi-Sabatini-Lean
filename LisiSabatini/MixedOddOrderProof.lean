@@ -1,6 +1,8 @@
-import LisiSabatini.MixedNormalComponentReductionCore
-import LisiSabatini.OddOrderChiefFactorCore
-import LisiSabatini.PrimewiseAffineRegularityCore
+module
+
+public import LisiSabatini.MixedNormalComponentReductionCore
+public import LisiSabatini.OddOrderChiefFactorCore
+public import LisiSabatini.PrimewiseAffineRegularityCore
 
 /-!
 # Mixed two-row synchronization in finite solvable groups of odd order
@@ -11,6 +13,8 @@ is unchanged: the second row contributes only an arbitrary affine
 translation, which the existing primewise affine regularity theorem already
 allows.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,8 @@
-import Mathlib
+module
+
+public import Lean.Elab.Tactic.Omega
+public import Mathlib.Tactic.IntervalCases
+public import Mathlib.Tactic.Ring
 
 /-!
 # Arithmetic for regular ternary list colourings
@@ -12,6 +16,8 @@ together with two prescribed external orbits, is
 
 which is strictly smaller than the full ternary cube `3^m`.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

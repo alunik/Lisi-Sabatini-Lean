@@ -1,4 +1,6 @@
-import LisiSabatini.RepeatedBlockAmplification
+module
+
+public import LisiSabatini.RepeatedBlockAmplification
 
 /-!
 # Nonzero fixed-space spectra
@@ -16,6 +18,8 @@ The summands vanish exactly for fixed-point-free elements.  This is the
 appropriate counting interface for cyclic central factors and extraspecial
 prime cores in quasi-primitive linear groups.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,9 @@
-import LisiSabatini.LinearImprimitivityExtraction
-import LisiSabatini.ImprimitiveStructuralCore
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+module
+
+public import LisiSabatini.LinearImprimitivityExtraction
+public import LisiSabatini.ImprimitiveStructuralCore
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 
 /-!
 # From a submodule-orbit witness to a recursive primitive presentation
@@ -27,6 +29,8 @@ interfaces live in `LinearImprimitivityPresentationExtraction.lean`.  Keeping
 them out of this core module prevents downstream structural consumers from
 importing an unrelated proof architecture.
 -/
+
+@[expose] public section
 
 noncomputable section
 

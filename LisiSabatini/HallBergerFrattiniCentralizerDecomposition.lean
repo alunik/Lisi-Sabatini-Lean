@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerResidualCyclic
+module
+
+public import LisiSabatini.HallBergerResidualCyclic
 
 /-!
 # Decomposing the Hall--Berger Frattini centralizer
@@ -9,6 +11,8 @@ hypothesis, the Frattini centralizer is either cyclic or is the internal
 central product of an extraspecial factor and a cyclic residual
 centralizer.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,6 @@
-import LisiSabatini.Quotient
+module
+
+public import LisiSabatini.Quotient
 
 /-!
 # Trivial two-primary coordinates in odd-order groups
@@ -6,6 +8,8 @@ import LisiSabatini.Quotient
 The local affine theorem concerns distinct *odd* primes.  These lemmas justify
 discarding a prescribed `p = 2` coordinate before invoking it.
 -/
+
+@[expose] public section
 
 noncomputable section
 

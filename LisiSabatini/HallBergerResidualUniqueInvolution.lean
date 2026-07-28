@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerResidualInvolution
+module
+
+public import LisiSabatini.HallBergerResidualInvolution
 
 /-!
 # The unique-involution residual in Hall--Berger
@@ -13,6 +15,8 @@ This is the exact point at which the published proof invokes the
 classical theorem that a finite `2`-group with a unique subgroup of order
 two is cyclic or generalized quaternion.
 -/
+
+@[expose] public section
 
 noncomputable section
 

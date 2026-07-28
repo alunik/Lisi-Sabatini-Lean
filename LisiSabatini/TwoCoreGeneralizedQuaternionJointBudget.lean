@@ -1,4 +1,6 @@
-import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
+module
+
+public import LisiSabatini.OddCharacteristicTwoCoreTwoOrbitReserve
 
 /-!
 # The full distinguished-two budget for a generalized-quaternion core
@@ -14,6 +16,8 @@ order divides the number of nonzero vectors.  Together with the existing
 odd-row estimate, these two facts close the exact distinguished-two
 reserve.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -36,7 +40,7 @@ local instance fintypeConcreteLinearSubgroupForQuaternionJointBudget
     Fintype P :=
   @Fintype.ofFinite P (finite_linearSubgroup_of_finite P)
 
-private abbrev mappedCore (q : ℕ) :
+abbrev generalizedQuaternionJointMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r)) :=
   (pCore q K).map K.subtype
@@ -45,7 +49,7 @@ private abbrev diagonalMappedCore (q : ℕ) :
     Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r)
         ((Fin d → ZMod r) × (Fin d → ZMod r))) :=
-  (mappedCore (K := K) q).map
+  (generalizedQuaternionJointMappedCore (K := K) q).map
     (diagonalGeneralLinearHom (ZMod r) (Fin d → ZMod r))
 
 omit [NeZero r] in
@@ -54,12 +58,12 @@ private theorem ncard_nonregular_diagonalMappedCore_eq_affineBadSet
     (nonregularVectors
       (diagonalMappedCore (K := K) q)).ncard =
       (affineTwoBaseBadSet
-        (mappedCore (K := K) q) 0 0).ncard := by
+        (generalizedQuaternionJointMappedCore (K := K) q) 0 0).ncard := by
   congr 1
   ext z
   simpa using
     (mem_affineTwoBaseBadSet_iff_mem_nonregularVectors_diagonal
-      (mappedCore (K := K) q) 0 0 z).symm
+      (generalizedQuaternionJointMappedCore (K := K) q) 0 0 z).symm
 
 private abbrev TwoIndex {I : Type uI} (p : I → ℕ) :=
   {i : I // p i = 2}
@@ -144,12 +148,12 @@ theorem
     (hqp : IsQuasiprimitiveLinearAction r d K)
     (n : ℕ) (hn : 0 < n)
     (e :
-      (mappedCore (K := K) 2) ≃*
+      (generalizedQuaternionJointMappedCore (K := K) 2) ≃*
         QuaternionGroup n) :
     OddCharacteristicTwoCoreTwoOrbitReserveData.{uI} K := by
   classical
   letI : NeZero n := ⟨hn.ne'⟩
-  let P := mappedCore (K := K) 2
+  let P := generalizedQuaternionJointMappedCore (K := K) 2
   let D₂ :=
     (nonregularVectors
       (diagonalMappedCore (K := K) 2)).ncard
@@ -240,7 +244,7 @@ theorem
           (fun _i _j hij ↦ Subtype.ext (hinj hij))
           hqp
     simpa [Bodd, f, O, pO, N,
-      diagonalMappedCore, mappedCore] using h
+      diagonalMappedCore, generalizedQuaternionJointMappedCore] using h
   have htwoSum : (∑ i : T, f i.1) ≤ D₂ := by
     have hterm : ∀ i : T, f i.1 = D₂ := by
       intro i

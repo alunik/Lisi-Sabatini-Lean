@@ -1,5 +1,7 @@
-import LisiSabatini.OddCharacteristicTwoCoreShapeDispatch
-import LisiSabatini.QuasiprimitiveAffineTwoOrbitAssembly
+module
+
+public import LisiSabatini.OddCharacteristicTwoCoreShapeDispatch
+public import LisiSabatini.QuasiprimitiveAffineTwoOrbitAssembly
 
 /-!
 # From Hall--Berger classification to the solvable synchronization theorem
@@ -9,6 +11,8 @@ one short interface.  This file records that interface separately so the
 final structural theorem can be substituted without reopening the affine
 argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,5 +1,7 @@
-import Mathlib.GroupTheory.Commutator.Basic
-import Mathlib.Tactic.Group
+module
+
+public import Mathlib.GroupTheory.Commutator.Basic
+public import Mathlib.Tactic.Group
 
 /-!
 # Elementary commutator identities in class-two groups
@@ -7,6 +9,8 @@ import Mathlib.Tactic.Group
 These four identities are the only part of the extraspecial-group structure
 file used by the odd-order proof.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

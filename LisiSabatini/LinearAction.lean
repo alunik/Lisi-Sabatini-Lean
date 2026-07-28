@@ -1,6 +1,8 @@
-import LisiSabatini.CommonTranslateCore
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Algebra.Group.Subgroup.Lattice
+module
+
+public import LisiSabatini.CommonTranslateCore
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Algebra.Group.Subgroup.Lattice
 
 /-!
 # Kernels and regular vectors for linear-action images
@@ -10,6 +12,8 @@ instead of quotienting the complement by its action kernel.  This file records
 the generic bridge: the stabilizer of a vector in the acting group is exactly
 the action kernel if and only if the stabilizer in the image is trivial.
 -/
+
+@[expose] public section
 
 noncomputable section
 

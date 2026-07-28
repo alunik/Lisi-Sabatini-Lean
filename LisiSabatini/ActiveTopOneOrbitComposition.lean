@@ -1,5 +1,7 @@
-import LisiSabatini.OddRegularListColoring
-import LisiSabatini.RecursiveMixedPrimeCoreCore
+module
+
+public import LisiSabatini.OddRegularListColoring
+public import LisiSabatini.RecursiveMixedPrimeCoreCore
 
 /-!
 # One-orbit composition through an active odd regular top
@@ -16,6 +18,8 @@ one entry from every list while avoiding all nonidentity exact top fibres and
 the prescribed external orbit.  This file identifies those deterministic
 relations with the exact bundle fibres of the active component.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeMixedHeadCount
-import Mathlib.Algebra.BigOperators.Ring.Finset
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeMixedHeadCount
+public import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-!
 # Sign-free square counts in extraspecial two-groups
@@ -12,6 +14,8 @@ group.  No classification of extraspecial groups by central products is
 used.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 open scoped BigOperators commutatorElement
@@ -23,7 +27,7 @@ set_option backward.isDefEq.respectTransparency false
 universe u
 
 /-- The sign character of a group of order two. -/
-private def orderTwoSign
+def orderTwoSign
     {K : Type*} [Group K] (x : K) : ℤ := by
   classical
   exact if x = 1 then 1 else -1
@@ -139,13 +143,13 @@ private def commutatorValue
       (Subgroup.mem_top x) (Subgroup.mem_top y)⟩
 
 /-- A square, as an element of the center. -/
-private def squareValue
+def squareValue
     (h : IsExtraspecial 2 E) (x : E) :
     Subgroup.center E :=
   ⟨x ^ 2, h.sq_mem_center x⟩
 
 /-- The `{±1}`-valued square character. -/
-private def squareSign
+def squareSign
     (h : IsExtraspecial 2 E) (x : E) : ℤ :=
   orderTwoSign (h.squareValue x)
 
@@ -405,7 +409,7 @@ private theorem squareSign_mul_rearranged
 
 /-- The direct group-level Gauss-sum identity for the extraspecial
 square map. -/
-private theorem squareSign_gauss_sq
+theorem squareSign_gauss_sq
     [Fintype E]
     (h : IsExtraspecial 2 E) :
     (∑ x : E, h.squareSign x) *
@@ -537,7 +541,7 @@ theorem exists_degree_card_eq_two_mul_sq
 
 /-- The square-sign sum is the difference of the two square-fiber
 cardinalities. -/
-private theorem sum_squareSign_eq_fiber_difference
+theorem sum_squareSign_eq_fiber_difference
     [Fintype E]
     (h : IsExtraspecial 2 E) :
     (∑ x : E, h.squareSign x) =
@@ -615,7 +619,7 @@ private theorem sum_squareSign_eq_fiber_difference
   simp only [Finset.sum_boole, hcardOne, hcardCentral]
 
 /-- The two square fibers partition an extraspecial two-group. -/
-private theorem card_squareFibers
+theorem card_squareFibers
     (h : IsExtraspecial 2 E) :
     Nat.card (SquareFiber E 1) +
         Nat.card

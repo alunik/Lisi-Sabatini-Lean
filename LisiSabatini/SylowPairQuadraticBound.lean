@@ -1,7 +1,9 @@
-import LisiSabatini.MixedSylowIntersections
-import Mathlib.Algebra.Group.ConjFinite
-import Mathlib.Data.Set.Card.Arithmetic
-import Mathlib.GroupTheory.GroupAction.Quotient
+module
+
+public import LisiSabatini.MixedSylowIntersections
+public import Mathlib.Algebra.Group.ConjFinite
+public import Mathlib.Data.Set.Card.Arithmetic
+public import Mathlib.GroupTheory.GroupAction.Quotient
 
 /-!
 # Quadratic conjugacy-class bounds for pairs of Sylow subgroups
@@ -20,6 +22,8 @@ quadratic bound
 A second union bound over a finite family of prime labels then produces one
 conjugator which makes every prescribed intersection trivial.
 -/
+
+@[expose] public section
 
 noncomputable section
 

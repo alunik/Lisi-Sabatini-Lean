@@ -1,4 +1,6 @@
-import LisiSabatini.CoprimeNormal
+module
+
+public import LisiSabatini.CoprimeNormal
 
 /-!
 # Quotients by normal `p`-subgroups
@@ -7,6 +9,8 @@ The results in this file are unconditional group-theoretic infrastructure for
 lifting Sylow-intersection statements through a quotient.  In particular,
 they do not assume or assert an affine lifting theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

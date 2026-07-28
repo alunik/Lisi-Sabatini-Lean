@@ -1,6 +1,8 @@
-import LisiSabatini.ImprimitiveNormalComponentsCore
-import LisiSabatini.PrimitiveNormalPSubgroup
-import LisiSabatini.SelfCentralizingTop
+module
+
+public import LisiSabatini.ImprimitiveNormalComponentsCore
+public import LisiSabatini.PrimitiveNormalPSubgroup
+public import LisiSabatini.SelfCentralizingTop
 
 /-!
 # Proof core for normal components over a primitive imprimitive top
@@ -24,6 +26,8 @@ both hypotheses needed by the one-active-top theorem in
 `SingleTopComponent`: all other top ranges are trivial, and the chosen top
 range is semiregular.
 -/
+
+@[expose] public section
 
 noncomputable section
 

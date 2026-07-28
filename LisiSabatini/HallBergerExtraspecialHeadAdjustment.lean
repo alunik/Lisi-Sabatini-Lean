@@ -1,6 +1,8 @@
-import LisiSabatini.ExtraspecialCentralAutomorphism
-import LisiSabatini.HallBergerExtraspecialExtension
-import LisiSabatini.HallBergerSourcePreliminaries
+module
+
+public import LisiSabatini.ExtraspecialCentralAutomorphism
+public import LisiSabatini.HallBergerExtraspecialExtension
+public import LisiSabatini.HallBergerSourcePreliminaries
 
 /-!
 # Adjusting the Hall--Berger head past an extraspecial factor
@@ -14,6 +16,8 @@ The right adjustment `h * c⁻¹` is the useful orientation in the
 Hall--Berger application: it has the same conjugation action as `h` on
 every element which commutes with the extraspecial factor.
 -/
+
+@[expose] public section
 
 noncomputable section
 

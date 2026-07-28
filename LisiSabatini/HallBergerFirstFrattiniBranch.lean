@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerCenterSquareObstruction
-import LisiSabatini.HallBergerSquareGenerator
+module
+
+public import LisiSabatini.HallBergerCenterSquareObstruction
+public import LisiSabatini.HallBergerSquareGenerator
 
 /-!
 # Eliminating the first large-Frattini Hall--Berger branch
@@ -15,6 +17,8 @@ two.
 Consequently the first branch is confined to `|Φ(G)| ≤ 2`; every
 large-Frattini case lies in the square-image branch.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeMixedCount
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeMixedCount
 
 /-!
 # Square fibers in maximal-class two-group heads
@@ -7,6 +9,8 @@ This file discharges the head-side finite input used by the mixed
 central-product count.  The proof is entirely by the three explicit
 normal forms.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,6 @@
-import LisiSabatini.Basic
+module
+
+public import LisiSabatini.Basic
 
 /-!
 # The `p`-core of a group
@@ -12,6 +14,8 @@ directed family: the supremum of two of them is again a normal `p`-subgroup.
 This lets us use `Subgroup.mem_sSup_of_directedOn` rather than reason about
 arbitrary words in a subgroup closure.
 -/
+
+@[expose] public section
 
 noncomputable section
 

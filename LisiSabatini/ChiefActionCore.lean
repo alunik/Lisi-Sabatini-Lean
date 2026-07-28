@@ -1,6 +1,8 @@
-import LisiSabatini.SectionConstructionCore
-import LisiSabatini.MinimalNormalCore
-import Mathlib.RepresentationTheory.Irreducible
+module
+
+public import LisiSabatini.SectionConstructionCore
+public import LisiSabatini.MinimalNormalCore
+public import Mathlib.Algebra.Module.Submodule.Lattice
 
 /-!
 # The irreducible action of a chief elementary-abelian section
@@ -10,6 +12,8 @@ ambient normal subgroups.  Representation-theoretic compatibility APIs,
 solvability, action-order, and defining-characteristic core results remain
 in `ChiefAction.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,5 +1,7 @@
-import LisiSabatini.CoprimeNormal
-import Mathlib.Data.Finset.Card
+module
+
+public import LisiSabatini.CoprimeNormal
+public import Mathlib.Data.Finset.Card
 
 /-!
 # Self-centralizing normal prime subgroups
@@ -16,6 +18,8 @@ distinct prime labels.  Every nontrivial member must have prime label `q`, so
 there is at most one nontrivial member.  No finiteness assumption on the
 ambient group is needed; finiteness enters only in the final `Finset` count.
 -/
+
+@[expose] public section
 
 noncomputable section
 

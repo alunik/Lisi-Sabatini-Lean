@@ -1,5 +1,7 @@
-import LisiSabatini.HallBergerResidualCyclic
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.HallBergerResidualCyclic
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # The square obstruction in the first Hall--Berger branch
@@ -16,6 +18,8 @@ square *inside the center*.  Since the square subgroup of a nontrivial
 finite cyclic `2`-group has index two, such a square cannot generate the
 center.
 -/
+
+@[expose] public section
 
 noncomputable section
 

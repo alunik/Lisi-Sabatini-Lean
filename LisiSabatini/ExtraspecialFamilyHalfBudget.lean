@@ -1,4 +1,6 @@
-import LisiSabatini.ExtraspecialFamilyArithmeticCore
+module
+
+public import LisiSabatini.ExtraspecialFamilyArithmeticCore
 
 /-!
 # Half-space budget for an extraspecial family
@@ -9,6 +11,8 @@ ambient odd prime-field vector space.  This is the complementary estimate
 needed to mix extraspecial rows with an arbitrary fixed-point-free prime
 family: the latter has at most half as many active rows as ambient points.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

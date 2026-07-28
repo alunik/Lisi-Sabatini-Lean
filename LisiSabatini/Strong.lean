@@ -1,4 +1,6 @@
-import LisiSabatini.PCore
+module
+
+public import LisiSabatini.PCore
 
 /-!
 # The strong Lisi–Sabatini property
@@ -12,6 +14,8 @@ Mathlib's action is `x • P = (MulAut.conj x) • P`.  Thus its underlying
 elements are `x * p * x⁻¹`, the convention commonly written `x P x⁻¹`.
 The definition below uses `sylowInter`, so it inherits exactly this convention.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,11 @@
-import Mathlib.Data.Nat.Factorization.PrimePow
-import Mathlib.Data.Nat.ModEq
-import Mathlib.Tactic
+module
+
+public import Lean.Elab.Tactic.Omega
+public import Mathlib.Data.Nat.Factorization.PrimePow
+public import Mathlib.Data.Nat.ModEq
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
 
 /-!
 # Two-adic arithmetic for cyclic maximal subgroups
@@ -8,6 +13,8 @@ import Mathlib.Tactic
 This file isolates the elementary congruence classification used for the
 conjugation parameter of a finite `2`-group with a cyclic maximal subgroup.
 -/
+
+@[expose] public section
 
 namespace LisiSabatini
 

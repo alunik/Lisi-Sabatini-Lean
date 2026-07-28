@@ -1,6 +1,8 @@
-import LisiSabatini.AffineTwoBaseTranslates
-import LisiSabatini.ActiveFixedSpaceSpectrum
-import LisiSabatini.QuasiprimitivePrimeCoreCore
+module
+
+public import LisiSabatini.AffineTwoBaseTranslates
+public import LisiSabatini.ActiveFixedSpaceSpectrum
+public import LisiSabatini.QuasiprimitivePrimeCoreCore
 
 /-!
 # A prime-order envelope for affine two-base bad loci
@@ -35,6 +37,8 @@ For the underlying classification of `2`-groups of symplectic type, see
 T. R. Berger, *Hall-Higman type theorems I*, Canad. J. Math. 26 (1974),
 Lemma 1.1 (citing Huppert, *Endliche Gruppen I*, Theorem III.13.10).
 -/
+
+@[expose] public section
 
 noncomputable section
 

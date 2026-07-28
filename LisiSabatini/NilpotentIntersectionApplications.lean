@@ -1,8 +1,10 @@
-import LisiSabatini.CommutativeSylowTwoCase
-import LisiSabatini.MixedOddOrderProof
-import LisiSabatini.NilpotentIntersectionCorollaries
-import LisiSabatini.OddOrderProof
-import LisiSabatini.SolvableThreeSylowSynchronization
+module
+
+public import LisiSabatini.CommutativeSylowTwoCase
+public import LisiSabatini.MixedOddOrderProof
+public import LisiSabatini.NilpotentIntersectionCorollaries
+public import LisiSabatini.OddOrderProof
+public import LisiSabatini.SolvableThreeSylowSynchronization
 
 /-!
 # Nilpotent-intersection applications
@@ -11,6 +13,8 @@ Concrete consequences of the synchronized Sylow theorems for finite
 solvable groups.  The general implications are kept separately in
 `NilpotentIntersectionCorollaries`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import Mathlib.Algebra.Ring.Parity
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.LinearAlgebra.Matrix.BilinearForm
+module
+
+public import Mathlib.Algebra.Ring.Parity
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.LinearAlgebra.Matrix.BilinearForm
 
 /-!
 # Even dimension of nondegenerate alternating spaces
@@ -10,6 +12,8 @@ extraspecial-group development: over a field of characteristic different
 from two, a finite-dimensional nondegenerate alternating bilinear space has
 even dimension.
 -/
+
+@[expose] public section
 
 noncomputable section
 

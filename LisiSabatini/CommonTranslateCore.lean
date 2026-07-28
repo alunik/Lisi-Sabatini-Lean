@@ -1,6 +1,8 @@
-import Mathlib.Data.Set.Card.Arithmetic
-import Mathlib.GroupTheory.GroupAction.Basic
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+module
+
+public import Mathlib.Data.Set.Card.Arithmetic
+public import Mathlib.GroupTheory.GroupAction.Basic
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 
 /-!
 # Minimal bad-set core for common affine translates
@@ -9,6 +11,8 @@ This file contains only the finite-union and nonregular-vector primitives
 used by the odd-order proof.  Translated-union and cardinal-bound convenience
 theorems remain in `CommonTranslate.lean`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

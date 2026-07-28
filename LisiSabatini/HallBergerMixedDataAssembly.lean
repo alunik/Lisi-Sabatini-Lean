@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerHeadTransport
+module
+
+public import LisiSabatini.HallBergerHeadTransport
 
 /-!
 # Assembling the internal mixed Hall--Berger datum
@@ -8,6 +10,8 @@ the ambient group, the only remaining overlap check is formal: their
 intersection is the center of the extraspecial factor as soon as that
 center lies in the head.
 -/
+
+@[expose] public section
 
 noncomputable section
 

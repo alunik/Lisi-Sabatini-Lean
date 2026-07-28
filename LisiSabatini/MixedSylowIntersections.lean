@@ -1,4 +1,6 @@
-import LisiSabatini.PCore
+module
+
+public import LisiSabatini.PCore
 
 /-!
 # Mixed intersections of Sylow subgroups
@@ -14,6 +16,8 @@ Thus `mixedSylowInter P Q x` denotes `P ∩ xQx⁻¹`, and
 `mixedSylowTripleInter P Q R x y` denotes
 `P ∩ xQx⁻¹ ∩ yRy⁻¹`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,7 +1,10 @@
-import LisiSabatini.AffineTwoBaseTranslates
-import LisiSabatini.ActiveFixedSpaceSpectrum
-import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
-import LisiSabatini.ExtraspecialFamilyArithmeticCore
+module
+
+public import LisiSabatini.AffineTwoBaseTranslates
+public import LisiSabatini.ActiveFixedSpaceSpectrum
+public import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
+public import LisiSabatini.ExtraspecialFamilyArithmeticCore
+public import Mathlib.Tactic.NormNum.Prime
 
 /-!
 # Direct pair-spectrum bounds for affine two-base loci
@@ -24,6 +27,8 @@ The second part records arithmetic estimates for the odd extraspecial rows
 in characteristic two.  It deliberately makes no assertion about a
 noncommuting normal `2`-core.
 -/
+
+@[expose] public section
 
 noncomputable section
 

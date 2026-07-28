@@ -1,10 +1,14 @@
-import Mathlib.GroupTheory.GroupAction.ConjAct
-import Mathlib.GroupTheory.Solvable
-import Mathlib.GroupTheory.Sylow
+module
+
+public import Mathlib.GroupTheory.GroupAction.ConjAct
+public import Mathlib.GroupTheory.Solvable
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # Minimal normal subgroups used by the odd-order induction
 -/
+
+@[expose] public section
 
 noncomputable section
 

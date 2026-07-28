@@ -1,8 +1,10 @@
-import LisiSabatini.LinearImprimitivityExtraction
-import LisiSabatini.NormalRestrictionSemisimple
-import LisiSabatini.QuasiprimitiveRepresentation
-import Mathlib.RepresentationTheory.Submodule
-import Mathlib.RingTheory.SimpleModule.Isotypic
+module
+
+public import LisiSabatini.LinearImprimitivityExtraction
+public import LisiSabatini.NormalRestrictionSemisimple
+public import LisiSabatini.QuasiprimitiveRepresentation
+public import Mathlib.RepresentationTheory.Submodule
+public import Mathlib.RingTheory.SimpleModule.Isotypic
 
 /-!
 # Clifford imprimitivity extraction from normal restrictions
@@ -18,6 +20,8 @@ The semisimplicity input is the normal-restriction socle theorem, so the final
 alternative is unconditional in the defining characteristic: there is no
 cross-characteristic or coprimality hypothesis.
 -/
+
+@[expose] public section
 
 open scoped MonoidAlgebra
 
@@ -523,15 +527,15 @@ theorem underlyingRestrictionComponent_ne_bot
     underlyingRestrictionComponent H
       (concreteRestrictionRepresentation H) C.1 ≠ ⊥ := by
   intro hbot
-  let E := Submodule.orderIsoMapComap
-    (restrictionModuleEquiv H (concreteRestrictionRepresentation H))
-  have hrest : C.1.restrictScalars k = ⊥ := by
-    apply E.injective
-    simpa [E, underlyingRestrictionComponent] using hbot
+  change
+    (C.1.restrictScalars k).map
+        (restrictionModuleEquiv H
+          (concreteRestrictionRepresentation H)).toLinearMap = ⊥ at hbot
+  rw [Submodule.map_eq_bot_iff] at hbot
   have hCbot : C.1 = ⊥ :=
     (Submodule.restrictScalars_eq_bot_iff
-      k k[H]
-      (RestrictionModule H (concreteRestrictionRepresentation H))).mp hrest
+      k k[H] (RestrictionModule H
+        (concreteRestrictionRepresentation H))).mp hbot
   exact (bot_lt_isotypicComponents C.2).ne' hCbot
 
 theorem underlyingRestrictionComponent_ne_top
@@ -544,14 +548,14 @@ theorem underlyingRestrictionComponent_ne_top
     underlyingRestrictionComponent H
       (concreteRestrictionRepresentation H) C.1 ≠ ⊤ := by
   intro htop
-  let E := Submodule.orderIsoMapComap
-    (restrictionModuleEquiv H (concreteRestrictionRepresentation H))
-  have hrest : C.1.restrictScalars k = ⊤ := by
-    apply E.injective
-    simpa [E, underlyingRestrictionComponent] using htop
+  change
+    (C.1.restrictScalars k).map
+        (restrictionModuleEquiv H
+          (concreteRestrictionRepresentation H)).toLinearMap = ⊤ at htop
+  rw [Submodule.map_eq_top_iff] at htop
   exact hCtop ((Submodule.restrictScalars_eq_top_iff
-    k k[H]
-    (RestrictionModule H (concreteRestrictionRepresentation H))).mp hrest)
+    k k[H] (RestrictionModule H
+      (concreteRestrictionRepresentation H))).mp htop)
 
 /-- A non-isotypic normal restriction of a finite irreducible concrete
 linear group supplies the precise orbit witness used by the project's

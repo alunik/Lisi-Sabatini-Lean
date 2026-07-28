@@ -1,6 +1,8 @@
-import LisiSabatini.NormalComponentReductionCore
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import LisiSabatini.NormalComponentReductionCore
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Linear-equivalence invariance of NCAS
@@ -10,6 +12,8 @@ it does not depend on a choice of coordinates.  This file transports the
 common action, its internal normal prime components, affine translations,
 and stabilizer regularity along a `ZMod r`-linear equivalence.
 -/
+
+@[expose] public section
 
 noncomputable section
 

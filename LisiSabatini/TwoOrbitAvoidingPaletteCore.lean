@@ -1,5 +1,7 @@
-import LisiSabatini.CommonTranslateCore
-import LisiSabatini.OrbitAvoidingPaletteCore
+module
+
+public import LisiSabatini.CommonTranslateCore
+public import LisiSabatini.OrbitAvoidingPaletteCore
 
 /-!
 # The two-orbit avoiding common-translate predicate
@@ -8,6 +10,8 @@ This file isolates the recursive local invariant needed to manufacture a
 three-colour palette.  At one distinguished row, a common regular translate
 may be required to avoid two prescribed orbit colours simultaneously.
 -/
+
+@[expose] public section
 
 noncomputable section
 

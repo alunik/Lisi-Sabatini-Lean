@@ -1,8 +1,10 @@
-import LisiSabatini.HallBergerClassificationEasyCase
-import LisiSabatini.HallBergerFirstFrattiniBranch
-import LisiSabatini.HallBergerCyclicHeadUniformInversion
-import LisiSabatini.HallBergerFrattiniCentralizerDecomposition
-import LisiSabatini.HallBergerMixedHeadAssembly
+module
+
+public import LisiSabatini.HallBergerClassificationEasyCase
+public import LisiSabatini.HallBergerFirstFrattiniBranch
+public import LisiSabatini.HallBergerCyclicHeadUniformInversion
+public import LisiSabatini.HallBergerFrattiniCentralizerDecomposition
+public import LisiSabatini.HallBergerMixedHeadAssembly
 
 /-!
 # Final assembly of the Berger--Kovács--Newman classification
@@ -14,6 +16,8 @@ centralizer is proper.  Its centralizer is either cyclic, giving an
 ambient maximal-class head, or has an internal extraspecial factor and
 assembles into the mixed maximal-class branch.
 -/
+
+@[expose] public section
 
 noncomputable section
 

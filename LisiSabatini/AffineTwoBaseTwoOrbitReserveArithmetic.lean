@@ -1,5 +1,7 @@
-import LisiSabatini.AffineTwoBasePairSpectrumArithmetic
-import LisiSabatini.MixedPrimeCoreOneRowEstimates
+module
+
+public import LisiSabatini.AffineTwoBasePairSpectrumArithmetic
+public import LisiSabatini.MixedPrimeCoreOneRowEstimates
 
 /-!
 # Arithmetic reserves for two-orbit affine two-base synchronization
@@ -8,6 +10,8 @@ The recursive diagonal invariant must pay for two complete orbits of one
 distinguished component in addition to the two-base bad loci.  This file
 collects the numerical estimates which make that extra charge explicit.
 -/
+
+@[expose] public section
 
 noncomputable section
 

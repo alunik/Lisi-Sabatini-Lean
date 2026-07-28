@@ -1,7 +1,9 @@
-import LisiSabatini.AlternatingSylowBasePBlocks
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Nat.Choose.Vandermonde
-import Mathlib.RingTheory.PowerSeries.WellKnown
+module
+
+public import LisiSabatini.AlternatingSylowBasePBlocks
+public import Mathlib.Data.Nat.Choose.Central
+public import Mathlib.Data.Nat.Choose.Vandermonde
+public import Mathlib.RingTheory.PowerSeries.WellKnown
 
 /-!
 # A negative-binomial majorant for Sylow cycle profiles
@@ -18,6 +20,8 @@ This file develops the coefficientwise convolution calculus for this
 sequence.  It is the natural majorant for the order-`p` cycle profile
 of a Sylow subgroup of a symmetric group.
 -/
+
+@[expose] public section
 
 noncomputable section
 

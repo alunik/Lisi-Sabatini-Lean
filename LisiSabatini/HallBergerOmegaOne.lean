@@ -1,5 +1,7 @@
-import LisiSabatini.TwoCoreSymplecticTypeFrontier
-import Mathlib.Algebra.Group.Subgroup.Lattice
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeFrontier
+public import Mathlib.Algebra.Group.Subgroup.Lattice
 
 /-!
 # The exact omega-one/Frattini-centralizer hypothesis in Hall--Berger
@@ -15,6 +17,8 @@ the exact implication between those two hypotheses.  It therefore
 separates the published classification theorem itself from the elementary
 characteristic-subgroup bridge needed to apply it.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import LisiSabatini.TwoCoreAffineTwoBaseHalfDensity
-import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
-import Mathlib.GroupTheory.SpecificGroups.Quaternion
+module
+
+public import LisiSabatini.TwoCoreAffineTwoBaseHalfDensity
+public import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
+public import Mathlib.GroupTheory.SpecificGroups.Quaternion
 
 /-!
 # Classification-free structure for symplectic-type two-cores
@@ -18,6 +20,8 @@ We also treat the generalized-quaternion branch using mathlib's explicit
 `QuaternionGroup`: every involution is central, hence a fixed-point-free
 center leaves no active involutions at all.
 -/
+
+@[expose] public section
 
 noncomputable section
 

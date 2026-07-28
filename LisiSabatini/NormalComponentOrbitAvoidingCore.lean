@@ -1,5 +1,7 @@
-import LisiSabatini.OrbitAvoidingPaletteCore
-import LisiSabatini.NCASLinearEquiv
+module
+
+public import LisiSabatini.OrbitAvoidingPaletteCore
+public import LisiSabatini.NCASLinearEquiv
 
 /-!
 # Orbit-avoiding normal-component synchronization
@@ -15,6 +17,8 @@ equivalence, and follows uniformly from fixed-point-freeness of all active
 normal prime components when the finite ambient module has odd nontrivial
 cardinality.
 -/
+
+@[expose] public section
 
 noncomputable section
 

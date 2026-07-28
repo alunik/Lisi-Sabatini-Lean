@@ -1,4 +1,6 @@
-import LisiSabatini.TwoCoreSymplecticTypeHeadRotation
+module
+
+public import LisiSabatini.TwoCoreSymplecticTypeFrontier
 
 /-!
 # Transporting Hall--Berger maximal-class heads
@@ -8,6 +10,8 @@ subgroup with the ambient group, or replaces one concrete copy by an
 isomorphic copy.  This file records that the three proof-relevant head
 presentations transport across a multiplicative equivalence.
 -/
+
+@[expose] public section
 
 noncomputable section
 

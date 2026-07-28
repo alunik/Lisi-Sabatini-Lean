@@ -1,4 +1,6 @@
-import LisiSabatini.HallBergerSourcePreliminaries
+module
+
+public import LisiSabatini.HallBergerSourcePreliminaries
 
 /-!
 # The two-generator central-factor lemma in Hall--Berger
@@ -9,6 +11,8 @@ two-generator subgroup is a central factor.  The application here is at
 `p = 2`, after the Frattini-centralizer preliminaries have shown that the
 derived subgroup is central of order two.
 -/
+
+@[expose] public section
 
 noncomputable section
 

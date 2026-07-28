@@ -1,4 +1,6 @@
-import LisiSabatini.ImprimitiveBundleAction
+module
+
+public import LisiSabatini.ImprimitiveBundleAction
 
 /-!
 # The graph identity for an imprimitive bundle action
@@ -7,6 +9,8 @@ This generic identity is used by both the publication one-orbit argument
 and the legacy labelled-palette construction.  It does not depend on the
 labelled multi-orbit machinery.
 -/
+
+@[expose] public section
 
 noncomputable section
 

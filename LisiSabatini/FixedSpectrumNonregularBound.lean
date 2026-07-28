@@ -1,5 +1,7 @@
-import LisiSabatini.NonzeroFixedSpaceSpectrum
-import LisiSabatini.FiniteLinearSubgroup
+module
+
+public import LisiSabatini.NonzeroFixedSpaceSpectrum
+public import LisiSabatini.FiniteLinearSubgroup
 
 /-!
 # The intrinsic fixed-spectrum nonregular bound
@@ -9,6 +11,8 @@ nonregular locus of a finite linear group.  It is independent of primitive
 tops, block systems, and marker structures, so both quasiprimitive and
 imprimitive arguments can depend on it without creating a dependency cycle.
 -/
+
+@[expose] public section
 
 noncomputable section
 

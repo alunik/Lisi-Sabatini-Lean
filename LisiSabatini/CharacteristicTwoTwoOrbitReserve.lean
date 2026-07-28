@@ -1,6 +1,8 @@
-import LisiSabatini.AffineTwoBaseOrbitAvoidance
-import LisiSabatini.AffineTwoBaseTwoOrbitReserveArithmetic
-import LisiSabatini.QuasiprimitiveAffineParityCATB
+module
+
+public import LisiSabatini.AffineTwoBaseOrbitAvoidance
+public import LisiSabatini.AffineTwoBaseTwoOrbitReserveArithmetic
+public import LisiSabatini.QuasiprimitiveAffineParityCATB
 
 /-!
 # The strong characteristic-two quasiprimitive affine leaf
@@ -18,6 +20,8 @@ acts fixed-point-freely off zero, so its order is at most the number of
 module points.  Dimension one is handled separately: every
 cross-characteristic prime core is then trivial.
 -/
+
+@[expose] public section
 
 noncomputable section
 

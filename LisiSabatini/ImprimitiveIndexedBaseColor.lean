@@ -1,4 +1,6 @@
-import LisiSabatini.ImprimitiveBaseComponents
+module
+
+public import LisiSabatini.ImprimitiveBaseComponents
 
 /-!
 # Block-indexed base groups with a common colour group
@@ -12,6 +14,8 @@ The final specialization uses the canonical block images of
 `ImprimitiveBaseComponents`.  Their prime-power property is therefore
 available without enlarging them to a basis-dependent common envelope.
 -/
+
+@[expose] public section
 
 noncomputable section
 

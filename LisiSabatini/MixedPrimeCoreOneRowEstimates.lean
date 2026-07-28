@@ -1,7 +1,9 @@
-import LisiSabatini.SchurCenterHalfOrbitCore
-import LisiSabatini.FixedPointFreeOffZero
-import LisiSabatini.CyclicCenterOperatorSpectrum
-import LisiSabatini.FixedSpectrumNonregularBound
+module
+
+public import LisiSabatini.SchurCenterHalfOrbitCore
+public import LisiSabatini.FixedPointFreeOffZero
+public import LisiSabatini.CyclicCenterOperatorSpectrum
+public import LisiSabatini.FixedSpectrumNonregularBound
 
 /-!
 # One-row estimates for mixed prime-core domination
@@ -9,6 +11,8 @@ import LisiSabatini.FixedSpectrumNonregularBound
 These two general estimates are the only part of the historical mixed-marker
 module needed by the quasiprimitive publication proof.
 -/
+
+@[expose] public section
 
 noncomputable section
 

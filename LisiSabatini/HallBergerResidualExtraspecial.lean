@@ -1,6 +1,8 @@
-import LisiSabatini.HallBergerExtraspecialExtension
-import LisiSabatini.HobbyFrattiniTheoremCore
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import LisiSabatini.HallBergerExtraspecialExtension
+public import LisiSabatini.HobbyFrattiniTheoremCore
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # The residual factor in the Hall--Berger decomposition
@@ -17,6 +19,8 @@ central squares then produces an abelian `2`-group with at most two elements
 killed by squaring, hence a cyclic group.  The original group would therefore
 be commutative, contradicting that its derived subgroup has order two.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,6 +1,8 @@
-import LisiSabatini.CliffordImprimitivity
-import LisiSabatini.FiniteLinearSubgroup
-import LisiSabatini.LinearImprimitivityPresentationExtractionCore
+module
+
+public import LisiSabatini.CliffordImprimitivity
+public import LisiSabatini.FiniteLinearSubgroup
+public import LisiSabatini.LinearImprimitivityPresentationExtractionCore
 
 /-!
 # Structural dichotomy at the recursive NCAS interface
@@ -11,6 +13,8 @@ extraction machinery turns that witness into the exact prime-field primitive
 internal imprimitivity presentation consumed by recursive NCAS.  This file
 packages those two completed bridges as one public dichotomy.
 -/
+
+@[expose] public section
 
 noncomputable section
 

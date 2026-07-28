@@ -1,5 +1,7 @@
-import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
-import LisiSabatini.FixedSpectrumNonregularBound
+module
+
+public import LisiSabatini.CyclicCenterOperatorFixedSpaceRowCore
+public import LisiSabatini.FixedSpectrumNonregularBound
 
 /-!
 # The compressed cyclic-center operator spectrum
@@ -9,6 +11,8 @@ quasiprimitive prime-core argument and the higher primitive-top marker
 packaging.  In particular, it has no dependency on imprimitive block data or
 primitive-top marker structures.
 -/
+
+@[expose] public section
 
 noncomputable section
 
