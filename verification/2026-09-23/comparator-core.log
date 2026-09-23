@@ -1,0 +1,17 @@
+Building Challenge
+✔ [1788/1790] Built Definitions (4.8s)
+⚠ [1789/1790] Built Challenge (3.7s)
+warning: Challenge.lean:13:8: declaration uses `sorry`
+warning: Challenge.lean:19:8: declaration uses `sorry`
+warning: Challenge.lean:26:8: declaration uses `sorry`
+warning: Challenge.lean:40:8: declaration uses `sorry`
+warning: Challenge.lean:44:8: declaration uses `sorry`
+Build completed successfully (1790 jobs).
+Exporting #[Quot, Quot.mk, Quot.lift, Quot.ind, PaperVerification.goodSolvable, PaperVerification.goodSolvableNilpotent, PaperVerification.translatedRegularOrbits, PaperVerification.alternating, PaperVerification.symmetric, propext, Classical.choice, Quot.sound, Nat.add, Nat.sub, Nat.mul, Nat.pow, Nat.gcd, Nat.div, Nat.mod, Nat.beq, Nat.ble, Nat.land, Nat.lor, Nat.xor, Nat.shiftLeft, Nat.shiftRight, String.ofList, Char.ofNat, List, eagerReduce, Nat, String, String.mk, Char, optParam, autoParam, semiOutParam, outParam] from Challenge
+Building Solution
+✔ [3424/3425] Built Solution (4.5s)
+Build completed successfully (3425 jobs).
+Exporting #[Quot, Quot.mk, Quot.lift, Quot.ind, PaperVerification.goodSolvable, PaperVerification.goodSolvableNilpotent, PaperVerification.translatedRegularOrbits, PaperVerification.alternating, PaperVerification.symmetric, propext, Classical.choice, Quot.sound, Nat.add, Nat.sub, Nat.mul, Nat.pow, Nat.gcd, Nat.div, Nat.mod, Nat.beq, Nat.ble, Nat.land, Nat.lor, Nat.xor, Nat.shiftLeft, Nat.shiftRight, String.ofList, Char.ofNat, List, eagerReduce, Nat, String, String.mk, Char, optParam, autoParam, semiOutParam, outParam] from Solution
+Running Lean default kernel on solution.
+Lean default kernel accepts the solution
+Your solution is okay!

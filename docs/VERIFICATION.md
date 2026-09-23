@@ -95,6 +95,20 @@ tree on the hosted runner.
 
 ## Recorded verification
 
+The separate [Comparator project](../verification/comparator/README.md)
+checks the principal results against explicit specifications that import only
+Mathlib and reviewed definitions. Both configurations passed on 23 September:
+five core statements and four odd-order statements, including the formalized
+Feit–Thompson dependency. See the [Comparator record](../verification/2026-09-23/comparator.json)
+for exact targets, tool pins, source hashes and run results.
+
+Comparator checked statement and definition agreement, the same three-axiom
+allowlist, and exported proof terms using Lean's kernel. The run used real
+Landrun and a tested seccomp guard. This is additional verification with
+Lean's kernel, not a result from an independently implemented kernel.
+The intentional `sorry` terms in the trusted challenge templates are not
+imported into the solution proofs and are not permitted in those proofs.
+
 The [23 September 2026 record](../verification/2026-09-23/summary.json)
 reports successful strict project builds, all 24 exact axiom reports, and
 ordinary and fresh kernel replay of the Feit–Thompson applications. It is
@@ -106,4 +120,6 @@ The core proof modules are unchanged from a successful fresh replay on
 21 September. The public imports and audit list were narrowed and strictly
 rebuilt; the changed odd-order wrapper received the new fresh replay.
 The record distinguishes this continuity check from a new replay of the
-whole core. GitHub CI additionally replays the current core entrypoint.
+whole core. [GitHub run 35833874307](https://github.com/alunik/Lisi-Sabatini-Lean/actions/runs/35833874307)
+also passed the strict core build, certificate and axiom checks, and a fresh
+replay of the current core entrypoint at commit `c684a9c808337d2c2c0e372dee0a392f69088ae7`.

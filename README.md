@@ -51,6 +51,9 @@ the project entrypoints are checked separately with warnings treated as
 errors. See [verification](docs/VERIFICATION.md) for the complete checks,
 kernel-replay scope and source records.
 
+Nine principal statements also passed [Comparator checks](verification/comparator/README.md)
+against separately stated specifications, using the same three-axiom allowlist.
+
 ## Repository contents
 
 - [LisiSabatini/](LisiSabatini/): the theorems and their proof dependencies.

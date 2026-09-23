@@ -1,4 +1,5 @@
 vendor/odd-order/** linguist-vendored=true
+verification/2026-09-23/comparator-*.log linguist-generated=true
 LisiSabatini/FiniteCertificates/A8FingerprintData.lean linguist-generated=true
 LisiSabatini/FiniteCertificates/A8Rows.lean linguist-generated=true
 LisiSabatini/SymmetricDoubleCosetCertificates/**/*.lean linguist-generated=true

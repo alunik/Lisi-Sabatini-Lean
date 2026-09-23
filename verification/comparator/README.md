@@ -3,6 +3,10 @@
 This separate project compares the paper's proofs with independently written
 formal statements. It does not change the main library's dependencies.
 
+Both configurations passed on 23 September 2026: five core statements and
+four odd-order statements. The [verification record](../2026-09-23/comparator.json)
+includes tool/source hashes, exact targets, timings, and complete output logs.
+
 The trusted [Definitions](Definitions.lean) module imports only Mathlib and
 spells out Sylow intersections, prime cores, the Fitting subgroup, and the
 synchronization properties. Neither challenge imports a `LisiSabatini` proof.

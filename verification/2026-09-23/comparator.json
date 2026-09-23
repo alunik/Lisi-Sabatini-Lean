@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "status": "PASS",
+  "record_kind": "Summary of the successful official Comparator runs; full tool output logs are adjacent.",
+  "run_id": "paper-comparator-20260923T081715Z",
+  "started_utc": "2026-09-23T08:21:08.005876+00:00",
+  "finished_utc": "2026-09-23T08:39:48.324352+00:00",
+  "paper_source_commit": "c684a9c808337d2c2c0e372dee0a392f69088ae7",
+  "lean_toolchain": "leanprover/lean4:v4.34.0-rc2",
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "checker_backend": "Comparator builtin Lean kernel",
+  "external_kernel_checked": false,
+  "checks": [
+    {
+      "configuration": "../comparator/core.json",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 728.57,
+      "theorems": [
+        "PaperVerification.goodSolvable",
+        "PaperVerification.goodSolvableNilpotent",
+        "PaperVerification.translatedRegularOrbits",
+        "PaperVerification.alternating",
+        "PaperVerification.symmetric"
+      ],
+      "log": "comparator-core.log",
+      "log_sha256": "d3b89f385b3c3a40ef328af574ef250bd9ab0568d585478788d41df4d8cae63a"
+    },
+    {
+      "configuration": "../comparator/odd-order.json",
+      "status": "PASS",
+      "exit_code": 0,
+      "seconds": 285.121,
+      "theorems": [
+        "PaperVerification.oddOrderCore",
+        "PaperVerification.oddOrderMinimal",
+        "PaperVerification.oddOrderNilpotent",
+        "PaperVerification.oddOrderMixedNilpotent"
+      ],
+      "log": "comparator-odd-order.log",
+      "log_sha256": "293e9296f5adee5916c7f85f1647889376c26f4a3a4b6d810287632e97411416"
+    }
+  ],
+  "source_verification": {
+    "staged_paper_input_count": 2152,
+    "paper_inputs_unchanged": true,
+    "paper_inputs_match_current_repository": true,
+    "specification_inputs_unchanged": true,
+    "current_specification_sha256": {
+      ".gitignore": "3d8fd053b510768135c2baada5aa30e0987cbfe483d41c9a4e56a339392f6163",
+      "Challenge.lean": "196a46e9194f0ba6c0d28573cd9678d3c8ebf3ed15667bc4690eb3360a5a58bf",
+      "Definitions.lean": "c9d72bdd3df03c0e9d19e8835acacbfef4f4dfc6c25fa8bef32703199cc975f9",
+      "OddOrderChallenge.lean": "c0c90c5e4e00d6021db60a8a73187168fe8794d9cb1d7f48c48151f1bfaae354",
+      "OddOrderSolution.lean": "4190d923b00e5dc3c0250d7c8c3a8398a51f9703c17f7d4b52e96905ba3b5bc9",
+      "Solution.lean": "c5dc0c1fd3767f9f72bbda1a0538e6a4d6d9a269a066412025492f08ddc67ffb",
+      "core.json": "e14eda8217d46aff6175a8b14ca08ccae08806fdf232503dc7e12c08814f800e",
+      "lake-manifest.json": "ced1b95a47d610a74767f19f30765773c99d461cbe849d2eaf28704335255c7c",
+      "lakefile.toml": "c3eafc766a77d8bd87043102f7ff02fc590c4c2a5ec9447141be9a97c0398730",
+      "lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "odd-order.json": "12ce44b82c20a808764fccc3ec24b0c760cae09612b55cbe5a7a32fbe824579f",
+      "stage.py": "91caec04aea3bf5f855ac09cd7063ebaa9c4ce9faed353c00c3793ceafa69120"
+    },
+    "original_paper_manifest": "source-files.sha256",
+    "original_paper_manifest_sha256": "f3e12be37210bb04b7c89589e1e7dbe053e3528471bb23f29f5e13a9784d8e04",
+    "all_original_recorded_inputs_match": true,
+    "original_recorded_input_count": 2163,
+    "documentation_note": "README wording was updated after the run. Verified Lean statements, configurations, staging script, toolchain and dependency pins are unchanged."
+  },
+  "dependency_pins": {
+    "mathlib": "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70",
+    "plausible": "d9598f07b1bc701f1e3aae163d2681c1fd978793",
+    "LeanSearchClient": "ba67e212be1197b84c1f1f6299488a10a3002713",
+    "importGraph": "d8823026ac7ef130c253089d95685f9877b95323",
+    "proofwidgets": "a8acbfd87375ff4abe14ce09db5b7664d383bc7f",
+    "aesop": "18889deb9e83ea7420ef51c160d6f88552e744e3",
+    "Qq": "507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3",
+    "batteries": "d54dddc581e08be364c278052863524bff7a99a9",
+    "Cli": "ab3a82db9fea14cf0fd7f5a2de650f4b534640af"
+  },
+  "tools": {
+    "commits": {
+      "comparator": "2312244ac716564a61cc0bf4e107d9abf1757a61",
+      "lean4export": "cacf989bd75f608700820f6afc595f32e7a99a4d",
+      "landrun": "811cfff51ceaf3d9843708aa6d22e9b84ccac8b4"
+    },
+    "sha256": {
+      "comparator": "5dca99684e841c3c1dd8a50fa18d9119327295cf3b68c6e4e70f0c17c31321cc",
+      "lean4export": "4fa9e14cada304109e85da5048bcd411cf781a03539b3e50953e5c537074bd9e",
+      "landrun": "7a626ce46d7dd83da578fc6f38a4606a4683f5bcf0140a9709806a00aa319922",
+      "deny-af-unix": "3f73fd0e3586a89acd79ef8f4560a006986f2ad172a1b050cf557af8e6f2bcce",
+      "guard_source": "4db96536ef2fe3231c97b477a60a7c9426129a37c8a8f65212b87bc758759786",
+      "runner": "d8eb4cb18cf44b5cde02f4483a43d6356f7f3a138c6132e3f7414f63b4b6e1dd"
+    }
+  },
+  "sandbox": {
+    "platform": "Linux-6.8.0-94-generic-x86_64-with-glibc2.39",
+    "landlock_abi": 4,
+    "real_landrun": true,
+    "unprivileged": true,
+    "guard_source": "../comparator/deny-af-unix.c",
+    "guard_source_sha256": "4db96536ef2fe3231c97b477a60a7c9426129a37c8a8f65212b87bc758759786",
+    "no_new_privs": true,
+    "seccomp_inherited_by_actual_comparator_processes": true,
+    "af_unix_and_io_uring_denied": true,
+    "trusted_challenge_write_denied": true,
+    "cpu_affinity": "0-31",
+    "layout": "Trusted specification files outside /dev; private dependency and build copies behind a unique .lake link to tmpfs. No shared build cache was writable.",
+    "caveat": "Custom guard was reviewed and functionally tested, not formally verified."
+  },
+  "control_checks": {
+    "correct_proof_accepted": true,
+    "sorryAx_rejected": true,
+    "mismatched_statement_rejected": true
+  },
+  "baseline_core_ci": {
+    "status": "success",
+    "commit": "c684a9c808337d2c2c0e372dee0a392f69088ae7",
+    "url": "https://github.com/alunik/Lisi-Sabatini-Lean/actions/runs/35833874307"
+  },
+  "receipt_provenance": {
+    "receipt_sha256": "3cf66178a68064cab9b90951afa9ef2ae1df7b65964edeb5c777dcf8b993bacf",
+    "tool_receipt_sha256": "c3c572f476594828d587134f357d75cd1f71dfe37b98ba4c98a22c16c097f19f",
+    "statement_review_sha256": "68fbb0beee6a265754a73ba57b377ab18d1f41c657b6418f56535129e268ec43",
+    "local_validation_sha256": "dc7cb820c3a577015007f3bebfec79815473a66ff84bccb04c1e6b17c6227fa4"
+  }
+}
