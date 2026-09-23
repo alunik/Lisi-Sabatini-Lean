@@ -7,8 +7,14 @@ title: >-
   Lean formalization and Magma computations for Sylow synchronization
   in finite groups: The good case
 authors:
+  - family-names: Huang
+    given-names: Hong Yi
+  - family-names: Lisi
+    given-names: Francesca
   - family-names: Rizzoli
     given-names: Aluna
+  - family-names: Sabatini
+    given-names: Luca
 version: 1.0.0
 date-released: 2026-09-23
 doi: 10.5281/zenodo.22913983
