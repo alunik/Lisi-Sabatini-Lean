@@ -54,10 +54,15 @@ kernel-replay scope and source records.
 Nine principal statements also passed [Comparator checks](verification/comparator/README.md)
 against separately stated specifications, using the same three-axiom allowlist.
 
+The independent [Magma reproduction of Section 3](computations/section3/README.md)
+checks both families for $5\le n\le40$, the nilpotent-pair assertion for
+$9\le n\le40$, and the paper's numerical anchors. It runs without Lean.
+
 ## Repository contents
 
 - [LisiSabatini/](LisiSabatini/): the theorems and their proof dependencies.
 - [Certificate guide](docs/CERTIFICATES.md): finite certificates and deterministic regeneration.
+- [Section 3 computations](computations/section3/README.md): standalone Magma code and exact certificates.
 - [vendor/odd-order/](vendor/odd-order/): the pinned Feit–Thompson dependency, with its [license](vendor/odd-order/LICENSE).
 - [scripts/check_axioms.py](scripts/check_axioms.py): exact declaration and axiom checks used in CI.
 

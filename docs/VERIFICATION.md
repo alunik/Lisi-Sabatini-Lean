@@ -95,6 +95,13 @@ tree on the hosted runner.
 
 ## Recorded verification
 
+The [Section 3 Magma computations](../computations/section3/README.md) independently
+check all symmetric and alternating degrees 5 through 40, all nilpotent-pair
+cases from 9 through 40, and the five numerical anchor inequalities. Their
+[separate record](../verification/2026-09-23-section3/README.md) contains complete
+outputs and source hashes. These are exact computer-algebra checks; the Lean
+proofs and their kernel-verification records below are separate.
+
 The separate [Comparator project](../verification/comparator/README.md)
 checks the principal results against explicit specifications that import only
 Mathlib and reviewed definitions. Both configurations passed on 23 September:
