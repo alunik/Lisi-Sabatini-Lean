@@ -29,6 +29,12 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_check_axioms.py'
       - name: Reproduce the finite certificates
         run: python3 scripts/certificates/check.py
+      - name: Cache project build products
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: .lake/build
+          key: paper-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ hashFiles('LisiSabatini.lean', 'LisiSabatini/**/*.lean') }}
+          restore-keys: paper-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
         with:
           auto-config: false
@@ -38,6 +44,9 @@ jobs:
             +LisiSabatini:olean
             +LisiSabatini.PaperAlignmentAxiomAudit:olean
           use-mathlib-cache: true
+          # The complete .lake archive exceeds hosted-runner disk space.
+          # Mathlib is downloaded from its own cache; only our build is saved above.
+          use-github-cache: false
           leanchecker: false
           nanoda: false
       - name: Audit the 18 paper endpoints
@@ -64,6 +73,7 @@ jobs:
           build-args: >-
             +LisiSabatini.FeitThompsonApplicationsAxiomAudit:olean
           use-mathlib-cache: true
+          use-github-cache: false
           leanchecker: false
           nanoda: false
       - name: Strictly compile project Feit–Thompson entrypoints

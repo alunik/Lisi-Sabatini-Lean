@@ -17,11 +17,11 @@
   },
   "inputs": {
     "manifest": "source-files.sha256",
-    "file_count": 2164,
-    "manifest_sha256": "d5186d53dd3b588f8c9ca1f586f27eb48bc7c30c1421f0f63df599d067323daf",
+    "file_count": 2163,
+    "manifest_sha256": "f3e12be37210bb04b7c89589e1e7dbe053e3528471bb23f29f5e13a9784d8e04",
     "source_unchanged_during_verification": true,
     "current_checkout_inputs_match": true,
-    "packaging_note": "README, license, Git attributes and publication documentation are outside this proof/configuration manifest."
+    "packaging_note": "README, license, Git attributes, CI workflow and publication documentation are outside this proof/configuration manifest. After verification, GitHub caching was restricted to project build products; proof commands and all recorded inputs are unchanged."
   },
   "axiom_audit": {
     "allowed_axioms": [
@@ -132,6 +132,7 @@
   "receipt_provenance": {
     "receipt_sha256": "1ae3681c1079743bef2398683a8ff6ea4300d4c598f46b0521f1d01f9452ca84",
     "source_snapshot_sha256": "5dfa6a7606c2cf46c378ceb74fe5596e727bc1ee0f34f786e559a21f91f9dbff",
-    "source_hashes_after_json_sha256": "e8540326a0f143cf3b237787cb2761cd1c6e7140047f8c4702569bf07327b0ac"
+    "source_hashes_after_json_sha256": "e8540326a0f143cf3b237787cb2761cd1c6e7140047f8c4702569bf07327b0ac",
+    "ci_workflow_at_verification_sha256": "ad712e22b484af4b5eb45f8fa463d78486013517f02a1cc736def37c64651c34"
   }
 }

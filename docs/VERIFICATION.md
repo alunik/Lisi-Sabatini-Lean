@@ -83,6 +83,9 @@ other.
 reproduction, exact axiom audit and fresh kernel replay on pull requests
 and pushes to `main`. The larger Feit–Thompson check is available through
 the workflow's **include_feit_thompson** manual option.
+CI caches only this project's build products; mathlib is fetched from its
+own cache. This avoids creating a second archive of the entire dependency
+tree on the hosted runner.
 
 ## Recorded verification
 
