@@ -66,6 +66,13 @@ $9\le n\le40$, and the paper's numerical anchors. It runs without Lean.
 - [vendor/odd-order/](vendor/odd-order/): the pinned Feit–Thompson dependency, with its [license](vendor/odd-order/LICENSE).
 - [scripts/check_axioms.py](scripts/check_axioms.py): exact declaration and axiom checks used in CI.
 
+## Citation
+
+The versioned source archive is available at
+[doi:10.5281/zenodo.22913983](https://doi.org/10.5281/zenodo.22913983).
+See [CITATION.cff](CITATION.cff) for the software citation; the accompanying
+paper is credited above.
+
 ## License
 
 The project is licensed under [Apache-2.0](LICENSE). Vendored code retains

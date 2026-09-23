@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: >-
+  Please cite this versioned software archive when using the Lean
+  formalization or Magma computations.
+type: software
+title: >-
+  Lean formalization and Magma computations for Sylow synchronization
+  in finite groups: The good case
+authors:
+  - family-names: Rizzoli
+    given-names: Aluna
+version: 1.0.0
+date-released: 2026-09-23
+doi: 10.5281/zenodo.22913983
+url: https://doi.org/10.5281/zenodo.22913983
+repository-code: https://github.com/alunik/Lisi-Sabatini-Lean
+license: Apache-2.0
+keywords:
+  - Lean 4
+  - Magma
+  - finite groups
+  - Sylow subgroups
+  - formalized mathematics
+abstract: >-
+  Source code accompanying Sylow synchronization in finite groups:
+  The good case, by Hong Yi Huang, Francesca Lisi, Aluna Rizzoli and
+  Luca Sabatini. Includes Lean formalizations, standalone Magma checks
+  for Section 3, exact finite certificates, pinned dependencies, and
+  verification records. Vendored code retains its upstream license
+  and attribution.
