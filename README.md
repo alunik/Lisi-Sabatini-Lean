@@ -57,3 +57,8 @@ kernel-replay scope and source records.
 - [Certificate guide](docs/CERTIFICATES.md): finite certificates and deterministic regeneration.
 - [vendor/odd-order/](vendor/odd-order/): the pinned Feit–Thompson dependency, with its [license](vendor/odd-order/LICENSE).
 - [scripts/check_axioms.py](scripts/check_axioms.py): exact declaration and axiom checks used in CI.
+
+## License
+
+The project is licensed under [Apache-2.0](LICENSE). Vendored code retains
+its original license and attribution.

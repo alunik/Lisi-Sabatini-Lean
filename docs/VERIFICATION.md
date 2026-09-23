@@ -83,3 +83,18 @@ other.
 reproduction, exact axiom audit and fresh kernel replay on pull requests
 and pushes to `main`. The larger Feit–Thompson check is available through
 the workflow's **include_feit_thompson** manual option.
+
+## Recorded verification
+
+The [23 September 2026 record](../verification/2026-09-23/summary.json)
+reports successful strict project builds, all 24 exact axiom reports, and
+ordinary and fresh kernel replay of the Feit–Thompson applications. It is
+a concise extract from the verification receipts, with the checked
+[source hashes](../verification/2026-09-23/source-files.sha256) and log hashes.
+Sources and dependency pins were unchanged throughout verification.
+
+The core proof modules are unchanged from a successful fresh replay on
+21 September. The public imports and audit list were narrowed and strictly
+rebuilt; the changed odd-order wrapper received the new fresh replay.
+The record distinguishes this continuity check from a new replay of the
+whole core. GitHub CI additionally replays the current core entrypoint.
