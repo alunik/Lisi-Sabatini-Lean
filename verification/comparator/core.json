@@ -1,0 +1,16 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "PaperVerification.goodSolvable",
+    "PaperVerification.goodSolvableNilpotent",
+    "PaperVerification.translatedRegularOrbits",
+    "PaperVerification.alternating",
+    "PaperVerification.symmetric"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}
