@@ -1,0 +1,32 @@
+{
+  "schema": "lisi-sabatini-vendored-source-v1",
+  "exported_utc_date": "2026-09-21",
+  "upstream_url": "https://github.com/yawara/odd-order.git",
+  "upstream_public_base_commit": "82e8b66fe80a2eb9f0c6568bf288186086af73af",
+  "compatibility_commit": "d60831c11b29679bb0535dbf340780de50aacff1",
+  "compatibility_tree": "24e3872dd03aa9adc7b5edadc14ce022360163ca",
+  "export_method": "git archive --format=tar COMMIT PATHS; extract regular files without source changes",
+  "exported_paths": [
+    "OddOrder",
+    "OddOrder.lean",
+    "lakefile.toml",
+    "lean-toolchain",
+    "lake-manifest.json",
+    "LICENSE",
+    "README.md",
+    "README.ja.md",
+    "CITATION.cff",
+    "COMPATIBILITY_PROVENANCE.json"
+  ],
+  "export_tar_sha256": "71b7c9eef2cc5a932366f60ab2322303e885205463e5af8bfe8262dbdf5efd86",
+  "export_tar_bytes": 46233600,
+  "source_files_sha256": "295d8aa1fafa65d6b0a1c8061998430a6cfc792d0b65bed3e58c852f8d99c3c6",
+  "exported_file_count": 1728,
+  "exported_lean_file_count": 1720,
+  "source_modifications": [],
+  "license": "Apache-2.0; LICENSE and source notices retained unchanged",
+  "toolchain": "leanprover/lean4:v4.34.0-rc2",
+  "mathlib_commit": "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70",
+  "inherited_provenance_notice": "COMPATIBILITY_PROVENANCE.json is preserved verbatim from the source commit. Its preparation-time status does not describe this export or subsequent builds.",
+  "validation_status": "Exact source export and checksums only; combined wrapper build and transitive axiom audit pending."
+}

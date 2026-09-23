@@ -435,14 +435,14 @@ abbrev imprimitiveLinearActionData
 theorem finite_space
     (P : PrimeFieldPrimitiveImprimitivityPresentation r b e V K) :
     Finite V := by
-  letI : NeZero r := ⟨P.field_prime.ne_zero⟩
+  let : NeZero r := ⟨P.field_prime.ne_zero⟩
   exact Finite.of_injective P.coordinates P.coordinates.injective
 
 /-- Consequently the presented common linear group is finite as well. -/
 theorem finite_action
     (P : PrimeFieldPrimitiveImprimitivityPresentation r b e V K) :
     Finite K := by
-  letI : Finite V := P.finite_space
+  let : Finite V := P.finite_space
   let f : K → (V → V) := fun g v ↦ g.1 • v
   apply Finite.of_injective f
   intro g h hgh

@@ -32,6 +32,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 variable {G : Type*} [Group G]
 
 /-- Restriction of an automorphism to a characteristic subgroup. -/
@@ -126,7 +128,7 @@ theorem characteristicCenterImage_characteristic
 /-- The center image is abelian. -/
 theorem characteristicCenterImage_isMulCommutative (H : Subgroup G) :
     IsMulCommutative (characteristicCenterImage H) := by
-  letI : IsMulCommutative (Subgroup.center H) :=
+  let : IsMulCommutative (Subgroup.center H) :=
     Subgroup.center.isMulCommutative H
   exact Subgroup.map_isMulCommutative (Subgroup.center H) H.subtype
 
@@ -164,7 +166,7 @@ theorem centerPrimeKernel_isMulCommutative (p : ℕ) (G : Type*) [Group G] :
     IsMulCommutative (centerPrimeKernel p G) := by
   let K := (powMonoidHom p :
     Subgroup.center G →* Subgroup.center G).ker
-  letI : IsMulCommutative K := inferInstance
+  let : IsMulCommutative K := inferInstance
   exact Subgroup.map_isMulCommutative K (Subgroup.center G).subtype
 
 /-- The canonical central kernel remains a `p`-group. -/
@@ -205,11 +207,11 @@ theorem card_centerPrimeKernel
     (hG : HasCyclicCharacteristicAbelianSubgroups G)
     {p : ℕ} (hp : p.Prime) (hGp : IsPGroup p G) :
     Nat.card (centerPrimeKernel p G) = p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   let Z := Subgroup.center G
-  letI : Finite Z := inferInstance
-  letI : Nontrivial Z := hGp.center_nontrivial
-  letI : IsCyclic Z := hG.center_isCyclic
+  let : Finite Z := inferInstance
+  let : Nontrivial Z := hGp.center_nontrivial
+  let : IsCyclic Z := hG.center_isCyclic
   let K0 := (powMonoidHom p : Z →* Z).ker
   have hp_dvd_cardZ : p ∣ Nat.card Z := by
     have hZp : IsPGroup p Z := hGp.to_subgroup (Subgroup.center G)
@@ -242,7 +244,7 @@ theorem commutator_isCyclic_of_isMulCommutative
     (hG : HasCyclicCharacteristicAbelianSubgroups G)
     (hcomm : IsMulCommutative (commutator G)) :
     IsCyclic (commutator G) := by
-  letI : IsMulCommutative (commutator G) := hcomm
+  let : IsMulCommutative (commutator G) := hcomm
   exact hG (commutator G) inferInstance inferInstance
 
 /-- The center of every characteristic subgroup, viewed in `G`, is cyclic. -/
@@ -316,8 +318,8 @@ theorem quotient_center_commutative :
     Std.Commutative
       (· * · : (derivedCentralizer G ⧸
         Subgroup.center (derivedCentralizer G)) → _ → _) := by
-  rw [Subgroup.Normal.quotient_commutative_iff_commutator_le]
-  exact commutator_le_center G
+  exact (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
+    (commutator_le_center G)).is_comm
 
 /-- Under Hall's cyclic-characteristic-abelian hypothesis,
 `Z(C_G(G'))` is cyclic. -/
@@ -331,7 +333,7 @@ because it lies in its cyclic center. -/
 theorem commutator_isCyclic
     (hG : HasCyclicCharacteristicAbelianSubgroups G) :
     IsCyclic (commutator (derivedCentralizer G)) := by
-  letI : IsCyclic (Subgroup.center (derivedCentralizer G)) := center_isCyclic G hG
+  let : IsCyclic (Subgroup.center (derivedCentralizer G)) := center_isCyclic G hG
   exact Subgroup.isCyclic_of_le (commutator_le_center G)
 
 end derivedCentralizer
@@ -359,7 +361,7 @@ variable {p : ℕ} {G : Type*} [Group G] [Finite G]
 /-- The center of an extraspecial group is cyclic. -/
 theorem center_isCyclic (h : IsExtraspecial p G) :
     IsCyclic (Subgroup.center G) := by
-  letI : Fact p.Prime := ⟨h.prime⟩
+  let : Fact p.Prime := ⟨h.prime⟩
   exact isCyclic_of_prime_card h.card_center
 
 /-- The derived subgroup of an extraspecial group is cyclic. -/
@@ -372,8 +374,8 @@ theorem commutator_isCyclic (h : IsExtraspecial p G) :
 theorem quotient_center_commutative (h : IsExtraspecial p G) :
     Std.Commutative
       (· * · : (G ⧸ Subgroup.center G) → _ → _) := by
-  rw [Subgroup.Normal.quotient_commutative_iff_commutator_le]
-  rw [h.commutator_eq_center]
+  exact (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
+    h.commutator_eq_center.le).is_comm
 
 /-- An extraspecial group is nonabelian. -/
 theorem not_isMulCommutative (h : IsExtraspecial p G) :

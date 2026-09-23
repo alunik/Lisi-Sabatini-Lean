@@ -125,7 +125,7 @@ theorem card_primeCycleTypeFinset
     · intro a ha
       simpa [Multiset.eq_of_mem_replicate ha] using hp
   rw [primeCycleTypeFinset,
-    Equiv.Perm.card_of_cycleType, if_pos hvalid]
+    Equiv.Perm.card_of_cycleType, ite_eq_left hvalid]
   simp [primeCycleClassCard, hj.ne', Nat.mul_comm,
     Nat.mul_left_comm, Nat.mul_assoc]
 
@@ -159,7 +159,7 @@ theorem alternatingSylowProfileQuadraticCost_le_symmetric
       symmetricSylowProfileQuadraticCost n p := by
   by_cases hp : p = 2
   · subst p
-    rw [alternatingSylowProfileQuadraticCost, if_pos rfl]
+    rw [alternatingSylowProfileQuadraticCost, ite_eq_left rfl]
     rw [symmetricSylowProfileQuadraticCost]
     apply Finset.sum_le_sum
     intro j _hj

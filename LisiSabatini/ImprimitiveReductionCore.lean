@@ -68,7 +68,7 @@ def blockOrbitColorStabilizer
   carrier := {σ | ∀ i, SameBlockOrbit L (x (σ.symm i)) (x i)}
   one_mem' := by
     intro i
-    simpa using sameBlockOrbit_refl L (x i)
+    exact sameBlockOrbit_refl L (x i)
   mul_mem' := by
     intro σ τ hσ hτ i
     change SameBlockOrbit L (x (τ.symm (σ.symm i))) (x i)

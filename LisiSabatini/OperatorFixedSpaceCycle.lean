@@ -155,8 +155,9 @@ theorem end_pow_injective_of_injective
     ∀ n : ℕ, Function.Injective (y ^ n) := by
   intro n
   induction n with
-  | zero => simpa only [pow_zero, Module.End.one_apply] using
-      (Function.injective_id : Function.Injective (id : V → V))
+  | zero =>
+      intro a b hab
+      simpa only [pow_zero, Module.End.one_apply] using hab
   | succ n ih =>
       intro a b hab
       apply hy
@@ -224,7 +225,7 @@ theorem iSupIndep_ker_sub_of_commute_of_injective_sub
     (hinj : Pairwise (fun i j ↦ Function.Injective (z i - z j))) :
     iSupIndep (fun i ↦ LinearMap.ker (x - z i)) := by
   classical
-  rw [iSupIndep_iff_finset_sum_eq_zero_imp_eq_zero]
+  rw [iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]
   intro s
   induction s using Finset.induction_on with
   | empty =>
@@ -351,7 +352,8 @@ theorem mul_finrank_ker_sub_one_le_of_operator_cycle
     let e : V ≃ₗ[K] V := LinearEquiv.ofInjectiveEndo (y ^ (i : ℕ))
       (end_pow_injective_of_injective y hy (i : ℕ))
     have heq := e.finrank_map_eq (LinearMap.ker (x - 1))
-    simpa only [E, operatorFixedCycleSubspace, e] using heq
+    convert heq using 1
+    congr 1
   calc
     q * Module.finrank K (LinearMap.ker (x - 1)) =
         ∑ _i : Fin q, Module.finrank K (LinearMap.ker (x - 1)) := by simp
@@ -384,8 +386,11 @@ theorem ncard_nonzeroFixedVectorSet_le_pow_div_sub_one_of_operator_cycle
     (generalLinearEnd x) (generalLinearEnd y) z
     y.toLinearEquiv.injective hxy hxz hzy hzq hfree
   have hmul : q * Module.finrank (ZMod r) (fixedSpace x) ≤ d := by
-    simpa only [fixedSpace, fixedDifferenceLinearMap, generalLinearEnd,
-      Module.finrank_fin_fun] using hmulRaw
+    have hx : fixedSpace x = LinearMap.ker (generalLinearEnd x - 1) := by
+      ext v
+      rfl
+    rw [hx]
+    simpa only [Module.finrank_fin_fun] using hmulRaw
   have hdim : Module.finrank (ZMod r) (fixedSpace x) ≤ d / q := by
     apply (Nat.le_div_iff_mul_le hq).2
     simpa [Nat.mul_comm] using hmul

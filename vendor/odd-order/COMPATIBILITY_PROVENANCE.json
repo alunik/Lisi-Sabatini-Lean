@@ -1,0 +1,146 @@
+{
+  "schema": "odd-order-compatibility-provenance-v1",
+  "prepared_utc_date": "2026-09-19",
+  "status": "metadata-only compatibility candidate; not compiled",
+  "upstream": {
+    "url": "https://github.com/yawara/odd-order.git",
+    "commit": "82e8b66fe80a2eb9f0c6568bf288186086af73af",
+    "tree": "fb4fefc344d2d5405d6d420799fe7b830952742d",
+    "local_branch": "compat/lean-4.34.0-rc2-mathlib-87f6d5ec"
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "path": "LICENSE",
+    "retained_unchanged": true,
+    "upstream_git_blob": "8e6c55e8e916f5fda4b7b4889a4063e6ab7fd407",
+    "upstream_sha256": "16076512749f6aa4fbe04b784ee60b208340f7e1ca015b2038ff308fb303748e",
+    "patched_sha256": "16076512749f6aa4fbe04b784ee60b208340f7e1ca015b2038ff308fb303748e",
+    "upstream_notice_file": null
+  },
+  "destination_lock_source": {
+    "path_at_preparation": "/Users/aluna/notebook/minimal-simple-classification/lean/lake-manifest.json",
+    "sha256": "b300ba9a8449fd027357d73315a391147004b3bdeda15b3547776e8417e9a4ee",
+    "lean_toolchain": "leanprover/lean4:v4.34.0-rc2",
+    "mathlib_commit": "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70"
+  },
+  "source_integrity": {
+    "OddOrder_git_tree_before": "4da182578522eb31a7d4f973fc62acf77d85f7d3",
+    "OddOrder_git_tree_after": "4da182578522eb31a7d4f973fc62acf77d85f7d3",
+    "mathematical_source_changes": [],
+    "feit_thompson_path": "OddOrder/FeitThompson.lean",
+    "feit_thompson_git_blob": "dd780d425b23c368fcefff4d270b132f1d7f6eb9",
+    "feit_thompson_sha256_before": "01933aacfa9e81adca2bb2a3c60657c1df95addf9c31b55fb0c29d316f8e4608",
+    "feit_thompson_sha256_after": "01933aacfa9e81adca2bb2a3c60657c1df95addf9c31b55fb0c29d316f8e4608"
+  },
+  "changes": [
+    {
+      "path": "lakefile.toml",
+      "kind": "modified compatibility metadata",
+      "notice": "Changed 2026-09-19 to use the destination project's exact mathlib commit.",
+      "upstream_git_blob": "1a76282a41beb86980028a0a83651d61549feece",
+      "patched_git_blob": "8ca185a7311a55695e7c2021c4138625a05f24d4",
+      "upstream_sha256": "2697d2e4e08e681cb4d5ef9d1e79fb33184367d76923163996266823aa6278d9",
+      "patched_sha256": "dcbfee57c5ab9372753743b6c9a8d14be230b7ff97a884b3d2ac249b63a2470c",
+      "exact_change": {
+        "mathlib_before": "db584cd6d46c92f209a44c0f1c829460d327499d",
+        "mathlib_after": "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70"
+      }
+    },
+    {
+      "path": "lean-toolchain",
+      "kind": "modified compatibility metadata",
+      "notice": "Changed 2026-09-19 to use the destination project's exact Lean toolchain.",
+      "upstream_git_blob": "025e59548e48cf71f2744154e2890beefe30a258",
+      "patched_git_blob": "b814d987e0c93cb99938be934d9b277778495ba1",
+      "upstream_sha256": "302cd63c54178885b89e669f33b38f12f4dd7ae7e5cac537b3203e3768d8fb2b",
+      "patched_sha256": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88",
+      "exact_change": {
+        "before": "leanprover/lean4:v4.33.0",
+        "after": "leanprover/lean4:v4.34.0-rc2"
+      }
+    },
+    {
+      "path": "lake-manifest.json",
+      "kind": "modified resolved compatibility lock",
+      "notice": "Changed 2026-09-19 to reproduce the destination project's exact nine-package revision set.",
+      "upstream_git_blob": "7b3b6de298b395fb0650b589006b021be6b05dea",
+      "patched_git_blob": "eace9b85645a55565e7f9811c16daa1689b2edc3",
+      "upstream_sha256": "f0afb15cee9c0048486efe5ec2b2f2c33f7b2ea5d7d675998b10f8c2c4a3c06d",
+      "patched_sha256": "a68ff97f3375afecec6d91dd1b600667ba9c7bbdfed9b520f3de609b2d4417de",
+      "resolved_revision_changes": {
+        "mathlib": [
+          "db584cd6d46c92f209a44c0f1c829460d327499d",
+          "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70"
+        ],
+        "plausible": [
+          "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+          "d9598f07b1bc701f1e3aae163d2681c1fd978793"
+        ],
+        "LeanSearchClient": [
+          "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+          "ba67e212be1197b84c1f1f6299488a10a3002713"
+        ],
+        "importGraph": [
+          "16f02aa7642864af59f1ff0e384a015994db9118",
+          "d8823026ac7ef130c253089d95685f9877b95323"
+        ],
+        "proofwidgets": [
+          "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+          "a8acbfd87375ff4abe14ce09db5b7664d383bc7f"
+        ],
+        "aesop": [
+          "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+          "18889deb9e83ea7420ef51c160d6f88552e744e3"
+        ],
+        "Qq": [
+          "92c15be17b7caf78c2ad767ec40f89052d908d81",
+          "507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3"
+        ],
+        "batteries": [
+          "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+          "d54dddc581e08be364c278052863524bff7a99a9"
+        ],
+        "Cli": [
+          "6130a47896ce867c6a4a55373441e59e565bad0f",
+          "ab3a82db9fea14cf0fd7f5a2de650f4b534640af"
+        ]
+      },
+      "Cli_inputRev_change": [
+        "v4.33.0",
+        "v4.34.0-rc2"
+      ]
+    },
+    {
+      "path": "AUCKLAND_BUILD_DESIGN.md",
+      "kind": "added compatibility documentation",
+      "notice": "Added 2026-09-19; design only, not executed.",
+      "upstream_git_blob": null,
+      "patched_git_blob": "be65ca0804e35c8513a53acf20c645627a5eb24c",
+      "upstream_sha256": null,
+      "patched_sha256": "bf26a4c99af1ce0bbdbcec1e4183048ebbde2451abb9d05e0212467562abc10f"
+    },
+    {
+      "path": "COMPATIBILITY_PROVENANCE.json",
+      "kind": "added provenance and prominent change notice",
+      "notice": "Added 2026-09-19. Its own content hash is intentionally excluded because embedding it would be self-referential.",
+      "upstream_git_blob": null,
+      "patched_git_blob": null,
+      "upstream_sha256": null,
+      "patched_sha256": null
+    }
+  ],
+  "verification_performed": [
+    "git base commit and upstream tree inspected",
+    "LICENSE retained byte-for-byte and no upstream NOTICE file found",
+    "patched lake-manifest.json parsed as JSON",
+    "all nine resolved package revisions compared with the destination manifest",
+    "OddOrder source tree confirmed unchanged by the compatibility patch"
+  ],
+  "verification_not_performed": [
+    "Lean invocation",
+    "Lake invocation",
+    "Auckland build",
+    "destination compatibility compilation",
+    "reachable-axiom replay"
+  ]
+}

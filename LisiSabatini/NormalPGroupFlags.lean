@@ -41,8 +41,8 @@ theorem center_inf_normal_ne_bot_of_isPGroup
     (hp : p.Prime) (hGp : IsPGroup p G)
     (N : Subgroup G) (hNnormal : N.Normal) (hNne : N ≠ ⊥) :
     Subgroup.center G ⊓ N ≠ ⊥ := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : N.Normal := hNnormal
+  let : Fact p.Prime := ⟨hp⟩
+  let : N.Normal := hNnormal
   have hNp : IsPGroup p N := hGp.to_subgroup N
   have hNcardNeOne : Nat.card N ≠ 1 := by
     exact ne_of_gt (N.one_lt_card_iff_ne_bot.mpr hNne)
@@ -83,7 +83,7 @@ theorem exists_normal_central_subgroup_card_prime_le
     ∃ C : Subgroup G,
       C.Normal ∧ C ≤ N ∧ Nat.card C = p ∧
         C ≤ Subgroup.center G := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   let H : Subgroup G := Subgroup.center G ⊓ N
   have hHne : H ≠ ⊥ :=
     center_inf_normal_ne_bot_of_isPGroup hp hGp N hNnormal hNne
@@ -154,7 +154,7 @@ theorem exists_normal_flag_card_prime_prime_sq_le
   obtain ⟨C, hCnormal, hCE, hCcard, hCcenter⟩ :=
     exists_normal_central_subgroup_card_prime_le
       hp hGp E hEnormal hEne
-  letI : C.Normal := hCnormal
+  let : C.Normal := hCnormal
   let q : G →* G ⧸ C := QuotientGroup.mk' C
   let Ebar : Subgroup (G ⧸ C) := E.map q
   have hQp : IsPGroup p (G ⧸ C) := hGp.to_quotient C

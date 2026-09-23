@@ -18,6 +18,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 set_option backward.isDefEq.respectTransparency false
 
 /-- The order of a finite `q`-group is nonzero in characteristic `r` when
@@ -26,8 +28,8 @@ theorem natCard_cast_ne_zero_of_isPGroup_of_distinct_primes
     {r q : ℕ} (hr : Nat.Prime r) (hq : Nat.Prime q) (hqr : q ≠ r)
     {A : Type*} [Group A] [Finite A] (hA : IsPGroup q A) :
     (Nat.card A : ZMod r) ≠ 0 := by
-  letI : Fact (Nat.Prime r) := ⟨hr⟩
-  letI : Fact (Nat.Prime q) := ⟨hq⟩
+  let : Fact (Nat.Prime r) := ⟨hr⟩
+  let : Fact (Nat.Prime q) := ⟨hq⟩
   have hr_not_dvd_q : ¬ r ∣ q := by
     intro hdvd
     rcases (Nat.dvd_prime hq).mp hdvd with hrOne | hrq
@@ -51,11 +53,11 @@ theorem map_normalAbelianPSubgroup_fixedPointFree_of_quasiprimitive
     (H : Subgroup K) (hHnormal : H.Normal) (hHp : IsPGroup q H)
     (hHcomm : ∀ a b : H, Commute a b) :
     FixedPointFreeOffZero (H.map K.subtype) := by
-  letI : Fact (Nat.Prime r) := ⟨hr⟩
-  letI : Fact (Nat.Prime q) := ⟨hq⟩
-  letI : Finite K := finite_linearSubgroup_of_finite K
-  letI : Finite H := inferInstance
-  letI : NeZero (Nat.card H : ZMod r) :=
+  let : Fact (Nat.Prime r) := ⟨hr⟩
+  let : Fact (Nat.Prime q) := ⟨hq⟩
+  let : Finite K := finite_linearSubgroup_of_finite K
+  let : Finite H := inferInstance
+  let : NeZero (Nat.card H : ZMod r) :=
     ⟨natCard_cast_ne_zero_of_isPGroup_of_distinct_primes
       hr hq hqr hHp⟩
   let rho : Representation (ZMod r) H (Fin d → ZMod r) :=
@@ -88,11 +90,11 @@ theorem normalAbelianPSubgroup_isCyclic_of_quasiprimitive
     (H : Subgroup K) (hHnormal : H.Normal) (hHp : IsPGroup q H)
     (hHcomm : ∀ a b : H, Commute a b) :
     IsCyclic H := by
-  letI : Fact (Nat.Prime r) := ⟨hr⟩
-  letI : Fact (Nat.Prime q) := ⟨hq⟩
-  letI : Finite K := finite_linearSubgroup_of_finite K
-  letI : Finite H := inferInstance
-  letI : NeZero (Nat.card H : ZMod r) :=
+  let : Fact (Nat.Prime r) := ⟨hr⟩
+  let : Fact (Nat.Prime q) := ⟨hq⟩
+  let : Finite K := finite_linearSubgroup_of_finite K
+  let : Finite H := inferInstance
+  let : NeZero (Nat.card H : ZMod r) :=
     ⟨natCard_cast_ne_zero_of_isPGroup_of_distinct_primes
       hr hq hqr hHp⟩
   let rho : Representation (ZMod r) H (Fin d → ZMod r) :=
@@ -168,9 +170,9 @@ theorem pCoreCenter_pairwise_commute
     (K : Subgroup
       (LinearMap.GeneralLinearGroup (ZMod r) (Fin d → ZMod r))) :
     ∀ a b : pCoreCenter q K, Commute a b := by
-  letI : IsMulCommutative (Subgroup.center (pCore q K)) :=
+  let : IsMulCommutative (Subgroup.center (pCore q K)) :=
     Subgroup.center.isMulCommutative (pCore q K)
-  letI : IsMulCommutative (pCoreCenter q K) :=
+  let : IsMulCommutative (pCoreCenter q K) :=
     Subgroup.map_isMulCommutative
       (Subgroup.center (pCore q K)) (pCore q K).subtype
   intro a b

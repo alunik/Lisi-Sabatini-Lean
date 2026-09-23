@@ -39,10 +39,10 @@ theorem natCard_eq_fintypeCard_of_isRegularAbelianPermutationSubgroup
     Nat.card T = Fintype.card I := by
   classical
   let omega : I := Classical.choice inferInstance
-  letI : Fintype T := Fintype.ofFinite T
+  let : Fintype T := Fintype.ofFinite T
   have hcard :=
     MulAction.card_orbit_mul_card_stabilizer_eq_card_group
-      (α := T) omega
+      T omega
   have horbit : MulAction.orbit T omega = Set.univ := by
     ext i
     simp only [Set.mem_univ, iff_true]
@@ -210,7 +210,7 @@ theorem activeTopOrbitAvoidanceResidual_of_localOneOrbit_of_regularOddTop
     intro sigma i x y hx hy
     exact hactiveValueOrbitInjective i x y
       (sameBlockOrbit_trans _ (sameBlockOrbit_symm _ hx) hy)
-  letI : IsCancelSMul T I :=
+  let : IsCancelSMul T I :=
     isCancelSMul_iff_stabilizer_eq_bot.mpr fun i ↦ by
       simpa [T, Da, IsSemiregularAt] using hsemi i
   have hsemiPoint : ∀ sigma : T, sigma ≠ 1 → ∀ i,
@@ -348,7 +348,7 @@ theorem orbitAvoidingCommonRegularTranslates_of_primitiveTop_of_localOneOrbit
     OrbitAvoidingCommonRegularTranslates
       (fun j ↦ restrictedAmbient (H j)) := by
   classical
-  letI : Fintype I := Fintype.ofFinite I
+  let : Fintype I := Fintype.ofFinite I
   obtain ⟨jactive, htop, hsemiActive⟩ :=
     D.exists_index_other_restrictComponent_ranges_bot_and_semiregular_of_primitiveTop
       p hp hinj H hHnormal hHp
@@ -401,13 +401,13 @@ theorem orbitAvoidingCommonRegularTranslates_of_primitiveTop_of_localOneOrbit
       rw [D.componentTopImage_map_subtype_eq_restrictComponent_range
         (H jactive)] at hmapped
       exact hmapped
-    letI : Fact (Nat.Prime (p jactive)) := ⟨hp jactive⟩
+    let : Fact (Nat.Prime (p jactive)) := ⟨hp jactive⟩
     have hoddT : Odd (Nat.card T) := by
       obtain ⟨n, hn⟩ := IsPGroup.iff_card.mp hTp
       rw [hn]
       exact ((hp jactive).odd_of_ne_two (hpTwo jactive)).pow
     have hthreeT : 3 ≤ Nat.card T := by
-      haveI : Nontrivial T := T.nontrivial_iff_ne_bot.mpr hTbot
+      have : Nontrivial T := T.nontrivial_iff_ne_bot.mpr hTbot
       have hone : 1 < Nat.card T :=
         Finite.one_lt_card_iff_nontrivial.mpr inferInstance
       obtain ⟨k, hk⟩ := hoddT

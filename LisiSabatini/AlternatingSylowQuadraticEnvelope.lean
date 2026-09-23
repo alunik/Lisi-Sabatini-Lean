@@ -41,8 +41,7 @@ theorem quadraticPermFinSucc_injective
   apply
     Equiv.Perm.extendDomainHom_injective
       Fin.castSuccEmb.toEquivRange
-  simpa only [quadraticPermFinSucc,
-    Equiv.Perm.viaFintypeEmbedding] using hgh
+  exact hgh
 
 theorem cycleType_quadraticPermFinSucc
     (n : ℕ) (g : Equiv.Perm (Fin n)) :
@@ -115,7 +114,7 @@ theorem primeCycleClassCard_mul_centralizer
   have hmul :=
     Equiv.Perm.card_of_cycleType_mul_eq
       (Fin n) (Multiset.replicate j p)
-  rw [if_pos hvalid] at hmul
+  rw [ite_eq_left hvalid] at hmul
   have hcard :=
     card_primeCycleTypeFinset hp hj hpj
   have hfiltered :
@@ -198,7 +197,7 @@ theorem alternatingSylowProfileQuadraticCost_two_le_negativeBinomialEven
     (n : ℕ) :
     alternatingSylowProfileQuadraticCost n 2 ≤
       sylowCycleNegativeBinomialEvenQuadraticCost n := by
-  rw [alternatingSylowProfileQuadraticCost, if_pos rfl,
+  rw [alternatingSylowProfileQuadraticCost, ite_eq_left rfl,
     sylowCycleNegativeBinomialEvenQuadraticCost]
   apply Finset.sum_le_sum
   intro j _hj
@@ -1454,7 +1453,7 @@ theorem sylowCycleNegativeBinomialEvenQuadraticCost_twoStep_le
     apply Finset.sum_le_sum
     intro j hjMem
     by_cases hjEven : Even j
-    · simp only [fNew, fOld, if_pos hjEven]
+    · simp only [fNew, fOld, ite_eq_left hjEven]
       have hj : 0 < j := (Finset.mem_Icc.mp hjMem).1
       have hjm : j ≤ r + 1 := by
         exact (Finset.mem_Icc.mp hjMem).2.trans
@@ -1469,7 +1468,7 @@ theorem sylowCycleNegativeBinomialEvenQuadraticCost_twoStep_le
     · simp [fNew, fOld, hjEven]
   have hsame :
       4 * fNew (r + 1) ≤ fOld (r + 1) := by
-    simp only [fNew, fOld, if_pos hevenM]
+    simp only [fNew, fOld, ite_eq_left hevenM]
     have hdec :
         sylowCycleNegativeBinomialQuadraticTerm
             2 (r + 3) (r + 1) ≤
@@ -1487,7 +1486,7 @@ theorem sylowCycleNegativeBinomialEvenQuadraticCost_twoStep_le
     simp [fNew, hoddNext]
   have htop :
       4 * fNew (r + 3) ≤ 3 * fOld (r + 1) := by
-    simp only [fNew, fOld, if_pos hevenNextTwo, if_pos hevenM]
+    simp only [fNew, fOld, ite_eq_left hevenNextTwo, ite_eq_left hevenM]
     exact
       four_mul_negativeBinomialQuadraticTwoStepNewTopTerm_le_three_oldTop
         (m := r + 1) hm8
@@ -1540,7 +1539,7 @@ theorem sylowCycleNegativeBinomialEvenQuadraticCost_succBlock_le_of_not_even
     apply Finset.sum_le_sum
     intro j hjMem
     by_cases hjEven : Even j
-    · simp only [fNew, fOld, if_pos hjEven]
+    · simp only [fNew, fOld, ite_eq_left hjEven]
       exact
         sylowCycleNegativeBinomialQuadraticTerm_succBlock_le
           (p := 2) (m := m) (j := j)
@@ -1586,7 +1585,7 @@ theorem sylowCycleNegativeBinomialEvenQuadraticCost_mul_le_twenty
               refine ⟨10 + k, ?_⟩
               omega)
         simpa only [Nat.mul_add, Nat.mul_one,
-          Nat.succ_eq_add_one] using hstep.trans ih
+          Nat.succ_eq_add_one, Nat.add_assoc] using hstep.trans ih
   · have hodd : Odd m :=
       Nat.not_even_iff_odd.mp heven
     rcases hodd with ⟨a, ha⟩
@@ -1880,8 +1879,14 @@ theorem sum_invTwo_pow_le_one_div_1024
   let f : ℕ → ℝ :=
     fun i ↦ if 11 ≤ i then (2 : ℝ)⁻¹ ^ i else 0
   have hf : Summable f := by
-    simpa only [f, ← Set.piecewise_eq_indicator, one_div] using
-      summable_geometric_two.indicator {i : ℕ | 11 ≤ i}
+    have hg := summable_geometric_two.indicator {i : ℕ | 11 ≤ i}
+    have hfg : f = {i : ℕ | 11 ≤ i}.indicator (fun n ↦ (1 / 2 : ℝ) ^ n) := by
+      funext i
+      by_cases hi : 11 ≤ i
+      · simp [f, hi]
+      · simp [f, hi]
+    rw [hfg]
+    exact hg
   calc
     (∑ p ∈ s, (2 : ℝ)⁻¹ ^ p) =
         ∑ p ∈ s, f p := by

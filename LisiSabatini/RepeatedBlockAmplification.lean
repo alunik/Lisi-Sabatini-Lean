@@ -181,7 +181,7 @@ theorem ncard_nonregularVectors_diagonalLinearSubgroup_le_sum
       ∑ h ∈ nonidentityElements H,
         (fixedVectorSet h.1).ncard ^ Fintype.card I := by
   classical
-  letI : Fintype {h : H // h ≠ 1} := Fintype.ofFinite _
+  let : Fintype {h : H // h ≠ 1} := Fintype.ofFinite _
   calc
     _ ≤ (repeatedBlockBadEnvelope I H).ncard :=
       Set.ncard_le_ncard

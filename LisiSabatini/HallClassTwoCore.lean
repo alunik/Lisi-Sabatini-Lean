@@ -33,6 +33,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 set_option backward.isDefEq.respectTransparency false
 
 namespace HasCyclicCharacteristicAbelianSubgroups
@@ -49,8 +51,8 @@ theorem of_characteristic_subgroup
     (H : Subgroup G) [H.Characteristic] :
     HasCyclicCharacteristicAbelianSubgroups H := by
   intro A hAchar hAcomm
-  letI : A.Characteristic := hAchar
-  letI : IsMulCommutative A := hAcomm
+  let : A.Characteristic := hAchar
+  let : IsMulCommutative A := hAcomm
   have hImageChar : (A.map H.subtype).Characteristic :=
     characteristic_map_subtype (H := H) hAchar
   have hImageComm : IsMulCommutative (A.map H.subtype) :=
@@ -75,11 +77,11 @@ theorem card_centerPrimeKernel_of_center_isCyclic
     (hp : p.Prime) (hGp : IsPGroup p G)
     (hcenter : IsCyclic (Subgroup.center G)) :
     Nat.card (centerPrimeKernel p G) = p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   let Z := Subgroup.center G
-  letI : Finite Z := inferInstance
-  letI : Nontrivial Z := hGp.center_nontrivial
-  letI : IsCyclic Z := hcenter
+  let : Finite Z := inferInstance
+  let : Nontrivial Z := hGp.center_nontrivial
+  let : IsCyclic Z := hcenter
   let K0 := (powMonoidHom p : Z →* Z).ker
   have hp_dvd_cardZ : p ∣ Nat.card Z := by
     have hZp : IsPGroup p Z := hGp.to_subgroup (Subgroup.center G)
@@ -117,12 +119,12 @@ theorem centerPrimeKernel_le_commutator_of_classTwo_of_center_isCyclic
     (hcenter : IsCyclic (Subgroup.center G))
     (hnoncomm : ¬ IsMulCommutative G) :
     centerPrimeKernel p G ≤ commutator G := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   have hnotSubsingleton : ¬ Subsingleton G := by
     intro hsub
     apply hnoncomm
     exact ⟨⟨fun x y ↦ hsub.elim (x * y) (y * x)⟩⟩
-  letI : Nontrivial G := not_subsingleton_iff_nontrivial.mp hnotSubsingleton
+  let : Nontrivial G := not_subsingleton_iff_nontrivial.mp hnotSubsingleton
   have hcommNeBot : commutator G ≠ ⊥ := by
     intro hbot
     apply hnoncomm
@@ -134,7 +136,7 @@ theorem centerPrimeKernel_le_commutator_of_classTwo_of_center_isCyclic
       exact Subgroup.mem_top x
     exact (Subgroup.mem_center_iff.mp hx y).symm
   let D := commutator G
-  letI : Nontrivial D :=
+  let : Nontrivial D :=
     (commutator G).nontrivial_iff_ne_bot.mpr hcommNeBot
   have hDp : IsPGroup p D := hGp.to_subgroup (commutator G)
   obtain ⟨m, hm, hcardD⟩ :=
@@ -251,7 +253,7 @@ theorem nontrivial (h : IsHallClassTwoIntermediate p P) : Nontrivial P := by
 /-- Its canonical central kernel has order exactly `p`. -/
 theorem card_centerPrimeKernel (h : IsHallClassTwoIntermediate p P) :
     Nat.card (centerPrimeKernel p P) = p := by
-  letI : Nontrivial P := h.nontrivial
+  let : Nontrivial P := h.nontrivial
   exact card_centerPrimeKernel_of_center_isCyclic
     h.prime h.pGroup h.center_isCyclic
 
@@ -306,7 +308,7 @@ For a finite odd `p`-group satisfying the Hall hypothesis, the characteristic
 centralizer `C_G(G')` has the complete bundled intermediate structure as soon
 as it is nonabelian.  The canonical-kernel containment is proved above; it is
 not an additional assumption. -/
-def isHallClassTwoIntermediate
+theorem isHallClassTwoIntermediate
     (hp : p.Prime) (hpOdd : Odd p) (hGp : IsPGroup p G)
     (hG : HasCyclicCharacteristicAbelianSubgroups G)
     (hnoncomm : ¬ IsMulCommutative (derivedCentralizer G)) :

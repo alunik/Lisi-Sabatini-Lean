@@ -1,289 +1,64 @@
-# Formalized Sylow-intersection results
+# Sylow synchronization in finite groups
 
-This Lean 4/mathlib project contains two related but distinct developments.
-The first concerns the original Lisi–Sabatini conjecture. The second concerns
-the mixed three-intersection problem and Huang's same-row specialization; it
-should not be identified with the Lisi–Sabatini conjecture.
+Lean 4 formalization of results in **Sylow synchronization in finite groups:
+The good case**, by Hong Yi Huang, Francesca Lisi, Aluna Rizzoli and Luca Sabatini.
 
-| Problem | Formalized range | Main endpoint |
-| --- | --- | --- |
-| Original Lisi–Sabatini property | finite solvable groups of odd order | `hasLisiSabatini_of_solvable_of_odd` |
-| Original Lisi–Sabatini property | alternating groups `A_n`, `n ≥ 40` | `hasLisiSabatini_alternatingGroup_ge_forty` |
-| Original Lisi–Sabatini property | symmetric groups `S_n`, `n ≥ 40` | `hasLisiSabatini_symmetricGroup_ge_forty` |
-| Mixed three-intersection synchronization | all finite solvable groups | `mixedThreeSylowCoreSynchronization_of_solvable` |
-| Huang's same-row three-intersection property | all finite solvable groups | `threeConjugatesSylowSynchronization_of_solvable` |
-| Mixed two-row trivial Sylow intersections | `A_n` and `S_n`, `n ≥ 40` | `mixedTwoSylowBotSynchronization_*_ge_forty` |
-| Trivial intersections of arbitrary nilpotent subgroups | `A_n` and `S_n`, `n ≥ 40` | `mixedNilpotentIntersectionTrivial_*_ge_forty` |
+| Result | Scope |
+| --- | --- |
+| Main solvable theorem | Every quotient of the finite solvable group satisfies property $(*)$ |
+| Translated regular orbits, Proposition 2.3 | Faithful completely reducible modules of finite nilpotent groups, over arbitrary fields |
+| Symmetric and alternating groups | The Lisi–Sabatini conjecture in every degree |
+| Odd-order corollaries | The conjecture and nilpotent-intersection consequence, using the formalized Feit–Thompson theorem |
 
-## Three intersections in finite solvable groups
+Property $(*)$ means that, for each prime $p$, two Sylow $p$-subgroups
+intersect in $O_p(G)$. The conjecture asks for one conjugating element
+making all prescribed Sylow intersections inclusion-minimal simultaneously.
+For $S_8$, the formalization proves this inclusion-minimality conclusion;
+it does not assert trivial Sylow 2-intersections.
 
-The strongest theorem in this part of the project is in
-[`LisiSabatini/SolvableThreeSylowSynchronization.lean`](LisiSabatini/SolvableThreeSylowSynchronization.lean):
+Start with **[LisiSabatini.lean](LisiSabatini.lean)** and the
+**[theorem map](docs/THEOREMS.md)**. The formal proofs sometimes use
+different arguments from the manuscript. The external Burness–Huang result
+for nonalternating finite simple groups is not part of this formalization.
 
-```lean
-theorem mixedThreeSylowCoreSynchronization_of_solvable
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
-    HasMixedThreeSylowCoreSynchronization.{uG, uI} G
-```
+## Build and check
 
-Expanding the definition, let `I` be a finite index type, let
-`p : I → ℕ` be an injective family of primes, and prescribe three independent
-Sylow rows
+Install [Lean through elan](https://github.com/leanprover/elan). The repository
+pins Lean `v4.34.0-rc2` and mathlib; no dependency update is needed.
 
-```lean
-P Q R : ∀ i, Sylow (p i) G.
-```
-
-Then there are two elements `x y : G`, common to every row, such that
-
-```text
-P_i ∩ xQ_i x⁻¹ ∩ yR_i y⁻¹ = O_{p_i}(G)
-```
-
-for every `i`. Here `O_p(G)` is the largest normal `p`-subgroup of `G`,
-formalized as `pCore p G`. Taking `P = Q = R` gives Huang's same-row
-three-intersection property:
-
-```lean
-theorem threeConjugatesSylowSynchronization_of_solvable
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
-    HasThreeConjugatesSylowSynchronization.{uG, uI} G
-```
-
-The proof has four principal layers:
-
-1. `ThreeConjugatesSynchronization.lean` defines the mixed two-row,
-   mixed three-row, and same-row properties.
-2. `ThreeSylowSolvableReduction.lean` reduces the solvable theorem through
-   an elementary-abelian chief factor to simultaneous affine orbit
-   avoidance.
-3. The affine modules settle the characteristic and odd-prime branches and
-   isolate the remaining noncommuting `2`-core branch.
-4. `HallBergerClassificationAssembly.lean` supplies that final input;
-   `SolvableThreeSylowSynchronization.lean` closes the unconditional
-   solvable-group theorem.
-
-The resulting nilpotent-subgroup consequence is:
-
-```lean
-theorem threeNilpotentIntersectionInFitting_of_solvable
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G] :
-    ThreeNilpotentIntersectionInFitting G
-```
-
-Thus, for arbitrary nilpotent subgroups `H`, `K`, and `M` of a finite
-solvable group, some `x,y ∈ G` satisfy
-
-```text
-H ∩ xKx⁻¹ ∩ yMy⁻¹ ≤ F(G).
-```
-
-## Original Lisi–Sabatini results
-
-The original property asks for one conjugator that makes a prescribed
-finite family of same-row Sylow intersections inclusion-minimal
-simultaneously.
-
-### Finite solvable groups of odd order
-
-[`LisiSabatini/OddOrderProof.lean`](LisiSabatini/OddOrderProof.lean) proves
-the stronger Sylow-core statement
-
-```lean
-theorem strongLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
-    (hodd : Odd (Nat.card G)) :
-    StrongLisiSabatini.{uG, uI} G
-```
-
-and derives the original formulation:
-
-```lean
-theorem hasLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
-    (hodd : Odd (Nat.card G)) :
-    HasLisiSabatini.{uG, uI} G
-```
-
-Solvability remains an explicit hypothesis. Feit–Thompson is neither
-imported nor postulated.
-
-### Alternating groups in degree at least 40
-
-[`LisiSabatini/Alternating.lean`](LisiSabatini/Alternating.lean) proves:
-
-```lean
-theorem hasLisiSabatini_alternatingGroup_ge_forty
-    (n : ℕ) (hn : 40 ≤ n) :
-    HasLisiSabatini (alternatingGroup (Fin n))
-```
-
-The proof constructs a quadratic conjugacy-class bound from the exact
-base-`p` Sylow wreath recurrence and proves a uniform strict budget from
-degree `40` onward. It uses no GAP census or project-specific axiom. See
-[`ALTERNATING_GROUPS_PROOF.md`](ALTERNATING_GROUPS_PROOF.md) for the
-mathematical proof structure and verification report.
-
-### Symmetric groups in degree at least 40
-
-[`LisiSabatini/Symmetric.lean`](LisiSabatini/Symmetric.lean) proves the
-stronger simultaneous trivial-intersection statement
-
-```lean
-universe uI
-
-theorem exists_common_sylowInter_bot_symmetricGroup_ge_forty
-    (n : ℕ) (hn : 40 ≤ n)
-    {I : Type uI} [Finite I]
-    (p : I → ℕ)
-    (hp : ∀ i, Nat.Prime (p i))
-    (hinjective : Function.Injective p)
-    (P : ∀ i, Sylow (p i) (Equiv.Perm (Fin n))) :
-    ∃ x : Equiv.Perm (Fin n), ∀ i, sylowInter (P i) x = ⊥
-```
-
-Thus one permutation `x`, common to every prime row, works simultaneously.
-In particular:
-
-```lean
-theorem strongLisiSabatini_symmetricGroup_ge_forty
-    (n : ℕ) (hn : 40 ≤ n) :
-    StrongLisiSabatini.{0, uI} (Equiv.Perm (Fin n))
-
-theorem hasLisiSabatini_symmetricGroup_ge_forty
-    (n : ℕ) (hn : 40 ≤ n) :
-    HasLisiSabatini.{0, uI} (Equiv.Perm (Fin n))
-```
-
-The proof uses the same quadratic conjugacy-class/fixed-point-ratio union
-bound as the alternating result. The full binary profile has cost less than
-`3/4` from degree `40` onward, while the already established odd-prime
-profiles have total cost less than `1/4`. Their strict combined budget
-therefore leaves a common good conjugator. No classification theorem, GAP
-census, or project-specific axiom is used. The exceptional pair
-`n = 8`, `p = 2` is outside the asserted range.
-
-## Nilpotent subgroups of alternating and symmetric groups
-
-The quadratic cost is independent of the second prescribed Sylow row.
-For `G = A_n` or `S_n`, with `n ≥ 40`, the library therefore proves
-
-```text
-∀ p_i, P_i, Q_i, ∃ x, ∀ i, P_i ∩ xQ_i x⁻¹ = 1,
-```
-
-where the `p_i` are distinct primes and `P_i,Q_i` are independently
-prescribed Sylow `p_i`-subgroups. The public endpoints are
-
-```lean
-mixedTwoSylowBotSynchronization_alternatingGroup_ge_forty
-mixedTwoSylowBotSynchronization_symmetricGroup_ge_forty
-```
-
-Choosing ambient Sylow rows containing the Sylow components of arbitrary
-nilpotent subgroups gives:
-
-```lean
-mixedNilpotentIntersectionTrivial_alternatingGroup_ge_forty
-mixedNilpotentIntersectionTrivial_symmetricGroup_ge_forty
-threeNilpotentIntersectionTrivial_alternatingGroup_ge_forty
-threeNilpotentIntersectionTrivial_symmetricGroup_ge_forty
-```
-
-Thus for nilpotent `A,B ≤ G` there is an `x` with
-`A ∩ xBx⁻¹ = 1`. The three-subgroup statement follows by taking the
-second conjugator to be the identity after making the first two subgroups
-intersect trivially; no additional probabilistic estimate is used.
-
-## Related formalized endpoints
-
-The repository also contains:
-
-- mixed two-row Sylow-core synchronization for finite solvable groups of odd
-  order;
-- mixed intersection of two arbitrary nilpotent subgroups into the Fitting
-  subgroup in finite solvable groups of odd order; and
-- an independent mixed three-row theorem for finite solvable groups with
-  commutative Sylow `2`-subgroups, now subsumed by the all-solvable theorem.
-
-## Scope and trust boundary
-
-All group-theoretic endpoints above concern finite groups. The
-Sylow-core three-intersection theorem for arbitrary rows assumes solvability.
-For alternating and symmetric groups in degree at least forty, the project
-proves both the original Lisi–Sabatini property and the mixed
-trivial-intersection consequences stated above. The project does not claim
-these results for all finite groups or for all almost simple groups.
-
-There are no `sorry`, `admit`, or project-specific axioms in the public proof
-chain. The focused endpoint audit reports only Lean's standard logical
-principles used throughout mathlib: `propext`, `Classical.choice`, and
-`Quot.sound`.
-
-## Building and verification
-
-The project is pinned to Lean and mathlib `v4.29.1`.
-The library sources use Lean's module system, so ordinary imports load
-compact public interfaces without loading all private proof terms. The four
-standalone `#print axioms` audit leaves remain in the legacy format required
-by this Lean version.
-
-```text
+```sh
 lake exe cache get
-LEAN_NUM_THREADS=4 lake build
+LEAN_NUM_THREADS=2 lake build --wfail \
+  +LisiSabatini:olean +LisiSabatini.PaperAlignmentAxiomAudit:olean
+python3 scripts/check_axioms.py
 ```
 
-`LEAN_NUM_THREADS=4` is the recommended setting on machines with about
-16 GB of memory. A controlled cold project build on the audit machine fell
-from 51m 00.2s in the legacy format to 5m 47.5s with modules; an exact-final
-repeat under heavier desktop load took 6m 42.6s. A six-worker run was slower
-because of contention. Machines with substantially different resources
-should benchmark their own worker count. See
-[`BUILD_PERFORMANCE.md`](BUILD_PERFORMANCE.md) for the import-graph and
-build-time audit.
+This builds the paper's core results and checks the exact 18 declarations
+listed in its audit. Their transitive axioms are restricted to
+`propext`, `Classical.choice` and `Quot.sound`.
 
-The complete public result set and its focused axiom audit can be checked in
-one warnings-fatal build:
+The odd-order corollaries have a separate, larger dependency:
 
-```text
-LEAN_NUM_THREADS=4 lake build --wfail \
-  +LisiSabatini:olean \
-  +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean \
-  +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean \
-  +LisiSabatini.SymmetricAxiomAudit:olean \
-  +LisiSabatini.NilpotentTrivialIntersectionAxiomAudit:olean
+```sh
+LEAN_NUM_THREADS=2 lake build \
+  +LisiSabatini.FeitThompsonApplicationsAxiomAudit:olean
+python3 scripts/check_axioms.py --include-feit-thompson
 ```
 
-The library root and four audit roots above cover the alternating and
-symmetric theorems, every solvable-group endpoint advertised in this README,
-the nilpotent consequences, every project source module, and all four
-focused `#print axioms` checks. Individual endpoints can still be
-re-elaborated directly when desired, for example:
+The vendored Feit–Thompson source is pinned and retains its upstream
+license and provenance. Its legacy deprecation warnings are documented;
+the project entrypoints are checked separately with warnings treated as
+errors. See [verification](docs/VERIFICATION.md) for the complete checks,
+kernel-replay scope and source records.
 
-```text
-lake env lean -DwarningAsError=true LisiSabatini/Alternating.lean
-```
+## Repository contents
 
-## Repository guide
+- [LisiSabatini/](LisiSabatini/): the theorems and their proof dependencies.
+- [Certificate guide](docs/CERTIFICATES.md): finite certificates and deterministic regeneration.
+- [vendor/odd-order/](vendor/odd-order/): the pinned Feit–Thompson dependency, with its [license](vendor/odd-order/LICENSE).
+- [scripts/check_axioms.py](scripts/check_axioms.py): exact declaration and axiom checks used in CI.
 
-- `LisiSabatini.lean` — combined library entrypoint.
-- `LisiSabatini/Basic.lean` and `Strong.lean` — the original
-  Lisi–Sabatini definitions and strong form.
-- `LisiSabatini/OddOrderProof.lean` — odd-order solvable endpoint.
-- `LisiSabatini/Alternating.lean` — alternating endpoint for `n ≥ 40`.
-- `ALTERNATING_GROUPS_PROOF.md` — detailed alternating proof note.
-- `LisiSabatini/SymmetricSylowQuadraticEnvelope.lean` — binary and
-  all-prime symmetric quadratic bounds.
-- `LisiSabatini/Symmetric.lean` — symmetric endpoint for `n ≥ 40`.
-- `LisiSabatini/SymmetricAxiomAudit.lean` — focused symmetric-endpoint
-  axiom audit.
-- `LisiSabatini/NilpotentTrivialIntersectionAxiomAudit.lean` — focused
-  mixed-Sylow and nilpotent trivial-intersection axiom audit.
-- `LisiSabatini/ThreeConjugatesSynchronization.lean` — definitions for
-  the mixed and same-row three-intersection problems.
-- `LisiSabatini/SolvableThreeSylowSynchronization.lean` — all-solvable
-  three-intersection endpoint.
-- `LisiSabatini/NilpotentIntersectionApplications.lean` — public
-  Fitting-subgroup consequences.
-- `LisiSabatini/SolvableThreeSylowSynchronizationAxiomAudit.lean` —
-  focused public-endpoint axiom audit.
+## License
+
+The project is licensed under [Apache-2.0](LICENSE). Vendored code retains
+its original license and attribution.

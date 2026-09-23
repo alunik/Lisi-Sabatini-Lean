@@ -21,6 +21,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 set_option backward.isDefEq.respectTransparency false
 
 open Subgroup
@@ -29,7 +31,7 @@ open scoped commutatorElement
 private theorem zmod_pow_primePow
     {p : ℕ} (hp : p.Prime) (x : ZMod p) :
     ∀ n : ℕ, x ^ (p ^ n) = x := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   intro n
   induction n with
   | zero => simp
@@ -38,8 +40,8 @@ private theorem zmod_pow_primePow
 
 theorem cyclicIsMulCommutative
     {A : Type*} [Group A] (hA : IsCyclic A) : IsMulCommutative A := by
-  letI : IsCyclic A := hA
-  exact ⟨IsCyclic.commutative⟩
+  let : IsCyclic A := hA
+  exact IsCyclic.isMulCommutative
 
 /-- A `p`-power-order automorphism of a finite cyclic `p`-group fixes its
 prime-order layer.  The hypothesis is phrased as a power relation so that it
@@ -49,10 +51,10 @@ theorem cyclicPGroup_aut_primeKernel_fixed_of_pow_primePower_eq_one
     (hp : p.Prime) (hAp : IsPGroup p A) (hACyclic : IsCyclic A)
     (sigma : MulAut A) (hsigma : sigma ^ (p ^ s) = 1) :
     ∀ a : A, a ^ p = 1 → sigma a = a := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   by_cases hA : Nontrivial A
-  · letI : Nontrivial A := hA
-    letI : IsCyclic A := hACyclic
+  · let : Nontrivial A := hA
+    let : IsCyclic A := hACyclic
     obtain ⟨n, hcard⟩ := IsPGroup.iff_card.mp hAp
     have hn : n ≠ 0 := by
       intro hn0
@@ -140,7 +142,7 @@ theorem cyclicPGroup_aut_primeKernel_fixed_of_pow_primePower_eq_one
       _ = g ^ m := by
         apply pow_eq_pow_iff_modEq.mpr
         simpa [hgOrder] using hkm
-  · haveI : Subsingleton A := not_nontrivial_iff_subsingleton.mp hA
+  · have : Subsingleton A := not_nontrivial_iff_subsingleton.mp hA
     intro a _
     exact Subsingleton.elim _ _
 
@@ -173,7 +175,7 @@ theorem mem_subgroupPrimeKernel_iff
     {G : Type*} [Group G] {p : ℕ} {A : Subgroup G}
     (hAcomm : IsMulCommutative A) (x : G) :
     x ∈ subgroupPrimeKernel p A hAcomm ↔ x ∈ A ∧ x ^ p = 1 := by
-  letI : IsMulCommutative A := hAcomm
+  let : IsMulCommutative A := hAcomm
   constructor
   · intro hx
     change x ∈ ((powMonoidHom p : A →* A).ker).map A.subtype at hx
@@ -212,7 +214,7 @@ theorem frattiniPrimeKernel_characteristic
     {p : ℕ} {P : Type*} [Group P]
     (hPhiCyclic : IsCyclic (frattini P)) :
     (frattiniPrimeKernel p P hPhiCyclic).Characteristic := by
-  letI : IsMulCommutative (frattini P) :=
+  let : IsMulCommutative (frattini P) :=
     cyclicIsMulCommutative hPhiCyclic
   unfold frattiniPrimeKernel subgroupPrimeKernel
   apply characteristic_map_subtype
@@ -230,7 +232,7 @@ theorem frattini_conj_pow_prime_eq_one_of_isCyclic
     let conjPhi : P →* MulAut (frattini P) := MulAut.conjNormal
     (conjPhi x) ^ p = 1 := by
   dsimp only
-  letI : IsMulCommutative (frattini P) :=
+  let : IsMulCommutative (frattini P) :=
     cyclicIsMulCommutative hPhiCyclic
   let conjPhi : P →* MulAut (frattini P) := MulAut.conjNormal
   have hxpowPhi : x ^ p ∈ frattini P :=
@@ -259,7 +261,7 @@ theorem frattini_prime_order_element_mem_center_of_isCyclic
     (hPhiCyclic : IsCyclic (frattini P))
     {z : P} (hzPhi : z ∈ frattini P) (hzpow : z ^ p = 1) :
     z ∈ Subgroup.center P := by
-  letI : IsMulCommutative (frattini P) :=
+  let : IsMulCommutative (frattini P) :=
     cyclicIsMulCommutative hPhiCyclic
   let conjPhi : P →* MulAut (frattini P) := MulAut.conjNormal
   rw [Subgroup.mem_center_iff]
@@ -303,7 +305,7 @@ theorem frattini_commutator_pow_prime_eq_one_of_isCyclic
     (hPhiCyclic : IsCyclic (frattini P))
     (x : P) {c : P} (hc : c ∈ frattini P) :
     ⁅x, c⁆ ^ p = 1 := by
-  letI : IsMulCommutative (frattini P) :=
+  let : IsMulCommutative (frattini P) :=
     cyclicIsMulCommutative hPhiCyclic
   let conjPhi : P →* MulAut (frattini P) := MulAut.conjNormal
   let cPhi : frattini P := ⟨c, hc⟩

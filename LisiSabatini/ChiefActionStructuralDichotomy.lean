@@ -35,7 +35,7 @@ theorem quasiprimitiveLinearAction_or_internalImprimitivityPresentation
       Nonempty (Σ b e : ℕ,
         PrimeFieldPrimitiveInternalImprimitivityPresentation
           r b e (Fin d → ZMod r) K) := by
-  letI : Finite K := finite_linearSubgroup_of_finite K
+  let : Finite K := finite_linearSubgroup_of_finite K
   rcases Clifford.quasiprimitiveLinearAction_or_extractionWitness
       r d K hirr with hqp | hW
   · exact Or.inl hqp

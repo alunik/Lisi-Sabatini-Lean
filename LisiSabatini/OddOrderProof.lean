@@ -19,7 +19,7 @@ in `PrimewiseAffineRegularityCore.lean`.  Historical abstract lifting
 interfaces and materialized block-stabilizer towers are compatibility APIs and
 are not imported here.
 
-The theorem deliberately retains `[IsSolvable G]`.  Feit--Thompson is not
+The theorem deliberately retains `[Group.IsSolvable G]`.  Feit--Thompson is not
 hidden in either its statement or proof.
 -/
 
@@ -37,21 +37,21 @@ For every finite family of prescribed Sylow subgroups at distinct primes,
 one conjugator makes every intersection equal to the corresponding normal
 prime core. -/
 theorem strongLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    {G : Type uG} [Group G] [Finite G] [Group.IsSolvable G]
     (hodd : Odd (Nat.card G)) :
     StrongLisiSabatini.{uG, uI} G := by
   classical
   by_cases hsubsingleton : Subsingleton G
-  · letI : Subsingleton G := hsubsingleton
+  · let : Subsingleton G := hsubsingleton
     exact strongLisiSabatini_of_subsingleton
-  · letI : Nontrivial G :=
+  · let : Nontrivial G :=
       not_subsingleton_iff_nontrivial.mp hsubsingleton
     obtain ⟨N, hN⟩ := exists_minimalNormal (G := G)
-    letI : N.Normal := hN.normal
+    let : N.Normal := hN.normal
     obtain ⟨C, hCN, hrTwo⟩ :=
       hN.exists_oddChiefElementaryAbelianSection hodd
     subst N
-    letI : Fact C.r.Prime := ⟨C.prime⟩
+    let : Fact C.r.Prime := ⟨C.prime⟩
     have hmarked : NormalComponentOrbitAvoidingSynchronization.{uI}
         C.r C.d C.chiefAction :=
       primewiseAffineOrbitAvoidance_of_irreducible.{uI}
@@ -79,7 +79,7 @@ decreasing_by
 /-- The original inclusion-minimal Lisi--Sabatini conclusion for finite
 solvable groups of odd order. -/
 theorem hasLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    {G : Type uG} [Group G] [Finite G] [Group.IsSolvable G]
     (hodd : Odd (Nat.card G)) :
     HasLisiSabatini.{uG, uI} G :=
   StrongLisiSabatini.hasLisiSabatini

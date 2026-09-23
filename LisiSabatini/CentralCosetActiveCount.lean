@@ -57,7 +57,7 @@ theorem card_nonzeroFixingElements_le_quotient_mul_of_coset_active_le
     (Finset.univ : Finset (P ⧸ Z)) q
     (by intro a ha; simp) (by
       intro c hc
-      simpa [← Set.ncard_coe_finset] using hcoset c)
+      simpa only [← Set.ncard_coe_finset, Finset.coe_filter] using hcoset c)
   simpa [Nat.card_eq_fintype_card] using h
 
 /-- Row-normalized form of central-coset active counting. -/

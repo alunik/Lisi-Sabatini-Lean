@@ -1,7 +1,12 @@
 module
 
 public import Mathlib.GroupTheory.QuotientGroup.Basic
-public import Mathlib.Data.Finite.Card
+public import Mathlib.Data.Finset.Attr
+public import Mathlib.Tactic.Bound.Init
+public import Mathlib.Tactic.Common
+public import Mathlib.Tactic.Finiteness.Attr
+public import Mathlib.Tactic.SetLike
+public import Mathlib.Util.CompileInductive
 public import Mathlib.GroupTheory.Index
 public import Mathlib.Algebra.Group.Subgroup.Finite
 
@@ -20,7 +25,7 @@ theorem natCard_comap_quotient_eq_mul
     (C : Subgroup G) (hCnormal : C.Normal)
     (D : Subgroup (G ⧸ C)) :
     Nat.card (D.comap (QuotientGroup.mk' C)) = Nat.card C * Nat.card D := by
-  letI : C.Normal := hCnormal
+  let : C.Normal := hCnormal
   let q : G →* G ⧸ C := QuotientGroup.mk' C
   let M : Subgroup G := D.comap q
   have hCM : C ≤ M := by
@@ -29,7 +34,7 @@ theorem natCard_comap_quotient_eq_mul
     rw [show q c = 1 from (QuotientGroup.eq_one_iff c).mpr hc]
     exact D.one_mem
   let qM : M →* D :=
-    (q.restrict M).codRestrict D (fun x ↦ x.2)
+    (q.comp M.subtype).codRestrict D (fun x ↦ x.2)
   have hqMSurj : Function.Surjective qM := by
     intro d
     obtain ⟨g, hg⟩ := QuotientGroup.mk'_surjective C d.1

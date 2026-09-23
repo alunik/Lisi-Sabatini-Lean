@@ -24,7 +24,7 @@ theorem ncard_orbit_le_natCard
     [Finite W]
     (H : Subgroup (LinearMap.GeneralLinearGroup R W)) (c : W) :
     (MulAction.orbit H c).ncard ≤ Nat.card H := by
-  letI : Finite H := finite_linearSubgroup_of_finite H
+  let : Finite H := finite_linearSubgroup_of_finite H
   rw [MulAction.orbit, ← Set.image_univ]
   simpa using
     (Set.ncard_image_le (f := fun h : H ↦ h • c) (s := Set.univ))

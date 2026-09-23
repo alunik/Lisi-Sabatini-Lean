@@ -1,0 +1,1263 @@
+/-
+Copyright (c) 2026 Yawara Ishida. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yawara Ishida
+-/
+import OddOrder.Peterfalvi.Appendices.Suzuki.PSU3StarEquation
+
+/-!
+# Peterfalvi Part II, Ch. IV §3 (4): `f` is inversion in the unitary coordinates
+
+T. Peterfalvi, *Character Theory for the Odd Order Theorem* (LMS LNS 272, 2000),
+Part II, Ch. IV §3 (4)–(5), pp. 130–131.
+
+Stage (4) says that on the fibre of `ω̄` — the elements `(ω̄, y)` of `Q` with
+`y + y^q = ω̄^{1+q}` — the map `f` is
+
+  `f(ω̄, y) = (ω̄/y, 1/y)`,
+
+and stage (5) removes the restriction to that one fibre.  The proof of (4) reads
+stage (1) in the unitary coordinates: writing `ω = (ω̄, x)` and
+`f(ω̄, x + a) = (ω̄/(a + ζ⁻¹), γ(a))` (the first coordinate being stage (2)),
+comparison of the *second* entries of
+
+  `f(ω̄, x+a)^{ζ⁻¹ a} (0, a) = f(ω̄, x+a)^{ζ⁻²} (ω̄, x)^{ζ⁻¹}`
+
+gives the book's
+
+  `(∗∗)   (a² + 1) γ(a) = x + a + (1 + ζ⁻²)/(a + ζ⁻¹)`   for `a ∈ F − {0}`,
+
+whose `a = 1` instance pins `x = ζ⁻¹` and whose remaining instances then collapse to
+`γ(a) = 1/(a + ζ⁻¹)`.
+
+This file carries the group-theoretic side: reading §2 and §3's identities in the
+unitary coordinates and feeding them to the arithmetic of `PSU3StarEquation`.
+
+## Main results
+
+* `Hypothesis.stepFour_base`, `Hypothesis.stepFour_pointwise`,
+  `Hypothesis.stepFour_at_omega`, `Hypothesis.stepFour_elem`,
+  `Hypothesis.stepFour_cover` — stage (4).
+* `Hypothesis.stepFive_orbit`, `Hypothesis.stepFive_equivariant` — stage (5) along
+  `K W`-orbits; `Hypothesis.sectionTwoStepTwo_coords` for its second case.
+* `Hypothesis.corollaryTwo` — Corollary 2 of §3.
+
+The arithmetic these run on — `(∗∗)` and its consequences — is `PSU3StarEquation`.
+-/
+
+set_option autoImplicit false
+
+namespace OddOrder.Peterfalvi.Appendices.Suzuki
+
+
+namespace Hypothesis
+
+open OddOrder.GroupTheory.RankOneBNPair
+
+variable {G Ω : Type*} [Group G] [MulAction G Ω] [Finite G]
+  (hyp : Hypothesis G Ω) {f g h : G → G}
+
+include hyp
+
+/-- **Stage (2) in the unitary coordinate system**: `f(ω s^a)‾ = ω̄/(μ(a²) + μ(ζ))`
+(Peterfalvi Part II, p. 130 — the first entry of `f(ω̄, x + a)` on p. 131).
+
+`stepTwo_linear` states this as the linear equation `(μ(a²) + μ(ζ)) · X̄ = ω̄` in the
+coordinate `M.coord` of `Q ⧸ Z(Q)`.  `Ψ` reads that coordinate scaled by `e`, so the
+equation survives verbatim, and `mu_K_add_mu_W_ne_zero` divides. -/
+theorem stepTwo_quotient (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    (hC2 : hyp.t * hyp.distinguishedInvolution * hyp.t
+      = hyp.distinguishedInvolution * hyp.t * hyp.distinguishedInvolution)
+    {m : ℕ} (M : hyp.QuotientFieldModel m)
+    (hZ : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    (hmu : Function.Injective M.mu)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    {ζ ω a : G} (hζ : ζ ∈ hyp.W) (hζ1 : (⟨ζ, hζ⟩ : ↥hyp.W) ≠ 1)
+    (hωQ : ω ∈ hyp.Q) (hωQ0 : ω ∉ hyp.Q0) (haK : a ∈ hyp.KSet) (ha2 : a ^ 2 ∈ hyp.K)
+    (hf : f ω = ζ⁻¹ * ω⁻¹ * ζ) (hhW : h ω ∈ hyp.W)
+    (hXQ : f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q) :
+    (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩).quotient
+      = (Ψ ⟨ω, hωQ⟩).quotient /
+        (((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E)
+          + ((M.mu (1, ⟨ζ, hζ⟩) : M.Eˣ) : M.E)) := by
+  have hne := hyp.mu_K_add_mu_W_ne_zero M hmu hζ1 (hyp.kActor ha2)
+  have hlin := hyp.stepTwo_linear H hC2 M hZ hmu hζ hωQ hωQ0 haK ha2 hf hhW hXQ
+  rw [eq_div_iff hne, mul_comm]
+  rw [hΨq, hΨq, hquot, hquot]
+  rw [show M.coord (Additive.ofMul (QuotientGroup.mk'
+        (Subgroup.center hyp.Q)
+        (⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩ : ↥hyp.Q)))
+      = M.coord (Additive.ofMul (QuotientGroup.mk
+        (⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩ : ↥hyp.Q))) from rfl,
+    show M.coord (Additive.ofMul (QuotientGroup.mk'
+        (Subgroup.center hyp.Q) (⟨ω, hωQ⟩ : ↥hyp.Q)))
+      = M.coord (Additive.ofMul (QuotientGroup.mk (⟨ω, hωQ⟩ : ↥hyp.Q))) from rfl]
+  linear_combination e * hlin
+
+/-- **Stage (3) in the unitary coordinate system**: `ω̄^{1+q} = ν · c(ω²)`
+(Peterfalvi Part II, p. 130: `ω² = (0, ζ + ζ⁻¹)`).
+
+The cocycle being Hermitian, the square of an element of `Q` is central with unitary
+coordinate the norm of its quotient coordinate (`unitaryCoord_sq`); reading the same
+element through the centre gives `ν` times its `centerCoord`.  With the book's
+normalization `ν · c(s) = 1` the right-hand side is `c(ω²)/c(s)`, which is exactly the
+`α` that `stepThree` evaluates as `μ(ζ) + μ(ζ)⁻¹`. -/
+theorem stepThree_quotient_norm {m : ℕ} (sfive : hyp.LemmaFiveSetup m)
+    (M : hyp.QuotientFieldModel m)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    {ω y : G} (hωQ : ω ∈ hyp.Q) (hyQ0 : y ∈ hyp.Q0) (hsq : ω * ω = y) :
+    (Ψ ⟨ω, hωQ⟩).quotient ^ (2 ^ m + 1)
+      = (ν : M.E) * hyp.centerCoord sfive M ι hyQ0 := by
+  have hval : (⟨ω, hωQ⟩ : ↥hyp.Q) ^ 2
+      = ((hyp.toCenter sfive hyQ0 : ↥(Subgroup.center hyp.Q)) : ↥hyp.Q) := by
+    refine Subtype.ext ?_
+    rw [pow_two]
+    exact hsq
+  calc (Ψ ⟨ω, hωQ⟩).quotient ^ (2 ^ m + 1)
+      = (Ψ ⟨ω, hωQ⟩).quotient * (Ψ ⟨ω, hωQ⟩).quotient ^ 2 ^ m := by
+        rw [pow_succ]; ring
+    _ = Suzuki2Groups.unitaryCoord m u ((Ψ ⟨ω, hωQ⟩) ^ 2) :=
+        (Suzuki2Groups.unitaryCoord_sq m M.card hu _).symm
+    _ = Suzuki2Groups.unitaryCoord m u
+          (Ψ ((hyp.toCenter sfive hyQ0 : ↥(Subgroup.center hyp.Q)) : ↥hyp.Q)) := by
+        rw [← map_pow, hval]
+    _ = (ν : M.E) * hyp.centerCoord sfive M ι hyQ0 :=
+        hyp.unitaryCoord_toCenter sfive M Φ ι hker hu Ψ hΨq hΨc hyQ0
+
+/-- **§3 (4)'s `(∗∗)`** (Peterfalvi Part II, p. 131), assembled.
+
+Stage (1), pushed through `Ψ` and read on the second unitary entries, is
+
+  `(A² + 1) γ = x + A + (1 + Z²)/(A + Z)`,   `A = μ(a²)`,  `Z = μ(ζ)`,
+
+`γ` and `x` being the unitary coordinates of `f(ω s^a)` and of `ω`.  The four factors'
+coordinates come from the scalar action: conjugation by `kv` multiplies the quotient
+coordinate by `μ(kv)` and the unitary one by `μ(kv)^{1+q} = μ(kv₁, 1)²` (`mu_norm_eq`),
+so the `ζ`-conjugations leave the second entry alone and only `a²` survives.  The
+central factor `s^a` contributes `A` on the nose, given the book's normalization
+`ν · c(s) = 1`; and stage (2) (`stepTwo_quotient`) supplies the quotient coordinate of
+`f(ω s^a)`.
+
+The identification `Z = μ(1, ζ)` of the book's `ζ⁻¹` is why `hstage3` reads
+`ω̄^{1+q} = Z + Z⁻¹`. -/
+theorem stepFour_star (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    (hC2 : hyp.t * hyp.distinguishedInvolution * hyp.t
+      = hyp.distinguishedInvolution * hyp.t * hyp.distinguishedInvolution)
+    {m : ℕ} (sfive : hyp.LemmaFiveSetup m) (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    (hmu : Function.Injective M.mu)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {ζ ω a : G} (hζ : ζ ∈ hyp.W) (hζ1 : (⟨ζ, hζ⟩ : ↥hyp.W) ≠ 1)
+    (hωQ : ω ∈ hyp.Q) (hωQ0 : ω ∉ hyp.Q0) (haK : a ∈ hyp.K) (ha2 : a ^ 2 ∈ hyp.K)
+    (hf : f ω = ζ⁻¹ * ω⁻¹ * ζ) (hhW : h ω ∈ hyp.W)
+    (hXQ : f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q)
+    (hstage3 : (Ψ ⟨ω, hωQ⟩).quotient ^ (2 ^ m + 1)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+        + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹) :
+    (((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E) ^ 2 + 1) *
+        Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩)
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+        + ((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E)
+        + (1 + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2)
+          / (((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E)
+            + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)) := by
+  classical
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  have haKSet : a ∈ hyp.KSet := by rw [← hyp.coe_K]; exact haK
+  have hzQ0 : a * hyp.distinguishedInvolution * a⁻¹ ∈ hyp.Q0 :=
+    hyp.conj_mem_Q0_of_mem_D (hyp.K_le_D haK) hyp.distinguishedInvolution_mem_Q0
+  -- ### the chain of stage (1), transported by `Ψ`
+  have hchain0 := hyp.stepOne_conjQHom H hC2 M hZc hmu hζ hωQ hωQ0 haKSet ha2 hf hhW hXQ
+  rw [hyp.kActor_one hyp.K.one_mem] at hchain0
+  have heq := congrArg Ψ hchain0
+  rw [map_mul, map_mul] at heq
+  -- ### the scalars
+  have hZ0 : ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ≠ 0 :=
+    Units.ne_zero _
+  have hZnorm :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ (2 ^ m + 1)
+        = 1 := by
+    have h := congrArg (fun x : M.Eˣ => (x : M.E)) (M.mu_W_normOne (⟨ζ, hζ⟩ : ↥hyp.W))
+    simpa using h
+  have hZmul :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) *
+        ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2 ^ m
+      = 1 := by
+    rw [← pow_succ']
+    exact hZnorm
+  have hone : ((M.mu ((1 : ↥hyp.actualKActor), (1 : ↥hyp.W)) : M.Eˣ) : M.E) = 1 := by
+    rw [show ((1 : ↥hyp.actualKActor), (1 : ↥hyp.W)) = 1 from rfl, map_one, Units.val_one]
+  have hζsq : (⟨ζ ^ 2, hyp.W.pow_mem hζ 2⟩ : ↥hyp.W) = (⟨ζ, hζ⟩ : ↥hyp.W) ^ 2 :=
+    Subtype.ext (SubmonoidClass.coe_pow (⟨ζ, hζ⟩ : ↥hyp.W) 2).symm
+  have hmuZ2 : ((M.mu ((1 : ↥hyp.actualKActor),
+        (⟨ζ ^ 2, hyp.W.pow_mem hζ 2⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2 := by
+    rw [hζsq, show ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W) ^ 2)
+        = ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) ^ 2 from
+      Prod.ext (one_pow 2).symm rfl, map_pow, Units.val_pow_eq_pow_val]
+  -- ### the four coordinates
+  have hL₁y : Suzuki2Groups.unitaryCoord m u
+      (Ψ (hyp.conjQHom (hyp.kActor ha2, (⟨ζ, hζ⟩ : ↥hyp.W))
+        ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩))
+      = ((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E) ^ 2 *
+        Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩) := by
+    rw [hconjy, hyp.mu_norm_eq M]
+  have hSaeq : (⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩ : ↥hyp.Q)
+      = ((hyp.toCenter sfive hzQ0 : ↥(Subgroup.center hyp.Q)) : ↥hyp.Q) := rfl
+  have hL₂q : (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹,
+      hyp.Q0_le_Q hzQ0⟩).quotient = 0 := by
+    rw [hSaeq, hΨq, hker]
+    exact mul_zero e
+  have hL₂y : Suzuki2Groups.unitaryCoord m u
+      (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩)
+      = ((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E) := by
+    rw [hSaeq, hyp.unitaryCoord_toCenter sfive M Φ ι hker hu Ψ hΨq hΨc hzQ0,
+      hyp.centerCoord_conj_eq_mu_sq sfive M ι d hequiv hdsq haK
+        hyp.distinguishedInvolution_mem_Q0]
+    linear_combination ((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E) * hs
+  have hR₁y : Suzuki2Groups.unitaryCoord m u
+      (Ψ (hyp.conjQHom ((1 : ↥hyp.actualKActor),
+          (⟨ζ ^ 2, hyp.W.pow_mem hζ 2⟩ : ↥hyp.W))
+        ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩))
+      = Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩) := by
+    rw [hconjy, hyp.mu_norm_eq M, hone, one_pow, one_mul]
+  have hR₂y : Suzuki2Groups.unitaryCoord m u
+      (Ψ (hyp.conjQHom ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) ⟨ω, hωQ⟩))
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) := by
+    rw [hconjy, hyp.mu_norm_eq M, hone, one_pow, one_mul]
+  have hR₂q : (Ψ (hyp.conjQHom ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W))
+      ⟨ω, hωQ⟩)).quotient
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) *
+        (Ψ ⟨ω, hωQ⟩).quotient := hconjq _ _
+  have hR₁q : (Ψ (hyp.conjQHom ((1 : ↥hyp.actualKActor),
+      (⟨ζ ^ 2, hyp.W.pow_mem hζ 2⟩ : ↥hyp.W))
+      ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hXQ⟩)).quotient
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2 *
+          (Ψ ⟨ω, hωQ⟩).quotient
+        / (((M.mu (hyp.kActor ha2, 1) : M.Eˣ) : M.E)
+          + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)) := by
+    rw [hconjq, hmuZ2,
+      hyp.stepTwo_quotient H hC2 M hZc hmu Φ hquot hu Ψ hΨq hζ hζ1 hωQ hωQ0
+        haKSet ha2 hf hhW hXQ, mul_div_assoc]
+  -- ### stage (3), as the norm of the quotient coordinate
+  have hω : (Ψ ⟨ω, hωQ⟩).quotient * (Ψ ⟨ω, hωQ⟩).quotient ^ 2 ^ m
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+        + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹ := by
+    rw [← pow_succ']
+    exact hstage3
+  exact star_of_chain m M.card hu h2 hZ0 hZmul hω hL₂q hL₁y hL₂y hR₁y hR₁q hR₂y hR₂q heq
+
+/-- **§3 (4), the base point**: `ω = (ω̄, ζ⁻¹)` (Peterfalvi Part II, p. 131: "For
+`a = 1`, this becomes `0 = x + 1 + (1 + ζ⁻¹) = x + ζ⁻¹`, whence `x = ζ⁻¹`").
+
+One instance of `(∗∗)` suffices, the one at the `a ∈ K` whose scalar `μ(a²)` is `1`;
+`exists_mem_K_mu_sq_eq` provides it. -/
+theorem stepFour_base (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    (hC2 : hyp.t * hyp.distinguishedInvolution * hyp.t
+      = hyp.distinguishedInvolution * hyp.t * hyp.distinguishedInvolution)
+    {m : ℕ} (sfive : hyp.LemmaFiveSetup m) (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    (hmu : Function.Injective M.mu)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {ζ ω : G} (hζ : ζ ∈ hyp.W) (hζ1 : (⟨ζ, hζ⟩ : ↥hyp.W) ≠ 1)
+    (hωQ : ω ∈ hyp.Q) (hωQ0 : ω ∉ hyp.Q0) (hf : f ω = ζ⁻¹ * ω⁻¹ * ζ) (hhW : h ω ∈ hyp.W)
+    (hstage3 : (Ψ ⟨ω, hωQ⟩).quotient ^ (2 ^ m + 1)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+        + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹)
+    (hm : m ≠ 0) (hQ0card : Nat.card ↥hyp.Q0 = 2 ^ m)
+    (hfQ : ∀ a : G, a ∈ hyp.K →
+      f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q) :
+    Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) := by
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  obtain ⟨a, haK, hAeq⟩ := hyp.exists_mem_K_mu_sq_eq hm hQ0card sfive M
+    (one_mem _) one_ne_zero
+  have hval := hyp.stepFour_star H hC2 sfive M hZc hmu Φ hquot ι hker hu Ψ hΨq hΨc
+    hconjq hconjy d hequiv hdsq hs hζ hζ1 hωQ hωQ0 haK (pow_mem haK 2) hf hhW
+    (hfQ a haK) hstage3
+  have hne := hyp.mu_K_add_mu_W_ne_zero M hmu hζ1 (hyp.kActor (pow_mem haK 2))
+  rw [hAeq] at hval hne
+  exact eq_of_star_at_one h2 hne hval
+
+/-- **§3 (4), the value at one point of the fibre**: the second unitary coordinate of
+`f(ω s^a)` is `1/(μ(a²) + ζ⁻¹)` (Peterfalvi Part II, p. 131).
+
+`stepFour_star` gives `(∗∗)` at this `a`, and `inv_of_star` solves it once the base
+point is known (`stepFour_base`).  The excluded `μ(a²) = 1` is the book's `a = 1`. -/
+theorem stepFour_pointwise (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    (hC2 : hyp.t * hyp.distinguishedInvolution * hyp.t
+      = hyp.distinguishedInvolution * hyp.t * hyp.distinguishedInvolution)
+    {m : ℕ} (sfive : hyp.LemmaFiveSetup m) (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    (hmu : Function.Injective M.mu)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {ζ ω : G} (hζ : ζ ∈ hyp.W) (hζ1 : (⟨ζ, hζ⟩ : ↥hyp.W) ≠ 1)
+    (hωQ : ω ∈ hyp.Q) (hωQ0 : ω ∉ hyp.Q0) (hf : f ω = ζ⁻¹ * ω⁻¹ * ζ) (hhW : h ω ∈ hyp.W)
+    (hstage3 : (Ψ ⟨ω, hωQ⟩).quotient ^ (2 ^ m + 1)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+        + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹)
+    (hx : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E))
+    {a : G} (haK : a ∈ hyp.K)
+    (ha1 : ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) ≠ 1)
+    (hfQ : f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q) :
+    Suzuki2Groups.unitaryCoord m u
+        (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hfQ⟩)
+      = (((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E)
+        + ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E))⁻¹ := by
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  exact inv_of_star h2 (hyp.mu_K_add_mu_W_ne_zero M hmu hζ1 _) ha1 hx
+    (hyp.stepFour_star H hC2 sfive M hZc hmu Φ hquot ι hker hu Ψ hΨq hΨc
+      hconjq hconjy d hequiv hdsq hs hζ hζ1 hωQ hωQ0 haK (pow_mem haK 2) hf hhW
+      hfQ hstage3)
+
+/-- **Stage (4) at the excluded point `A = 0`**, that is at `ω` itself (Peterfalvi
+Part II, p. 131: "For `y = ζ⁻¹`, `(ω̄, y) = ω` and again we obtain
+`f(ω) = ω^{-ζ} = (ω̄, ζ)^ζ = (ω̄/y, 1/y)`").
+
+There is nothing to solve here — the standing hypothesis `f(ω) = ζ⁻¹ ω⁻¹ ζ` already
+gives `f(ω)` as a conjugate of `ω⁻¹`, and the two coordinates come out directly:
+inversion `q`-powers the unitary coordinate (`unitaryCoord_inv`) and the conjugation
+multiplies it by the norm of `μ(1, ζ⁻¹)`, which is `1`.  With `y = Z` the answer
+`(Z⁻¹ ω̄, Z⁻¹)` is `(ω̄/y, 1/y)`.
+
+Note the direction: the book's `x^d` is `d⁻¹ x d`, so its `ζ` is conjugation by `ζ⁻¹`
+here, whose scalar is `μ(1, ζ)⁻¹ = Z⁻¹`. -/
+theorem stepFour_at_omega {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    {ζ ω : G} (hζ : ζ ∈ hyp.W) (hωQ : ω ∈ hyp.Q) (hf : f ω = ζ⁻¹ * ω⁻¹ * ζ)
+    (hfωQ : f ω ∈ hyp.Q)
+    (hx : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)) :
+    (Ψ ⟨f ω, hfωQ⟩).quotient
+        = (Ψ ⟨ω, hωQ⟩).quotient / Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) ∧
+      Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ω, hfωQ⟩)
+        = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩))⁻¹ := by
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  have hZ0 : ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ≠ 0 :=
+    Units.ne_zero _
+  have hZnorm :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ (2 ^ m + 1)
+        = 1 := by
+    have h := congrArg (fun x : M.Eˣ => (x : M.E)) (M.mu_W_normOne (⟨ζ, hζ⟩ : ↥hyp.W))
+    simpa using h
+  have hZq :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2 ^ m
+        = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹ := by
+    field_simp
+    rw [← pow_succ]
+    exact hZnorm
+  -- the scalar of the conjugation is `Z⁻¹`
+  have hkv : ((M.mu (hyp.kActor hyp.K.one_mem,
+        (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹ := by
+    rw [hyp.kActor_one hyp.K.one_mem,
+      show ((1 : ↥hyp.actualKActor), (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W))
+        = ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W))⁻¹ from
+      Prod.ext (inv_one (G := ↥hyp.actualKActor)).symm (Subtype.ext rfl),
+      map_inv, Units.val_inv_eq_inv_val]
+  have hnorm1 : ((M.mu (hyp.kActor hyp.K.one_mem,
+      (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ (2 ^ m + 1) = 1 := by
+    rw [hyp.mu_norm_eq M, hyp.kActor_one hyp.K.one_mem,
+      show ((1 : ↥hyp.actualKActor), (1 : ↥hyp.W)) = 1 from rfl, map_one,
+      Units.val_one, one_pow]
+  -- `f(ω)` is the conjugate of `ω⁻¹` by `ζ⁻¹`
+  have hfeq : (⟨f ω, hfωQ⟩ : ↥hyp.Q)
+      = hyp.conjQHom (hyp.kActor hyp.K.one_mem,
+          (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) (⟨ω, hωQ⟩ : ↥hyp.Q)⁻¹ := by
+    refine Subtype.ext ?_
+    rw [hyp.conjQHom_kActor_apply_val hyp.K.one_mem (hyp.W.inv_mem hζ)]
+    change f ω = 1 * ζ⁻¹ * ω⁻¹ * (1 * ζ⁻¹)⁻¹
+    rw [hf]
+    group
+  constructor
+  · have hneg : -(Ψ (⟨ω, hωQ⟩ : ↥hyp.Q)).quotient
+        = (Ψ (⟨ω, hωQ⟩ : ↥hyp.Q)).quotient := by
+      linear_combination (-(Ψ (⟨ω, hωQ⟩ : ↥hyp.Q)).quotient) * h2
+    rw [hfeq, hconjq, map_inv, Suzuki2Groups.BilinearTwistedProduct.quotient_inv, hkv,
+      hx, hneg, div_eq_mul_inv, mul_comm]
+  · rw [hfeq, hconjy, map_inv,
+      Suzuki2Groups.unitaryCoord_inv m M.card hu, hnorm1, one_mul, hx, hZq]
+
+/-- **Moving along the fibre adds `μ(a²)` to the unitary coordinate**: `ω s^a` is the
+book's `(ω̄, x + a)` (Peterfalvi Part II, p. 131).
+
+Right multiplication by a central element shifts the unitary coordinate by that
+element's own coordinate (the cocycle term drops out, the quotient coordinate of a
+central element being `0`), and that coordinate is `μ(a²)` once the centre is
+normalized so that `s = (0, 1)`. -/
+theorem unitaryCoord_mul_conj {m : ℕ} (sfive : hyp.LemmaFiveSetup m)
+    (M : hyp.QuotientFieldModel m)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {ω a : G} (hωQ : ω ∈ hyp.Q) (haK : a ∈ hyp.K)
+    (hprodQ : ω * (a * hyp.distinguishedInvolution * a⁻¹) ∈ hyp.Q) :
+    Suzuki2Groups.unitaryCoord m u
+        (Ψ ⟨ω * (a * hyp.distinguishedInvolution * a⁻¹), hprodQ⟩)
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+        + ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) := by
+  have hzQ0 : a * hyp.distinguishedInvolution * a⁻¹ ∈ hyp.Q0 :=
+    hyp.conj_mem_Q0_of_mem_D (hyp.K_le_D haK) hyp.distinguishedInvolution_mem_Q0
+  have hSaeq : (⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩ : ↥hyp.Q)
+      = ((hyp.toCenter sfive hzQ0 : ↥(Subgroup.center hyp.Q)) : ↥hyp.Q) := rfl
+  have hcq : (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹,
+      hyp.Q0_le_Q hzQ0⟩).quotient = 0 := by
+    rw [hSaeq, hΨq, hker]
+    exact mul_zero e
+  have hcy : Suzuki2Groups.unitaryCoord m u
+      (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩)
+      = ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) := by
+    rw [hSaeq, hyp.unitaryCoord_toCenter sfive M Φ ι hker hu Ψ hΨq hΨc hzQ0,
+      hyp.centerCoord_conj_eq_mu_sq sfive M ι d hequiv hdsq haK
+        hyp.distinguishedInvolution_mem_Q0]
+    linear_combination ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) * hs
+  have hmul : (⟨ω * (a * hyp.distinguishedInvolution * a⁻¹), hprodQ⟩ : ↥hyp.Q)
+      = (⟨ω, hωQ⟩ : ↥hyp.Q) *
+        ⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩ := Subtype.ext rfl
+  rw [hmul, map_mul, Suzuki2Groups.unitaryCoord_mul m M.card hu, hcq, hcy,
+    zero_pow (by positivity), mul_zero, add_zero]
+
+/-- **The fibre of `ω̄` is `{ω} ∪ {ω s^a : a ∈ K}`** (Peterfalvi Part II, p. 131: the
+elements `(ω̄, y)` over which stage (4) quantifies).
+
+Elements of `Q` with the same quotient coordinate differ by an element of `Q₀`
+(`exists_mem_Q0_mul_of_quotient_eq`), and `K` is transitive on `Q₀^#`
+(`exists_mem_KSet_conj_eq_of_mem_Q0`), so the fibre is swept by `a ↦ ω s^a` together
+with `ω` itself. -/
+theorem eq_or_exists_conj_mul_of_quotient_eq {m : ℕ} (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} (hene : e ≠ 0)
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    {ρ ω : G} (hρQ : ρ ∈ hyp.Q) (hωQ : ω ∈ hyp.Q)
+    (h : (Ψ ⟨ρ, hρQ⟩).quotient = (Ψ ⟨ω, hωQ⟩).quotient) :
+    ρ = ω ∨ ∃ (a : G) (_ : a ∈ hyp.K),
+      ρ = ω * (a * hyp.distinguishedInvolution * a⁻¹) := by
+  -- the two coordinates agree, hence the two classes
+  have hcoord : M.coord (Additive.ofMul
+        (QuotientGroup.mk' (Subgroup.center hyp.Q) (⟨ρ, hρQ⟩ : ↥hyp.Q)))
+      = M.coord (Additive.ofMul
+        (QuotientGroup.mk' (Subgroup.center hyp.Q) (⟨ω, hωQ⟩ : ↥hyp.Q))) := by
+    rw [← hquot, ← hquot]
+    exact mul_left_cancel₀ hene (by rw [← hΨq, ← hΨq]; exact h)
+  have hmk : (QuotientGroup.mk (⟨ω, hωQ⟩ : ↥hyp.Q) :
+      ↥hyp.Q ⧸ Subgroup.center hyp.Q) = QuotientGroup.mk ⟨ρ, hρQ⟩ :=
+    (M.coord.injective hcoord).symm
+  obtain ⟨w, hwQ0, hw⟩ := hyp.exists_mem_Q0_mul_of_quotient_eq hZc hωQ hρQ hmk
+  by_cases hw1 : w = 1
+  · exact Or.inl (by rw [hw, hw1, mul_one])
+  · obtain ⟨k, hkSet, hk⟩ := hyp.exists_mem_KSet_conj_eq_of_mem_Q0 hwQ0 hw1
+    have hkK : k ∈ hyp.K := by rw [← hyp.coe_K] at hkSet; exact hkSet
+    refine Or.inr ⟨k⁻¹, hyp.K.inv_mem hkK, ?_⟩
+    rw [hw, ← hk]
+    group
+
+/-- **§3 (4), on elements**: `f(ω̄, y) = (ω̄/y, 1/y)` for every element of the fibre of
+`ω̄` other than the one excluded point (Peterfalvi Part II, p. 131).
+
+The pointwise conclusions of `stepFour_pointwise`, `stepTwo_quotient` and
+`stepFour_at_omega` are transported to elements by the parametrization of the fibre: an
+element with the same quotient coordinate as `ω` is `ω` itself or `ω s^a`, and its
+unitary coordinate is `x + μ(a²)` (`unitaryCoord_mul_conj`).  The excluded point is
+`y = x + 1`, i.e. `μ(a²) = 1`; the book recovers it by re-running the argument with
+`ω⁻¹` and `ζ⁻¹`, which moves the exclusion to `x⁻¹ + 1 ≠ x + 1` (`mu_W_ne_inv`). -/
+theorem stepFour_elem {m : ℕ} (sfive : hyp.LemmaFiveSetup m)
+    (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} (hene : e ≠ 0)
+    {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {ω : G} (hωQ : ω ∈ hyp.Q)
+    (hpt : ∀ (a : G) (haK : a ∈ hyp.K)
+      (hfQ : f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q),
+      ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) ≠ 1 →
+      Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hfQ⟩)
+        = (((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E)
+          + Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩))⁻¹)
+    (hquotf : ∀ (a : G) (haK : a ∈ hyp.K)
+      (hfQ : f (ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q),
+      (Ψ ⟨f (ω * (a * hyp.distinguishedInvolution * a⁻¹)), hfQ⟩).quotient
+        = (Ψ ⟨ω, hωQ⟩).quotient
+          / (((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E)
+            + Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)))
+    (homega : ∀ hfωQ : f ω ∈ hyp.Q,
+      (Ψ ⟨f ω, hfωQ⟩).quotient
+          = (Ψ ⟨ω, hωQ⟩).quotient /
+            Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) ∧
+        Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ω, hfωQ⟩)
+          = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩))⁻¹)
+    {ρ : G} (hρQ : ρ ∈ hyp.Q) (hfρQ : f ρ ∈ hyp.Q)
+    (hfib : (Ψ ⟨ρ, hρQ⟩).quotient = (Ψ ⟨ω, hωQ⟩).quotient)
+    (hne : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩)
+      ≠ Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) + 1) :
+    (Ψ ⟨f ρ, hfρQ⟩).quotient
+        = (Ψ ⟨ω, hωQ⟩).quotient / Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ∧
+      Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfρQ⟩)
+        = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹ := by
+  obtain hcase | ⟨a, haK, hρ⟩ :=
+    hyp.eq_or_exists_conj_mul_of_quotient_eq M hZc Φ hquot hu Ψ hene hΨq hρQ hωQ hfib
+  · subst hcase
+    exact homega hfρQ
+  · subst hρ
+    have hy := hyp.unitaryCoord_mul_conj sfive M Φ ι hker hu Ψ hΨq hΨc d hequiv hdsq
+      hs hωQ haK hρQ
+    have hA1 : ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) ≠ 1 := by
+      intro hc
+      exact hne (by rw [hy, hc])
+    refine ⟨?_, ?_⟩
+    · rw [hquotf a haK hfρQ, hy]
+      congr 1
+      exact add_comm _ _
+    · rw [hpt a haK hfρQ hA1, hy]
+      congr 1
+      exact add_comm _ _
+
+/-- **The base point of Corollary 2 exists** (Peterfalvi Part II, Ch. IV §3,
+Corollary 2, p. 132: "As `ζ⁻¹ + ζ^{-q} ≠ 0`, there is an element `ω̄ ∈ E − {0}` such
+that `ω̄^{1+q} = ζ⁻¹ + ζ^{-q}`.  Then `ω = (ω̄, ζ⁻¹) ∈ Q`").
+
+`μ(ζ) + μ(ζ)⁻¹` is the trace of `μ(ζ)`, so it lies in `F` and — for `ζ ≠ 1` — is
+nonzero; a square root inside `F` is a norm-one-shaped preimage, since the Hermitian
+norm restricted to `F` *is* squaring.  The resulting pair `(ω̄, μ(ζ))` satisfies the
+defining relation `Tr y = ω̄ ω̄̄` of the unitary coordinates, so `ofUnitary` builds the
+element. -/
+theorem exists_normPreimage_of_mem_W {m : ℕ} (M : hyp.QuotientFieldModel m)
+    (hmu : Function.Injective M.mu) {ζ : ↥hyp.W} (hζ1 : ζ ≠ 1) :
+    ∃ r : M.E, r ≠ 0 ∧
+      OddOrder.FiniteField.frobTrace (E := M.E) m ((M.mu (1, ζ) : M.Eˣ) : M.E)
+        = r * r ^ 2 ^ m := by
+  classical
+  have hmem := hyp.mu_W_add_inv_mem_frobFixed M ζ
+  have hne := hyp.mu_W_add_inv_ne_zero M hmu hζ1
+  -- a square root inside `F`
+  obtain ⟨r, hr⟩ := (frobeniusEquiv
+    ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m) 2).surjective
+    (⟨_, hmem⟩ : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+  have hrval : ((r : M.E)) ^ 2
+      = ((M.mu (1, ζ) : M.Eˣ) : M.E) + ((M.mu (1, ζ) : M.Eˣ) : M.E)⁻¹ :=
+    congrArg Subtype.val hr
+  have hr0 : ((r : M.E)) ≠ 0 := by
+    intro hc
+    exact hne (by rw [← hrval, hc]; ring)
+  have hrfix : ((r : M.E)) ^ 2 ^ m = (r : M.E) :=
+    OddOrder.FiniteField.mem_frobFixedSubfield.mp r.2
+  refine ⟨(r : M.E), hr0, ?_⟩
+  -- `Tr μ(ζ) = μ(ζ) + μ(ζ)^q = μ(ζ) + μ(ζ)⁻¹`
+  have hZnorm : ((M.mu (1, ζ) : M.Eˣ) : M.E) ^ (2 ^ m + 1) = 1 := by
+    have h := congrArg (fun x : M.Eˣ => (x : M.E)) (M.mu_W_normOne ζ)
+    simpa using h
+  have hZq : ((M.mu (1, ζ) : M.Eˣ) : M.E) ^ 2 ^ m
+      = ((M.mu (1, ζ) : M.Eˣ) : M.E)⁻¹ := by
+    have hZ0 : ((M.mu (1, ζ) : M.Eˣ) : M.E) ≠ 0 := Units.ne_zero _
+    field_simp
+    rw [← pow_succ]
+    exact hZnorm
+  rw [OddOrder.FiniteField.frobTrace_apply, hZq, ← hrval, pow_two, hrfix]
+
+/-- **The converse of `stepFour_at_omega`**: the inversion formula at a point whose
+unitary coordinate is `μ(ζ)` *forces* `f(ω) = ω^{-ζ}` (Peterfalvi Part II, Ch. IV §3,
+Corollary 2, p. 132).
+
+Corollary 2 constructs `ω = (ω̄, ζ⁻¹)` from `ζ` and reads `f(ω) = (ζ ω̄, ζ) = ω^{-ζ}` off
+stage (5).  This is that reading: both `f(ω)` and `ζ⁻¹ ω⁻¹ ζ` have quotient coordinate
+`μ(ζ)⁻¹ ω̄` and unitary coordinate `μ(ζ)⁻¹`, and the two coordinates determine the
+element (`eq_of_unitaryCoord_eq`).
+
+Unlike `stepFour_at_omega` this needs no standing hypothesis on `f`; the conjugate's
+coordinates are computed outright. -/
+theorem f_eq_conj_inv_of_inverseFormula {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    {ζ ω : G} (hζ : ζ ∈ hyp.W) (hωQ : ω ∈ hyp.Q) (hfωQ : f ω ∈ hyp.Q)
+    (hx : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E))
+    (h1 : (Ψ ⟨f ω, hfωQ⟩).quotient
+      = (Ψ ⟨ω, hωQ⟩).quotient / Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩))
+    (h2 : Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ω, hfωQ⟩)
+      = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩))⁻¹) :
+    f ω = ζ⁻¹ * ω⁻¹ * ζ := by
+  have hZ0 : ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ≠ 0 :=
+    Units.ne_zero _
+  have hZnorm :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ (2 ^ m + 1)
+        = 1 := by
+    have h := congrArg (fun x : M.Eˣ => (x : M.E)) (M.mu_W_normOne (⟨ζ, hζ⟩ : ↥hyp.W))
+    simpa using h
+  have hZq :
+      ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ 2 ^ m
+        = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹ := by
+    field_simp
+    rw [← pow_succ]
+    exact hZnorm
+  have hkv : ((M.mu (hyp.kActor hyp.K.one_mem,
+        (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)
+      = ((M.mu ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E)⁻¹ := by
+    rw [hyp.kActor_one hyp.K.one_mem,
+      show ((1 : ↥hyp.actualKActor), (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W))
+        = ((1 : ↥hyp.actualKActor), (⟨ζ, hζ⟩ : ↥hyp.W))⁻¹ from
+      Prod.ext (inv_one (G := ↥hyp.actualKActor)).symm (Subtype.ext rfl),
+      map_inv, Units.val_inv_eq_inv_val]
+  have hnorm1 : ((M.mu (hyp.kActor hyp.K.one_mem,
+      (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) ^ (2 ^ m + 1) = 1 := by
+    rw [hyp.mu_norm_eq M, hyp.kActor_one hyp.K.one_mem,
+      show ((1 : ↥hyp.actualKActor), (1 : ↥hyp.W)) = 1 from rfl, map_one,
+      Units.val_one, one_pow]
+  have hωinvQ : ω⁻¹ ∈ hyp.Q := hyp.Q.inv_mem hωQ
+  -- the conjugate, and its two coordinates
+  set T : ↥hyp.Q := hyp.conjQHom (hyp.kActor hyp.K.one_mem,
+    (⟨ζ⁻¹, hyp.W.inv_mem hζ⟩ : ↥hyp.W)) (⟨ω, hωQ⟩ : ↥hyp.Q)⁻¹ with hT
+  have hTval : (T : G) = ζ⁻¹ * ω⁻¹ * ζ := by
+    rw [hT, hyp.conjQHom_kActor_apply_val hyp.K.one_mem (hyp.W.inv_mem hζ)]
+    change 1 * ζ⁻¹ * ω⁻¹ * (1 * ζ⁻¹)⁻¹ = ζ⁻¹ * ω⁻¹ * ζ
+    group
+  have hTq : (Ψ T).quotient = (Ψ ⟨f ω, hfωQ⟩).quotient := by
+    rw [hT, hconjq, map_inv, Suzuki2Groups.BilinearTwistedProduct.quotient_inv,
+      hkv, h1, hx, div_eq_mul_inv, mul_comm]
+    congr 1
+    have h2E : (2 : M.E) = 0 := by
+      have := M.charTwo
+      simpa using (CharP.cast_eq_zero M.E 2)
+    linear_combination (-(Ψ (⟨ω, hωQ⟩ : ↥hyp.Q)).quotient) * h2E
+  have hTy : Suzuki2Groups.unitaryCoord m u (Ψ T)
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ω, hfωQ⟩) := by
+    rw [hT, hconjy, map_inv, Suzuki2Groups.unitaryCoord_inv m M.card hu, hnorm1,
+      one_mul, h2, hx, hZq]
+  have hΨeq : Ψ T = Ψ ⟨f ω, hfωQ⟩ :=
+    Suzuki2Groups.eq_of_unitaryCoord_eq m hTq hTy
+  have := congrArg (Subtype.val (p := fun x => x ∈ hyp.Q)) (Ψ.injective hΨeq)
+  rw [hTval] at this
+  exact this.symm
+
+/-! ### The second half of stage (4): re-running the argument at `ω⁻¹` -/
+
+/-- **Inversion does not move the quotient coordinate** (characteristic two). -/
+theorem quotient_inv_eq {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {ω : G} (hωQ : ω ∈ hyp.Q) (hωinvQ : ω⁻¹ ∈ hyp.Q) :
+    (Ψ ⟨ω⁻¹, hωinvQ⟩).quotient = (Ψ ⟨ω, hωQ⟩).quotient := by
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  have heq : (⟨ω⁻¹, hωinvQ⟩ : ↥hyp.Q) = (⟨ω, hωQ⟩ : ↥hyp.Q)⁻¹ := Subtype.ext rfl
+  rw [heq, map_inv, Suzuki2Groups.BilinearTwistedProduct.quotient_inv]
+  linear_combination (-(Ψ (⟨ω, hωQ⟩ : ↥hyp.Q)).quotient) * h2
+
+/-- **Inversion `q`-powers the unitary coordinate**: `(a, y)⁻¹ = (a, ȳ)`. -/
+theorem unitaryCoord_inv_eq {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {ω : G} (hωQ : ω ∈ hyp.Q) (hωinvQ : ω⁻¹ ∈ hyp.Q) :
+    Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω⁻¹, hωinvQ⟩)
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) ^ 2 ^ m := by
+  have heq : (⟨ω⁻¹, hωinvQ⟩ : ↥hyp.Q) = (⟨ω, hωQ⟩ : ↥hyp.Q)⁻¹ := Subtype.ext rfl
+  rw [heq, map_inv, Suzuki2Groups.unitaryCoord_inv m M.card hu]
+
+/-- **Stage (4) on the whole fibre** (Peterfalvi Part II, p. 131: "all of these results
+remain valid if we replace `ω` by `ω⁻¹` and `ζ` by `ζ⁻¹` … this completes the proof as
+`ζ + 1 ≠ ζ⁻¹ + 1`").
+
+Each run of `stepFour_elem` leaves out one point — the one whose unitary coordinate is
+`1` more than that of its base point.  The two base points `ω` and `ω⁻¹` have distinct
+unitary coordinates (`x` and `x^q = x⁻¹`, distinct by `mu_W_ne_inv`), so the two
+excluded points differ and the two runs together cover the fibre.
+
+That `ω⁻¹` may be used as a base point at all is `f_inv_eq`: `f(ω⁻¹) = ζ ω ζ⁻¹` is
+exactly the standing hypothesis `f(ω') = ζ'⁻¹ ω'⁻¹ ζ'` for `(ω', ζ') = (ω⁻¹, ζ⁻¹)`. -/
+theorem stepFour_cover {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {ω : G} (hωQ : ω ∈ hyp.Q) (hωinvQ : ω⁻¹ ∈ hyp.Q)
+    (hxne : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩)
+      ≠ Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω⁻¹, hωinvQ⟩))
+    (h1 : ∀ (ρ : G) (hρQ : ρ ∈ hyp.Q) (hfρQ : f ρ ∈ hyp.Q),
+      (Ψ ⟨ρ, hρQ⟩).quotient = (Ψ ⟨ω, hωQ⟩).quotient →
+      Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩)
+          ≠ Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) + 1 →
+        (Ψ ⟨f ρ, hfρQ⟩).quotient
+            = (Ψ ⟨ω, hωQ⟩).quotient /
+              Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ∧
+          Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfρQ⟩)
+            = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹)
+    (h2 : ∀ (ρ : G) (hρQ : ρ ∈ hyp.Q) (hfρQ : f ρ ∈ hyp.Q),
+      (Ψ ⟨ρ, hρQ⟩).quotient = (Ψ ⟨ω⁻¹, hωinvQ⟩).quotient →
+      Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩)
+          ≠ Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω⁻¹, hωinvQ⟩) + 1 →
+        (Ψ ⟨f ρ, hfρQ⟩).quotient
+            = (Ψ ⟨ω⁻¹, hωinvQ⟩).quotient /
+              Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ∧
+          Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfρQ⟩)
+            = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹) :
+    ∀ (ρ : G) (hρQ : ρ ∈ hyp.Q) (hfρQ : f ρ ∈ hyp.Q),
+      (Ψ ⟨ρ, hρQ⟩).quotient = (Ψ ⟨ω, hωQ⟩).quotient →
+        (Ψ ⟨f ρ, hfρQ⟩).quotient
+            = (Ψ ⟨ω, hωQ⟩).quotient /
+              Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ∧
+          Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfρQ⟩)
+            = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹ := by
+  have hq := hyp.quotient_inv_eq M hu Ψ hωQ hωinvQ
+  intro ρ hρQ hfρQ hfib
+  by_cases hy : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩)
+      = Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω, hωQ⟩) + 1
+  · -- the point `ω` misses; the run at `ω⁻¹` catches it
+    have hy2 : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩)
+        ≠ Suzuki2Groups.unitaryCoord m u (Ψ ⟨ω⁻¹, hωinvQ⟩) + 1 := by
+      rw [hy]
+      exact fun hc => hxne (add_right_cancel hc)
+    obtain ⟨hA, hB⟩ := h2 ρ hρQ hfρQ (hfib.trans hq.symm) hy2
+    exact ⟨hA.trans (by rw [hq]), hB⟩
+  · exact h1 ρ hρQ hfρQ hfib hy
+
+/-- **Peterfalvi Part II, Ch. IV §3, Corollary 2** (p. 132): for every `ζ ∈ W^#` there
+is an `ω ∈ Q − Q₀` with `f(ω) = ω^{-ζ}`.
+
+The element is built from `ζ` rather than found: `exists_normPreimage_of_mem_W` supplies
+`ω̄` with `ω̄^{1+q} = Tr μ(ζ)`, so `(ω̄, μ(ζ))` is a legitimate pair of unitary
+coordinates (`ofUnitary`); stage (5) then evaluates `f` there, and
+`f_eq_conj_inv_of_inverseFormula` recognizes the answer as `ω^{-ζ}`.
+
+`ω ∉ Q₀` because its quotient coordinate `ω̄` is nonzero.
+
+Stage (5) enters as the hypothesis `hfive`; the book's second conclusion `h(ω) = ζ³` is
+`h_eq_zpow_three` applied to the first (it needs `h(ω) ∈ W`, which the book reads off
+(H5)). -/
+theorem corollaryTwo (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    {m : ℕ} (M : hyp.QuotientFieldModel m)
+    (hZc : Subgroup.center hyp.Q = hyp.Q0.subgroupOf hyp.Q)
+    (hVW : hyp.V = hyp.W)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (hquot : ∀ ρ : ↥hyp.Q, (Φ ρ).quotient =
+      M.coord (Additive.ofMul (QuotientGroup.mk' (Subgroup.center hyp.Q) ρ)))
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (hmu : Function.Injective M.mu)
+    {ζ : G} (hζ : ζ ∈ hyp.W) (hζ1 : (⟨ζ, hζ⟩ : ↥hyp.W) ≠ 1)
+    (hfQ : ∀ ρ : G, ρ ∈ hyp.Q → f ρ ∈ hyp.Q)
+    (hfive : ∀ (ρ : G) (hρQ : ρ ∈ hyp.Q), ρ ∉ hyp.Q0 →
+      (Ψ ⟨f ρ, hfQ ρ hρQ⟩).quotient
+          = (Ψ ⟨ρ, hρQ⟩).quotient /
+            Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ∧
+        Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfQ ρ hρQ⟩)
+          = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹) :
+    ∃ ω ∈ hyp.Q, ω ∉ hyp.Q0 ∧ f ω = ζ⁻¹ * ω⁻¹ * ζ ∧ h ω = ζ ^ 3 := by
+  classical
+  obtain ⟨r, hr0, hrtr⟩ := hyp.exists_normPreimage_of_mem_W M hmu hζ1
+  set p : Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu) :=
+    Suzuki2Groups.ofUnitary m M.card hu r
+      ((M.mu (1, (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) hrtr with hp
+  set ωQ : ↥hyp.Q := Ψ.symm p with hωQdef
+  have hΨp : Ψ ωQ = p := Ψ.apply_symm_apply p
+  have hωmem : (ωQ : G) ∈ hyp.Q := ωQ.2
+  have hcoe : (⟨(ωQ : G), hωmem⟩ : ↥hyp.Q) = ωQ := rfl
+  have hq : (Ψ (⟨(ωQ : G), hωmem⟩ : ↥hyp.Q)).quotient = r := by
+    rw [hcoe, hΨp, hp]
+    exact Suzuki2Groups.ofUnitary_quotient m M.card hu _ _ hrtr
+  have hy : Suzuki2Groups.unitaryCoord m u (Ψ (⟨(ωQ : G), hωmem⟩ : ↥hyp.Q))
+      = ((M.mu (1, (⟨ζ, hζ⟩ : ↥hyp.W)) : M.Eˣ) : M.E) := by
+    rw [hcoe, hΨp, hp]
+    exact Suzuki2Groups.ofUnitary_unitaryCoord m M.card hu _ _ hrtr
+  -- `ω ∉ Q₀`: its quotient coordinate is `r ≠ 0`
+  have hnotQ0 : (ωQ : G) ∉ hyp.Q0 := by
+    intro hc
+    refine hr0 ?_
+    rw [← hq, hΨq, hquot]
+    rw [show M.coord (Additive.ofMul (QuotientGroup.mk'
+          (Subgroup.center hyp.Q) (⟨(ωQ : G), hωmem⟩ : ↥hyp.Q)))
+        = M.coord (Additive.ofMul (QuotientGroup.mk
+          (⟨(ωQ : G), hωmem⟩ : ↥hyp.Q))) from rfl,
+      hyp.coord_mk_eq_zero_of_mem_Q0 M hZc hc hωmem, mul_zero]
+  obtain ⟨h1, h2⟩ := hfive (ωQ : G) hωmem hnotQ0
+  have hfeq := hyp.f_eq_conj_inv_of_inverseFormula M hu Ψ hconjq hconjy hζ hωmem
+    (hfQ _ hωmem) hy h1 h2
+  exact ⟨(ωQ : G), hωmem, hnotQ0, hfeq,
+    hyp.h_eq_zpow_three_of_freeD H M hZc hmu hVW hζ hωmem hnotQ0 hfeq⟩
+
+/-! ### Stage (5): the formula is `K W`-equivariant -/
+
+/-- **(H3) for the `K W`-action, in the shape `conjQHom` uses**:
+`f(ρ^{(k,v)}) = f(ρ)^{(k⁻¹, v)}`.
+
+(H3) reads `f(x^a) = f(x)^{a^t}`, and on `K W` the twist `a ↦ a^t` is `(k, v) ↦
+(k⁻¹, v)`: `t` inverts `K` (`mul_t_eq_of_mem_KSet`, whose content is exactly the
+defining property of `KSet`) and centralizes `W` (`conj_t_pow_eq`).
+
+Together with `mu_t_twist` this is what feeds `stepFive_equivariant`. -/
+theorem f_conjQHom (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    {k v : G} (hk : k ∈ hyp.KSet) (hkK : k ∈ hyp.K) (hv : v ∈ hyp.W)
+    {x : G} (hxQ : x ∈ hyp.Q) (hx1 : x ≠ 1) (hfxQ : f x ∈ hyp.Q)
+    (hfconjQ : f (k * v * x * (k * v)⁻¹) ∈ hyp.Q) :
+    (⟨f (k * v * x * (k * v)⁻¹), hfconjQ⟩ : ↥hyp.Q)
+      = hyp.conjQHom (hyp.kActor (hyp.K.inv_mem hkK), ⟨v, hv⟩) ⟨f x, hfxQ⟩ := by
+  have htinv : hyp.t⁻¹ = hyp.t := inv_eq_of_mul_eq_one_right hyp.rankOneSetup.invol
+  have htt : hyp.t * hyp.t = 1 := by rw [← sq]; exact hyp.t_sq
+  have hvD : v ∈ hyp.D := hyp.V_le_D (hyp.W_le_V hv)
+  have hcD : k * v ∈ hyp.D := hyp.D.mul_mem (hyp.K_le_D hkK) hvD
+  obtain ⟨h3, -, -⟩ := hThree hyp.rankOneSetup H hxQ hx1 (hyp.D.inv_mem hcD)
+  rw [inv_inv] at h3
+  -- the `t`-twist of `k v` is `k⁻¹ v`
+  have htv : hyp.t * v * hyp.t = v := by
+    have hp := hyp.conj_t_pow_eq hv 1
+    rwa [pow_one] at hp
+  have hsplit : hyp.t * (k * v) * hyp.t = k⁻¹ * v := by
+    have e : (hyp.t * k * hyp.t) * (hyp.t * v * hyp.t) = hyp.t * (k * v) * hyp.t := by
+      calc (hyp.t * k * hyp.t) * (hyp.t * v * hyp.t)
+          = hyp.t * k * (hyp.t * hyp.t) * v * hyp.t := by group
+        _ = hyp.t * (k * v) * hyp.t := by rw [htt]; group
+    rw [← e, hk.2, htv]
+  have hprod : (hyp.t * (k * v) * hyp.t) * (hyp.t * (k * v)⁻¹ * hyp.t) = 1 := by
+    calc (hyp.t * (k * v) * hyp.t) * (hyp.t * (k * v)⁻¹ * hyp.t)
+        = hyp.t * (k * v) * (hyp.t * hyp.t) * (k * v)⁻¹ * hyp.t := by group
+      _ = hyp.t * (k * v) * 1 * (k * v)⁻¹ * hyp.t := by rw [htt]
+      _ = hyp.t * hyp.t := by group
+      _ = 1 := htt
+  have hstep : hyp.t * (k * v)⁻¹ * hyp.t = (k⁻¹ * v)⁻¹ := by
+    rw [← hsplit]
+    symm
+    rw [inv_eq_iff_mul_eq_one]
+    exact hprod
+  rw [hstep, inv_inv] at h3
+  refine Subtype.ext ?_
+  rw [hyp.conjQHom_kActor_apply_val (hyp.K.inv_mem hkK) hv]
+  exact h3
+
+/-- **The inversion formula propagates along `K W`-orbits** (Peterfalvi Part II, §3 (5),
+p. 131, the opening display):
+
+  `f(d ρ̄, d^{1+q} y) = f(ρ̄, y)^{d^t} = (ρ̄/y, 1/y)^{d^{-q}} = (ρ̄/(d^q y), 1/(d^{1+q} y))`.
+
+The hypotheses are the coordinates of the two conjugates: `ρ' = ρ^d` scales by `d` and
+its norm, and `σ' = f(ρ') = f(ρ)^{d^t}` scales by the twisted scalar `(d^q)⁻¹` and *its*
+norm (`mu_t_twist` identifies that twisted scalar).  The conclusion is that the shape
+`(ρ̄/y, 1/y)` is preserved, and it is pure arithmetic: `((d^q)⁻¹)^{1+q} = (d^{1+q})⁻¹`
+because `d^{q²} = d`. -/
+theorem stepFive_equivariant {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {ρ ρ' σ σ' : ↥hyp.Q} {c : M.E} (hc : c ≠ 0)
+    (hy : Suzuki2Groups.unitaryCoord m u (Ψ ρ) ≠ 0)
+    (hρq : (Ψ ρ').quotient = c * (Ψ ρ).quotient)
+    (hρy : Suzuki2Groups.unitaryCoord m u (Ψ ρ')
+      = c ^ (2 ^ m + 1) * Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (hσq : (Ψ σ').quotient = (c ^ 2 ^ m)⁻¹ * (Ψ σ).quotient)
+    (hσy : Suzuki2Groups.unitaryCoord m u (Ψ σ')
+      = ((c ^ 2 ^ m)⁻¹) ^ (2 ^ m + 1) * Suzuki2Groups.unitaryCoord m u (Ψ σ))
+    (h1 : (Ψ σ).quotient
+      = (Ψ ρ).quotient / Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (h2 : Suzuki2Groups.unitaryCoord m u (Ψ σ)
+      = (Suzuki2Groups.unitaryCoord m u (Ψ ρ))⁻¹) :
+    (Ψ σ').quotient
+        = (Ψ ρ').quotient / Suzuki2Groups.unitaryCoord m u (Ψ ρ') ∧
+      Suzuki2Groups.unitaryCoord m u (Ψ σ')
+        = (Suzuki2Groups.unitaryCoord m u (Ψ ρ'))⁻¹ := by
+  have hcq : (c ^ 2 ^ m) ^ 2 ^ m = c :=
+    OddOrder.FiniteField.frobPow_frobPow m M.card c
+  have hcq0 : c ^ 2 ^ m ≠ 0 := pow_ne_zero _ hc
+  have hcn0 : c ^ (2 ^ m + 1) ≠ 0 := pow_ne_zero _ hc
+  have hkey : (c ^ 2 ^ m) ^ (2 ^ m + 1) = c ^ (2 ^ m + 1) := by
+    rw [pow_succ, pow_succ, hcq]
+    ring
+  constructor
+  · rw [hσq, hρq, hρy, h1, pow_succ]
+    field_simp
+  · rw [hσy, hρy, h2, inv_pow, hkey, mul_inv]
+
+/-- **§2 (2) in the unitary coordinates** (Peterfalvi Part II, p. 131, the first line of
+stage (5)'s second computation):
+
+  `f(ρ̄, x + a) = f(ω̄', x' + a⁻¹)^{a⁻¹} (0, a⁻¹)`.
+
+`f_mul_conj_distinguishedInvolution` states this in `G` as
+`f(ω s^{a⁻¹}) = f(f(ω) s^{a})^{a²} s^{a}`; reading it through `Ψ` the conjugation by
+`a²` scales the quotient coordinate by `A = μ(a²)` and the unitary one by `A²`
+(`mu_norm_eq`), while the central factor `s^a` adds its own coordinate `A`
+(`unitaryCoord_mul_of_quotient_eq_zero`, with the normalization `ν · c(s) = 1`).
+
+The book's parameter is the *other* one: its `a` is the coordinate of the shift on the
+left, here `μ(a⁻²) = A⁻¹`.  Only the relabelling differs. -/
+theorem sectionTwoStepTwo_coords (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    (hC2 : hyp.t * hyp.distinguishedInvolution * hyp.t
+      = hyp.distinguishedInvolution * hyp.t * hyp.distinguishedInvolution)
+    {m : ℕ} (sfive : hyp.LemmaFiveSetup m) (M : hyp.QuotientFieldModel m)
+    {φ : LinearMap.BilinMap (ZMod 2) M.E
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (Φ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct φ)
+    (ι : Additive ↥(Subgroup.center hyp.Q) ≃+
+      ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m))
+    (hker : ∀ z : ↥(Subgroup.center hyp.Q),
+      Φ (z : ↥hyp.Q) = ⟨0, ι (Additive.ofMul z)⟩)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {e : M.E} {ν : ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)}
+    (hΨq : ∀ ρ : ↥hyp.Q, (Ψ ρ).quotient = e * (Φ ρ).quotient)
+    (hΨc : ∀ ρ : ↥hyp.Q, (Ψ ρ).central = ν * (Φ ρ).central)
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    (d : ℤ)
+    (hequiv : ∀ (k : ↥hyp.actualKActor) (z : ↥(Subgroup.center hyp.Q)),
+      ((ι (Additive.ofMul (hyp.centerKHom k z)) :
+          ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E)
+        = ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) *
+          ((ι (Additive.ofMul z) :
+            ↥(OddOrder.FiniteField.frobFixedSubfield M.E 2 m)) : M.E))
+    (hdsq : ∀ k : ↥hyp.actualKActor,
+      ((M.mu (k, 1) ^ d : M.Eˣ) : M.E) = ((M.mu (k, 1) : M.Eˣ) : M.E) ^ 2)
+    (hs : (ν : M.E) *
+      hyp.centerCoord sfive M ι hyp.distinguishedInvolution_mem_Q0 = 1)
+    {a ω : G} (haK : a ∈ hyp.K) (haKSet : a ∈ hyp.KSet)
+    (hωQ : ω ∈ hyp.Q) (hω1 : ω ≠ 1)
+    (hne : ω * (a⁻¹ * hyp.distinguishedInvolution * a) ≠ 1)
+    (hLQ : f (ω * (a⁻¹ * hyp.distinguishedInvolution * a)) ∈ hyp.Q)
+    (hRQ : f (f ω * (a * hyp.distinguishedInvolution * a⁻¹)) ∈ hyp.Q) :
+    (Ψ ⟨f (ω * (a⁻¹ * hyp.distinguishedInvolution * a)), hLQ⟩).quotient
+        = ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) *
+          (Ψ ⟨f (f ω * (a * hyp.distinguishedInvolution * a⁻¹)), hRQ⟩).quotient ∧
+      Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨f (ω * (a⁻¹ * hyp.distinguishedInvolution * a)), hLQ⟩)
+        = ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) ^ 2 *
+            Suzuki2Groups.unitaryCoord m u
+              (Ψ ⟨f (f ω * (a * hyp.distinguishedInvolution * a⁻¹)), hRQ⟩)
+          + ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) := by
+  have hzQ0 : a * hyp.distinguishedInvolution * a⁻¹ ∈ hyp.Q0 :=
+    hyp.conj_mem_Q0_of_mem_D (hyp.K_le_D haK) hyp.distinguishedInvolution_mem_Q0
+  have hSaeq : (⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩ : ↥hyp.Q)
+      = ((hyp.toCenter sfive hzQ0 : ↥(Subgroup.center hyp.Q)) : ↥hyp.Q) := rfl
+  have hcq : (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹,
+      hyp.Q0_le_Q hzQ0⟩).quotient = 0 := by
+    rw [hSaeq, hΨq, hker]
+    exact mul_zero e
+  have hcy : Suzuki2Groups.unitaryCoord m u
+      (Ψ ⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩)
+      = ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) := by
+    rw [hSaeq, hyp.unitaryCoord_toCenter sfive M Φ ι hker hu Ψ hΨq hΨc hzQ0,
+      hyp.centerCoord_conj_eq_mu_sq sfive M ι d hequiv hdsq haK
+        hyp.distinguishedInvolution_mem_Q0]
+    linear_combination ((M.mu (hyp.kActor (pow_mem haK 2), 1) : M.Eˣ) : M.E) * hs
+  -- the identity of §2 (2), packaged in `↥Q`
+  have hstep2 := hyp.f_mul_conj_distinguishedInvolution H hC2 haKSet hωQ hω1 hne
+  have heq : (⟨f (ω * (a⁻¹ * hyp.distinguishedInvolution * a)), hLQ⟩ : ↥hyp.Q)
+      = hyp.conjQHom (hyp.kActor (pow_mem haK 2), (⟨1, hyp.W.one_mem⟩ : ↥hyp.W))
+          ⟨f (f ω * (a * hyp.distinguishedInvolution * a⁻¹)), hRQ⟩
+        * ⟨a * hyp.distinguishedInvolution * a⁻¹, hyp.Q0_le_Q hzQ0⟩ := by
+    refine Subtype.ext ?_
+    rw [Submonoid.coe_mul,
+      hyp.conjQHom_kActor_apply_val (pow_mem haK 2) hyp.W.one_mem]
+    change f (ω * (a⁻¹ * hyp.distinguishedInvolution * a))
+      = a ^ 2 * 1 * f (f ω * (a * hyp.distinguishedInvolution * a⁻¹)) *
+        (a ^ 2 * 1)⁻¹ * (a * hyp.distinguishedInvolution * a⁻¹)
+    rw [hstep2]
+    group
+  refine ⟨?_, ?_⟩
+  · rw [heq, map_mul, Suzuki2Groups.BilinearTwistedProduct.quotient_mul, hcq, add_zero,
+      hconjq]
+    rfl
+  · rw [heq, map_mul,
+      Suzuki2Groups.unitaryCoord_mul_of_quotient_eq_zero m M.card hu _ _ hcq, hcy,
+      hconjy, hyp.mu_norm_eq M]
+
+/-- **Stage (5)'s second case, at one point of the fibre** (Peterfalvi Part II, p. 131).
+
+Everything is already in coordinates: `hLq`/`hLy` are §2 (2)
+(`sectionTwoStepTwo_coords`), `hRq`/`hRy` are the inversion formula at `f(ρ) s^a` —
+whose coordinates are `(ρ̄/x, x⁻¹ + A)` once `inverseFormula_symm` has turned the known
+value of `f` at `f(ρ)` into `f(ρ) = (ρ̄/x, 1/x)` — and `hρ'q`/`hρ'y` are the coordinates
+of `ρ s^{a⁻¹}`, whose shift is `μ((a⁻¹)²) = A⁻¹` (`mu_kActor_sq_inv`,
+`unitaryCoord_mul_conj`).
+
+The conclusion is the inversion formula at `ρ s^{a⁻¹}`, which is what the second case
+had to produce. -/
+theorem stepFive_secondCase_at {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    {L Rin ρ' : ↥hyp.Q} {r x A : M.E}
+    (hA : A ≠ 0) (hx : x ≠ 0) (hxA : x + A⁻¹ ≠ 0)
+    (hLq : (Ψ L).quotient = A * (Ψ Rin).quotient)
+    (hLy : Suzuki2Groups.unitaryCoord m u (Ψ L)
+      = A ^ 2 * Suzuki2Groups.unitaryCoord m u (Ψ Rin) + A)
+    (hRq : (Ψ Rin).quotient = (r / x) / (x⁻¹ + A))
+    (hRy : Suzuki2Groups.unitaryCoord m u (Ψ Rin) = (x⁻¹ + A)⁻¹)
+    (hρ'q : (Ψ ρ').quotient = r)
+    (hρ'y : Suzuki2Groups.unitaryCoord m u (Ψ ρ') = x + A⁻¹) :
+    (Ψ L).quotient
+        = (Ψ ρ').quotient / Suzuki2Groups.unitaryCoord m u (Ψ ρ') ∧
+      Suzuki2Groups.unitaryCoord m u (Ψ L)
+        = (Suzuki2Groups.unitaryCoord m u (Ψ ρ'))⁻¹ := by
+  have h2 : (2 : M.E) = 0 := by
+    have := M.charTwo
+    simpa using (CharP.cast_eq_zero M.E 2)
+  obtain ⟨e1, e2⟩ := stepFive_secondCase_compose h2 hA hx hxA hLq hLy hRq hRy
+  exact ⟨by rw [e1, hρ'q, hρ'y], by rw [e2, hρ'y]⟩
+
+/-- **Stage (5)'s first half**: the inversion formula holds at every `K W`-translate of
+a point where it holds (Peterfalvi Part II, p. 131).
+
+`f_conjQHom` turns (H3) into the statement that `f` intertwines the `K W`-action with
+its `t`-twist, `mu_t_twist` evaluates that twist on scalars as `d ↦ (d^q)⁻¹`, and
+`stepFive_equivariant` checks that the shape `(ρ̄/y, 1/y)` survives.
+
+So stage (4) plus this covers every `ρ` whose quotient coordinate lies in the
+`K W`-orbit of `ω̄` — which is the first case of the book's proof. -/
+theorem stepFive_orbit (H : IsFGH hyp.H hyp.Q hyp.D hyp.t f g h)
+    {m : ℕ} (M : hyp.QuotientFieldModel m)
+    {u : M.E} (hu : OddOrder.FiniteField.frobTrace (E := M.E) m u = 1)
+    (Ψ : ↥hyp.Q ≃* Suzuki2Groups.BilinearTwistedProduct
+      (OddOrder.FiniteField.hermitianCocycle m M.card hu))
+    (hconjq : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      (Ψ (hyp.conjQHom kv ρ)).quotient
+        = ((M.mu kv : M.Eˣ) : M.E) * (Ψ ρ).quotient)
+    (hconjy : ∀ (kv : ↥hyp.actualKActor × ↥hyp.W) (ρ : ↥hyp.Q),
+      Suzuki2Groups.unitaryCoord m u (Ψ (hyp.conjQHom kv ρ))
+        = ((M.mu kv : M.Eˣ) : M.E) ^ (2 ^ m + 1) *
+          Suzuki2Groups.unitaryCoord m u (Ψ ρ))
+    {k v : G} (hk : k ∈ hyp.KSet) (hkK : k ∈ hyp.K) (hv : v ∈ hyp.W)
+    {ρ : G} (hρQ : ρ ∈ hyp.Q) (hρ1 : ρ ≠ 1) (hfρQ : f ρ ∈ hyp.Q)
+    (hρ'Q : k * v * ρ * (k * v)⁻¹ ∈ hyp.Q)
+    (hfρ'Q : f (k * v * ρ * (k * v)⁻¹) ∈ hyp.Q)
+    (hy : Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩) ≠ 0)
+    (h1 : (Ψ ⟨f ρ, hfρQ⟩).quotient
+      = (Ψ ⟨ρ, hρQ⟩).quotient / Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))
+    (h2 : Suzuki2Groups.unitaryCoord m u (Ψ ⟨f ρ, hfρQ⟩)
+      = (Suzuki2Groups.unitaryCoord m u (Ψ ⟨ρ, hρQ⟩))⁻¹) :
+    (Ψ ⟨f (k * v * ρ * (k * v)⁻¹), hfρ'Q⟩).quotient
+        = (Ψ ⟨k * v * ρ * (k * v)⁻¹, hρ'Q⟩).quotient /
+          Suzuki2Groups.unitaryCoord m u (Ψ ⟨k * v * ρ * (k * v)⁻¹, hρ'Q⟩) ∧
+      Suzuki2Groups.unitaryCoord m u (Ψ ⟨f (k * v * ρ * (k * v)⁻¹), hfρ'Q⟩)
+        = (Suzuki2Groups.unitaryCoord m u
+          (Ψ ⟨k * v * ρ * (k * v)⁻¹, hρ'Q⟩))⁻¹ := by
+  have hkinv : hyp.kActor (hyp.K.inv_mem hkK) = (hyp.kActor hkK)⁻¹ :=
+    hyp.kActor_eq_inv hkK (hyp.K.inv_mem hkK) rfl
+  have hρeq : (⟨k * v * ρ * (k * v)⁻¹, hρ'Q⟩ : ↥hyp.Q)
+      = hyp.conjQHom (hyp.kActor hkK, ⟨v, hv⟩) ⟨ρ, hρQ⟩ :=
+    Subtype.ext (hyp.conjQHom_kActor_apply_val hkK hv ⟨ρ, hρQ⟩).symm
+  have hfeq := hyp.f_conjQHom H hk hkK hv hρQ hρ1 hfρQ hfρ'Q
+  refine hyp.stepFive_equivariant M hu Ψ
+    (c := ((M.mu (hyp.kActor hkK, (⟨v, hv⟩ : ↥hyp.W)) : M.Eˣ) : M.E))
+    (Units.ne_zero _) hy ?_ ?_ ?_ ?_ h1 h2
+  · rw [hρeq, hconjq]
+  · rw [hρeq, hconjy]
+  · rw [hfeq, hconjq, hkinv, hyp.mu_t_twist M]
+  · rw [hfeq, hconjy, hkinv, hyp.mu_t_twist M]
+
+end Hypothesis
+
+end OddOrder.Peterfalvi.Appendices.Suzuki

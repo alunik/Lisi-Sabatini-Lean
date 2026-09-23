@@ -40,7 +40,7 @@ private theorem orderOf_eq_prime_of_cycleType_eq_replicate
     (hj : 0 < j)
     (hcycle : g.cycleType = Multiset.replicate j p) :
     orderOf g = p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   have hpow : g ^ p = 1 := by
     apply Equiv.Perm.pow_prime_eq_one_iff.2
     intro c hc
@@ -166,7 +166,7 @@ theorem card_primeCycleTypeSylowRow_eq_coeff_of_prime
     (P : Sylow p (Equiv.Perm (Fin n))) :
     (primeCycleTypeSylowRow n p j P).card =
       (sylowCycleProfile n p).coeff j := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   let P₀ := basePBlockSylow n p hp
   obtain ⟨g, hg⟩ :=
     MulAction.exists_smul_eq
@@ -390,7 +390,7 @@ theorem ambientConjClassMeetsAlternating_primeCycleTypeClass_of_odd
         Multiset.replicate g.cycleType.card p := by
     rw [hgcycle, Multiset.card_replicate]
   rw [Equiv.Perm.sign_of_cycleType_eq_replicate
-    hp.pos hcycle, if_pos hpOdd]
+    hp.pos hcycle, ite_eq_left hpOdd]
 
 /-- The integer-scaled symmetric-group class sum, restricted to classes
 meeting `A_n`, is exactly the even-transposition part of the cycle
@@ -454,11 +454,11 @@ theorem sum_mixedSylowPairQuadraticClassTerm_meetingAlternating_two_eq_profile_s
       rw [ambientConjClassMeetsAlternating_primeCycleTypeClass_two_iff
           h2j]
       by_cases heven : Even j
-      · rw [if_pos heven, if_pos heven]
+      · rw [ite_eq_left heven, ite_eq_left heven]
         exact
           mixedSylowPairQuadraticClassTerm_primeCycleTypeClass
             Nat.prime_two hjpos h2j P
-      · rw [if_neg heven, if_neg heven]
+      · rw [ite_eq_right heven, ite_eq_right heven]
 
 /-- Exact restricted normalized formula for the Sylow `2` row of
 `S_n`.  This is the profile consumed by the index-two transfer to
@@ -473,7 +473,7 @@ theorem normalizedSameRowSylowQuadraticCostMeetingAlternating_perm_eq_profile
     sum_mixedSylowPairQuadraticClassTerm_meetingAlternating_two_eq_profile_sum
       P,
     natCard_perm_fin,
-    alternatingSylowProfileQuadraticCost, if_pos rfl,
+    alternatingSylowProfileQuadraticCost, ite_eq_left rfl,
     Nat.cast_sum, div_eq_mul_inv, Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro j hj
@@ -483,11 +483,11 @@ theorem normalizedSameRowSylowQuadraticCostMeetingAlternating_perm_eq_profile
       (Nat.le_div_iff_mul_le Nat.zero_lt_two).1
         (Finset.mem_Icc.1 hj).2
   by_cases heven : Even j
-  · simp only [heven, if_true, Nat.cast_mul, Nat.cast_pow]
+  · simp only [heven, ite_true, Nat.cast_mul, Nat.cast_pow]
     simpa only [Nat.cast_mul, Nat.cast_pow, div_eq_mul_inv] using
       normalized_primeCycle_profile_term
         (r := (sylowCycleProfile n 2).coeff j)
         Nat.prime_two hjpos h2j
-  · simp only [heven, if_false, Nat.cast_zero, zero_mul]
+  · simp only [heven, ite_false, Nat.cast_zero, zero_mul]
 
 end LisiSabatini

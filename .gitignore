@@ -1,4 +1,6 @@
 /.lake/
+/vendor/odd-order/.lake/
 /tmp/
-/.DS_Store
-**/.DS_Store
+__pycache__/
+*.pyc
+.DS_Store

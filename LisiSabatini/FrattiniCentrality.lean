@@ -48,15 +48,15 @@ theorem frattini_eq_bot_of_commutative_of_exponent_prime
     {p : ℕ} {G : Type*} [CommGroup G] [Finite G]
     (hp : p.Prime) (hpow : ∀ g : G, g ^ p = 1) :
     frattini G = ⊥ := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : Field (ZMod p) := inferInstance
-  letI : Module (ZMod p) (Additive G) :=
+  let : Fact p.Prime := ⟨hp⟩
+  let : Field (ZMod p) := inferInstance
+  let : Module (ZMod p) (Additive G) :=
     AddCommGroup.zmodModule fun x => by
       apply Additive.toMul.injective
       simpa using hpow (Additive.toMul x)
-  letI hfree : Module.Free (ZMod p) (Additive G) :=
+  let hfree : Module.Free (ZMod p) (Additive G) :=
     Module.Free.of_divisionRing (ZMod p) (Additive G)
-  letI hproj : Module.Projective (ZMod p) (Additive G) :=
+  let hproj : Module.Projective (ZMod p) (Additive G) :=
     @Module.Projective.of_free (ZMod p) _ (Additive G) _ _ hfree
   apply le_antisymm
   · intro z hz
@@ -143,7 +143,7 @@ theorem frattini_eq_commutator_sup_primePowerNormalClosure
       commutator G ⊔ primePowerNormalClosure p G := by
   let Ppow := primePowerNormalClosure p G
   let K : Subgroup G := commutator G ⊔ Ppow
-  letI : K.Normal := inferInstance
+  let : K.Normal := inferInstance
   have hPpowPhi : Ppow ≤ frattini G := by
     apply Subgroup.normalClosure_le_normal
     rintro z ⟨x, rfl⟩
@@ -160,10 +160,10 @@ theorem frattini_eq_commutator_sup_primePowerNormalClosure
       Subgroup.subset_normalClosure ⟨x, rfl⟩
     exact (show Ppow ≤ K from le_sup_right) hxP
   have hQcomm : Std.Commutative (· * · : Q → Q → Q) :=
-    Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
-      le_sup_left
+    (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
+      (show commutator G ≤ K from le_sup_left)).is_comm
   let groupQ : Group Q := inferInstance
-  letI : CommGroup Q :=
+  let : CommGroup Q :=
     { groupQ with
       mul_comm := hQcomm.comm }
   have hQphi : frattini Q = ⊥ :=
@@ -209,7 +209,7 @@ theorem frattini_le_center_of_classTwo_of_pow_mem_center
     frattini G ≤ Subgroup.center G := by
   let Ppow := primePowerNormalClosure p G
   let K : Subgroup G := commutator G ⊔ Ppow
-  letI : K.Normal := inferInstance
+  let : K.Normal := inferInstance
   have hPpowCenter : Ppow ≤ Subgroup.center G := by
     apply Subgroup.normalClosure_le_normal
     rintro z ⟨x, rfl⟩
@@ -253,7 +253,7 @@ theorem frattini_le_center_of_frattini_isMulCommutative
     (h : IsHallClassTwoIntermediate p P)
     (hPhiComm : IsMulCommutative (frattini P)) :
     frattini P ≤ Subgroup.center P := by
-  letI : IsMulCommutative (frattini P) := hPhiComm
+  let : IsMulCommutative (frattini P) := hPhiComm
   have hPhiCyclic : IsCyclic (frattini P) :=
     h.hall.isCyclic (frattini P)
   exact h.frattini_le_center_of_frattini_isCyclic hPhiCyclic

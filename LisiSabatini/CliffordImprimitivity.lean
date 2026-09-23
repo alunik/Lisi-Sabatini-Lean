@@ -77,8 +77,12 @@ noncomputable def semilinearConjugateEquiv (sigma : R ≃+* R)
     componentTransport sigma e P ≃ₗ[R] componentTransport sigma e Q where
   toFun x := e.submoduleMap Q (f ((e.submoduleMap P).symm x))
   invFun y := e.submoduleMap P (f.symm ((e.submoduleMap Q).symm y))
-  left_inv x := by simp
-  right_inv y := by simp
+  left_inv x := by
+    simp only [LinearEquiv.symm_apply_apply]
+    exact (e.submoduleMap P).apply_symm_apply x
+  right_inv y := by
+    simp only [LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
+    exact (e.submoduleMap Q).apply_symm_apply y
   map_add' x y := by
     apply Subtype.ext
     change e (f ((e.submoduleMap P).symm (x + y))) =
@@ -128,8 +132,8 @@ theorem isIsotypic_componentTransport (sigma : R ≃+* R)
   have hQ0eq : Q0 = F.symm Q := by
     dsimp [Q0, F, componentTransport]
     exact (Submodule.comap_equiv_eq_map_symm e Q).symm
-  letI : IsSimpleModule R P0 := simple_componentTransport sigma.symm e.symm P
-  letI : IsSimpleModule R Q0 := simple_componentTransport sigma.symm e.symm Q
+  let : IsSimpleModule R P0 := simple_componentTransport sigma.symm e.symm P
+  let : IsSimpleModule R Q0 := simple_componentTransport sigma.symm e.symm Q
   have hP0 : P0 ≤ C := by
     rw [hP0eq]
     have := F.symm.monotone hP
@@ -189,7 +193,7 @@ noncomputable instance (tau : Representation k H V) :
 noncomputable instance (tau : Representation k H V) :
     IsScalarTower k k[H] (RestrictionModule H tau) := by
   change IsScalarTower k k[H] tau.asModule
-  letI : Module k[H] tau.asModule :=
+  let : Module k[H] tau.asModule :=
     Representation.instModuleMonoidAlgebraAsModule tau
   infer_instance
 
@@ -513,10 +517,10 @@ theorem linearSubgroupRepresentation_isIrreducible_of_project
       exact W.apply_mem_toSubmodule g hv)
     · left
       apply Subrepresentation.toSubmodule_injective
-      simpa using hW
+      exact hW
     · right
       apply Subrepresentation.toSubmodule_injective
-      simpa using hW
+      exact hW
 
 theorem underlyingRestrictionComponent_ne_bot
     (H : Subgroup K) [H.Normal]
@@ -570,15 +574,15 @@ theorem nonempty_linearImprimitivityExtractionWitness_of_not_isotypic
   have hMnontrivial : Nontrivial
       (RestrictionModule H (concreteRestrictionRepresentation H)) := by
     by_contra htriv
-    letI : Subsingleton
+    let : Subsingleton
         (RestrictionModule H (concreteRestrictionRepresentation H)) :=
       not_nontrivial_iff_subsingleton.mp htriv
     exact hnotiso (IsIsotypic.of_subsingleton k[H]
       (RestrictionModule H (concreteRestrictionRepresentation H)))
-  letI : Nontrivial V := hMnontrivial
+  let : Nontrivial V := hMnontrivial
   have hrhoirr : (linearSubgroupRepresentation K).IsIrreducible :=
     linearSubgroupRepresentation_isIrreducible_of_project hirr
-  letI : IsSemisimpleModule k[H]
+  let : IsSemisimpleModule k[H]
       (RestrictionModule H (concreteRestrictionRepresentation H)) := by
     exact Representation.isSemisimpleModule_normalRestriction
       (linearSubgroupRepresentation K) H hrhoirr
@@ -615,7 +619,7 @@ theorem homogeneousNormalRestrictions_or_extractionWitness
       Nonempty (LinearImprimitivityExtractionWitness K) := by
   classical
   by_cases hV : Nontrivial V
-  · letI : Nontrivial V := hV
+  · let : Nontrivial V := hV
     have hrhoirr : (linearSubgroupRepresentation K).IsIrreducible :=
       linearSubgroupRepresentation_isIrreducible_of_project hirr
     by_cases halliso : ∀ H : Subgroup K, H.Normal →
@@ -623,7 +627,7 @@ theorem homogeneousNormalRestrictions_or_extractionWitness
           (RestrictionModule H (concreteRestrictionRepresentation H))
     · left
       intro H hHnormal
-      letI : H.Normal := hHnormal
+      let : H.Normal := hHnormal
       refine ⟨Representation.isSemisimpleModule_normalRestriction
         (linearSubgroupRepresentation K) H hrhoirr, ?_⟩
       change IsIsotypic k[H]
@@ -635,13 +639,13 @@ theorem homogeneousNormalRestrictions_or_extractionWitness
             (RestrictionModule H (concreteRestrictionRepresentation H)) := by
         simpa only [not_forall] using halliso
       obtain ⟨H, hHnormal, hnotiso⟩ := hex
-      letI : H.Normal := hHnormal
+      let : H.Normal := hHnormal
       exact nonempty_linearImprimitivityExtractionWitness_of_not_isotypic
         hirr H hnotiso
   · left
-    letI : Subsingleton V := not_nontrivial_iff_subsingleton.mp hV
+    let : Subsingleton V := not_nontrivial_iff_subsingleton.mp hV
     intro H _hHnormal
-    letI : Subsingleton
+    let : Subsingleton
         (RestrictionModule H (concreteRestrictionRepresentation H)) := by
       constructor
       intro x y

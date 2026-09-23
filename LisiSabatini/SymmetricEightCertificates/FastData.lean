@@ -1,0 +1,148 @@
+module
+
+public import LisiSabatini.SymmetricEightCertificates.Table
+
+/-! Generated generator-closure and spanning-tree certificate data. -/
+
+@[expose] public section
+
+namespace LisiSabatini.SymmetricEightCertificates.FastData
+
+open LisiSabatini.FiniteCertificates
+
+set_option maxRecDepth 100000
+
+/- Install before defining the Boolean checks: the decider is captured there. -/
+local instance : DecidableEq G := permutationCodeDecidableEq_fin8
+
+/-- The involutions `(01)`, `(02)(13)`, and `(04)(15)(26)(37)`. -/
+def genAt : Fin 3 → G :=
+  ![p16, p32, p64]
+
+set_option maxHeartbeats 0 in
+/- This certificate proof unfolds finite checks; scope its elaboration budget here. -/
+theorem gen_involutive : ∀ j : Fin 3, (genAt j)⁻¹ = genAt j := by
+  decide +kernel
+
+set_option maxHeartbeats 0 in
+/- This certificate proof unfolds finite checks; scope its elaboration budget here. -/
+theorem rowAt_zero : rowAt 0 = 1 := by decide +kernel
+
+def actionIndices0 : Array (Fin 128) :=
+  #[16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+   40, 41, 42, 43, 44, 45, 46, 47, 32, 33, 34, 35, 36, 37, 38, 39,
+   56, 57, 58, 59, 60, 61, 62, 63, 48, 49, 50, 51, 52, 53, 54, 55,
+   66, 67, 64, 65, 69, 68, 71, 70, 74, 75, 72, 73, 77, 76, 79, 78,
+   82, 83, 80, 81, 85, 84, 87, 86, 90, 91, 88, 89, 93, 92, 95, 94,
+   98, 99, 96, 97, 101, 100, 103, 102, 106, 107, 104, 105, 109, 108, 111, 110,
+   114, 115, 112, 113, 117, 116, 119, 118, 122, 123, 120, 121, 125, 124, 127, 126]
+
+def actionIndices1 : Array (Fin 128) :=
+  #[32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+   48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+   16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+   68, 69, 70, 71, 64, 65, 66, 67, 76, 77, 78, 79, 72, 73, 74, 75,
+   84, 85, 86, 87, 80, 81, 82, 83, 92, 93, 94, 95, 88, 89, 90, 91,
+   100, 101, 102, 103, 96, 97, 98, 99, 108, 109, 110, 111, 104, 105, 106, 107,
+   116, 117, 118, 119, 112, 113, 114, 115, 124, 125, 126, 127, 120, 121, 122, 123]
+
+def actionIndices2 : Array (Fin 128) :=
+  #[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+   80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95,
+   96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+   112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127,
+   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+   16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+   32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+   48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+
+def actionIndices : Fin 3 → Array (Fin 128) :=
+  ![actionIndices0, actionIndices1, actionIndices2]
+
+theorem actionIndices_size (j : Fin 3) : (actionIndices j).size = 128 := by
+  fin_cases j <;> rfl
+
+def actionIndex (j : Fin 3) (i : Fin 128) : Fin 128 :=
+  (actionIndices j)[i.val]'(by rw [actionIndices_size]; exact i.isLt)
+
+def bfsAtData : Array (Fin 128) :=
+  #[0, 16, 32, 64, 48, 80, 40, 96, 66, 68, 56, 112, 82, 84, 8, 104,
+   98, 100, 70, 2, 69, 4, 24, 120, 114, 116, 86, 18, 85, 20, 72, 106,
+   108, 102, 34, 101, 36, 71, 6, 65, 5, 88, 122, 124, 118, 50, 117, 52,
+   87, 22, 81, 21, 74, 76, 110, 42, 109, 44, 103, 38, 97, 37, 67, 7,
+   1, 90, 92, 126, 58, 125, 60, 119, 54, 113, 53, 83, 23, 17, 78, 10,
+   77, 12, 111, 46, 105, 45, 99, 39, 33, 3, 94, 26, 93, 28, 127, 62,
+   121, 61, 115, 55, 49, 19, 79, 14, 73, 13, 107, 47, 41, 35, 95, 30,
+   89, 29, 123, 63, 57, 51, 75, 15, 9, 43, 91, 31, 25, 59, 11, 27]
+
+def bfsAt (k : Fin 128) : Fin 128 :=
+  bfsAtData[k.val]'(by change k.val < 128; exact k.isLt)
+
+def bfsInverseData : Array (Fin 128) :=
+  #[0, 64, 19, 89, 21, 40, 38, 63, 14, 120, 79, 126, 81, 105, 103, 119,
+   1, 77, 27, 101, 29, 51, 49, 76, 22, 124, 91, 127, 93, 113, 111, 123,
+   2, 88, 34, 109, 36, 61, 59, 87, 6, 108, 55, 121, 57, 85, 83, 107,
+   4, 100, 45, 117, 47, 74, 72, 99, 10, 116, 68, 125, 70, 97, 95, 115,
+   3, 39, 8, 62, 9, 20, 18, 37, 30, 104, 52, 118, 53, 80, 78, 102,
+   5, 50, 12, 75, 13, 28, 26, 48, 41, 112, 65, 122, 66, 92, 90, 110,
+   7, 60, 16, 86, 17, 35, 33, 58, 15, 84, 31, 106, 32, 56, 54, 82,
+   11, 73, 24, 98, 25, 46, 44, 71, 23, 96, 42, 114, 43, 69, 67, 94]
+
+def bfsInverse (k : Fin 128) : Fin 128 :=
+  bfsInverseData[k.val]'(by change k.val < 128; exact k.isLt)
+
+def bfsParentData : Array (Fin 128) :=
+  #[0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+   7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 15,
+   15, 16, 16, 17, 17, 18, 18, 20, 20, 22, 23, 23, 24, 24, 25, 25,
+   26, 26, 28, 28, 30, 30, 31, 31, 32, 32, 33, 33, 35, 35, 37, 37,
+   39, 41, 41, 42, 42, 43, 43, 44, 44, 46, 46, 48, 48, 50, 52, 52,
+   53, 53, 54, 54, 56, 56, 58, 58, 60, 62, 65, 65, 66, 66, 67, 67,
+   69, 69, 71, 71, 73, 75, 78, 78, 80, 80, 82, 82, 84, 86, 90, 90,
+   92, 92, 94, 94, 96, 98, 102, 102, 104, 106, 110, 110, 112, 114, 118, 122]
+
+def bfsParent (k : Fin 128) : Fin 128 :=
+  bfsParentData[k.val]'(by change k.val < 128; exact k.isLt)
+
+def bfsGenData : Array (Fin 3) :=
+  #[0, 0, 1, 2, 1, 2, 0, 2, 0, 1, 0, 2, 0, 1, 1, 2,
+   0, 1, 1, 2, 0, 2, 1, 2, 0, 1, 1, 2, 0, 2, 2, 0,
+   1, 1, 2, 0, 2, 0, 2, 1, 2, 2, 0, 1, 1, 2, 0, 2,
+   0, 2, 1, 2, 0, 1, 1, 2, 0, 2, 0, 2, 1, 2, 1, 2,
+   2, 0, 1, 1, 2, 0, 2, 0, 2, 1, 2, 1, 2, 2, 1, 2,
+   0, 2, 0, 2, 1, 2, 1, 2, 2, 2, 1, 2, 0, 2, 0, 2,
+   1, 2, 1, 2, 2, 2, 0, 2, 1, 2, 1, 2, 2, 2, 0, 2,
+   1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2]
+
+def bfsGen (k : Fin 128) : Fin 3 :=
+  bfsGenData[k.val]'(by change k.val < 128; exact k.isLt)
+
+set_option maxHeartbeats 0 in
+/- This certificate proof unfolds finite checks; scope its elaboration budget here. -/
+theorem bfsAt_zero : bfsAt 0 = 0 := by decide +kernel
+
+set_option maxHeartbeats 0 in
+/- This certificate proof unfolds finite checks; scope its elaboration budget here. -/
+theorem bfs_cover : ∀ i : Fin 128, bfsAt (bfsInverse i) = i := by
+  decide +kernel
+
+theorem bfsAt_surjective : Function.Surjective bfsAt :=
+  fun i ↦ ⟨bfsInverse i, bfs_cover i⟩
+
+set_option maxHeartbeats 0 in
+/- This certificate proof unfolds finite checks; scope its elaboration budget here. -/
+theorem bfs_parent_lt : ∀ k : Fin 128, 0 < k → bfsParent k < k := by
+  decide +kernel
+
+/-- Exactly 128 left-generator products, with no ambient-group enumeration. -/
+def actionCheck (j : Fin 3) : Bool :=
+  decide (∀ i : Fin 128, genAt j * rowAt i = rowAt (actionIndex j i))
+
+/-- One product per nonroot node of the spanning tree. -/
+def bfsEdgeCheck : Bool :=
+  decide (∀ k : Fin 128, 0 < k →
+    rowAt (bfsAt k) = genAt (bfsGen k) * rowAt (bfsAt (bfsParent k)))
+
+end LisiSabatini.SymmetricEightCertificates.FastData

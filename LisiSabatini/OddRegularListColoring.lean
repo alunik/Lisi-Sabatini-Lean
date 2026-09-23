@@ -168,7 +168,7 @@ theorem exists_binaryChoice_avoiding_deterministicTop_and_external
           (epsilon ((sigma.1 : Equiv.Perm I).symm i)) (epsilon i)) ∧
       (∀ sigma : T, ¬ ∀ i, E sigma i (epsilon i)) := by
   classical
-  letI : Fintype T := Fintype.ofFinite T
+  let : Fintype T := Fintype.ofFinite T
   let Choices := I → Bool
   let nonidentity : Finset T := Finset.univ.filter (fun sigma ↦ sigma ≠ 1)
   let topBad (sigma : T) : Finset Choices :=

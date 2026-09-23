@@ -86,7 +86,7 @@ theorem natCard_dvd_natCard_sub_one_of_fixedPointFreeOffZero
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl }
   have hcardNZ : Nat.card NZ = Nat.card V - 1 := by
-    letI : Fintype V := Fintype.ofFinite V
+    let : Fintype V := Fintype.ofFinite V
     calc
       Nat.card NZ = Nat.card {v : V // v ≠ 0} :=
         Nat.card_congr nzEquiv
@@ -118,14 +118,14 @@ theorem natCard_le_half_natCard_sub_one_of_oddPGroup_fixedPointFreeOffZero
     (hP : IsPGroup p H)
     (hfp : FixedPointFreeOffZero H) :
     Nat.card H ≤ (Nat.card V - 1) / 2 := by
-  letI : Fact (Nat.Prime p) := ⟨hp⟩
-  letI : Fintype V := Fintype.ofFinite V
+  let : Fact (Nat.Prime p) := ⟨hp⟩
+  let : Fintype V := Fintype.ofFinite V
   have hVnontrivial : Nontrivial V :=
     Finite.one_lt_card_iff_nontrivial.mp (by
       simpa only [Nat.card_eq_fintype_card] using hV)
-  letI : Nontrivial V := hVnontrivial
+  let : Nontrivial V := hVnontrivial
   obtain ⟨v : V, hv⟩ := exists_ne (0 : V)
-  letI : Finite H := Finite.of_injective
+  let : Finite H := Finite.of_injective
     (fun g : H ↦ g • v)
     (orbitMap_injective_of_fixedPointFreeOffZero_of_ne_zero H hfp hv)
   obtain ⟨n, hn⟩ := hP.exists_card_eq

@@ -153,7 +153,7 @@ theorem carrier_inter_subgroup_nonempty_of_map_subtype_eq
   obtain ⟨x, rfl⟩ := ConjClasses.exists_rep D
   refine ⟨(x : G), ?_, x.property⟩
   rw [ConjClasses.mem_carrier_iff_mk_eq]
-  simpa using hD
+  exact hD
 
 /-! ## Pointwise comparison of class rows -/
 
@@ -384,7 +384,7 @@ theorem sum_mixedSylowPairQuadraticClassTerm_subgroup_le_two_mul_restricted
       apply Finset.sum_le_sum
       intro C _hC
       by_cases hmeet : ambientConjClassMeetsSubgroup H C
-      · rw [if_pos hmeet]
+      · rw [ite_eq_left hmeet]
         have hcard :
             ((Finset.univ : Finset (ConjClasses H)).filter
               fun D ↦ classMap D = C).card ≤ 2 := by
@@ -416,7 +416,7 @@ theorem sum_mixedSylowPairQuadraticClassTerm_subgroup_le_two_mul_restricted
             rfl
           _ ≤ 2 * ambientTerm C :=
             Nat.mul_le_mul_right (ambientTerm C) hcard
-      · rw [if_neg hmeet, Nat.mul_zero]
+      · rw [ite_eq_right hmeet, Nat.mul_zero]
         have hempty :
             ((Finset.univ : Finset (ConjClasses H)).filter
               fun D ↦ classMap D = C) = ∅ := by
@@ -558,7 +558,7 @@ theorem alternatingLinkedRowQuadraticTransfer
         (alternatingGroup (Fin n)) Q ≤
       4 * normalizedSameRowSylowQuadraticCost
         (Equiv.Perm (Fin n)) P := by
-  letI : Nontrivial (Fin n) :=
+  let : Nontrivial (Fin n) :=
     Fin.nontrivial_iff_two_le.mpr hn
   exact
     normalizedSameRowSylowQuadraticCost_subgroup_le_four_mul
@@ -578,7 +578,7 @@ theorem alternatingLinkedRowQuadraticTransfer_restricted
       4 *
         normalizedSameRowSylowQuadraticCostMeetingSubgroup
           (alternatingGroup (Fin n)) P := by
-  letI : Nontrivial (Fin n) :=
+  let : Nontrivial (Fin n) :=
     Fin.nontrivial_iff_two_le.mpr hn
   exact
     normalizedSameRowSylowQuadraticCost_subgroup_le_four_mul_restricted

@@ -169,7 +169,7 @@ theorem mem_mixedSylowPairBadConjugators_iff_exists_primeOrder_witness
           x ∈ mixedSylowPairPrimeWitnessConjugators P Q g := by
   rw [mem_mixedSylowPairBadConjugators_iff,
     mixedSylowInter_ne_bot_iff_exists_primeOrder_mem]
-  simp only [mixedSylowPairPrimeWitnessConjugators, Set.mem_setOf_eq]
+  simp only [mixedSylowPairPrimeWitnessConjugators, Set.mem_ofPred_eq]
 
 /-- The finite set of elements of order exactly `p`. -/
 def primeOrderElements (p : ℕ) (G : Type uG) [Group G] [Fintype G] :
@@ -234,9 +234,9 @@ theorem ncard_mixedSylowPairPrimeWitnessConjugators
         (sylowConjugatorMembershipSet Q g).ncard
       else 0 := by
   by_cases hg : g ∈ (P : Subgroup G)
-  · rw [if_pos hg,
+  · rw [ite_eq_left hg,
       mixedSylowPairPrimeWitnessConjugators_eq_of_mem P Q g hg]
-  · rw [if_neg hg,
+  · rw [ite_eq_right hg,
       mixedSylowPairPrimeWitnessConjugators_eq_empty_of_not_mem P Q g hg]
     exact Set.ncard_empty _
 
@@ -320,8 +320,8 @@ theorem ncard_smul_into_set_eq_inter_orbit_mul_card_stabilizer
     {a : A | a • b ∈ S}.ncard =
       (MulAction.orbit A b ∩ S).ncard *
         Nat.card (MulAction.stabilizer A b) := by
-  letI := Fintype.ofFinite A
-  letI := Fintype.ofFinite X
+  let := Fintype.ofFinite A
+  let := Fintype.ofFinite X
   rw [← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq]
   calc
     Nat.card {a : A // a • b ∈ S} =
@@ -415,7 +415,7 @@ theorem conjugacyClass_ncard_mul_card_centralizer
     (ConjClasses.mk g).carrier.ncard *
         Nat.card (Subgroup.centralizer {g}) =
       Nat.card G := by
-  letI := Fintype.ofFinite G
+  let := Fintype.ofFinite G
   have h :=
     MulAction.card_orbit_mul_card_stabilizer_eq_card_group
       (ConjAct G) g
@@ -454,7 +454,7 @@ theorem mem_primeOrderConjugacyClassRow_iff
       ConjClasses.mk g = C ∧ g ∈ H ∧ orderOf g = p := by
   simp only [primeOrderConjugacyClassRow, Set.mem_inter_iff,
     ConjClasses.mem_carrier_iff_mk_eq, SetLike.mem_coe,
-    Set.mem_setOf_eq]
+    Set.mem_ofPred_eq]
   tauto
 
 /-- The integer-scaled quadratic contribution of one conjugacy class. -/
@@ -631,7 +631,7 @@ theorem mixedSylowPair_transporter_sum_eq_quadraticClass_sum
           ∑ g ∈ S with ConjClasses.mk g = C,
             F (ConjClasses.mk g) := by
       symm
-      simpa only [Finset.mem_univ, if_true, Finset.filter_true] using
+      simpa only [Finset.mem_univ, ite_true, Finset.filter_true] using
         (Finset.sum_fiberwise_eq_sum_filter
           S (Finset.univ : Finset (ConjClasses G))
           ConjClasses.mk (fun g ↦ F (ConjClasses.mk g)))
@@ -682,7 +682,7 @@ theorem exists_common_mixedSylowInter_bot_of_quadraticClass_sum_lt
   apply exists_common_mixedSylowInter_bot_of_sum_bad_ncard_lt p P Q
   refine
     (Finset.sum_le_sum fun i _hi ↦ ?_).trans_lt hclass
-  letI : Fact (p i).Prime := ⟨hp i⟩
+  let : Fact (p i).Prime := ⟨hp i⟩
   exact
     ncard_mixedSylowPairBadConjugators_le_quadraticClass_sum
       (P i) (Q i)

@@ -49,22 +49,22 @@ theorem normalComponentOrbitAvoidingSynchronizationOn_of_children
   have hblock : NormalComponentOrbitAvoidingSynchronizationOn.{uJ} r
       (Fin b → Fin e → ZMod r) P.blockAction := by
     let D := P.imprimitiveLinearActionData
-    letI : Nonempty (Fin b) := Fin.pos_iff_nonempty.mp
+    let : Nonempty (Fin b) := Fin.pos_iff_nonempty.mp
       (P.blockCount_one_lt.trans' Nat.zero_lt_one)
-    letI : Finite D.blockPerm.range :=
+    let : Finite D.blockPerm.range :=
       P.toPrimitiveImprimitivityPresentation.top_finite
-    letI : FaithfulSMul D.blockPerm.range (Fin b) :=
+    let : FaithfulSMul D.blockPerm.range (Fin b) :=
       P.toPrimitiveImprimitivityPresentation.top_faithful
-    letI : MulAction.IsPreprimitive D.blockPerm.range (Fin b) :=
+    let : MulAction.IsPreprimitive D.blockPerm.range (Fin b) :=
       P.toPrimitiveImprimitivityPresentation.top_preprimitive
     intro J _ p hp hinj hpTwo hcross H hHnormal hHp
     cases isEmpty_or_nonempty J with
     | inl hJ =>
-        letI : IsEmpty J := hJ
+        let : IsEmpty J := hJ
         intro j
         exact isEmptyElim j
     | inr hJ =>
-        letI : Nonempty J := hJ
+        let : Nonempty J := hJ
         apply
           D.orbitAvoidingCommonRegularTranslates_of_primitiveTop_of_localOneOrbit
             p hp hinj hpTwo H hHnormal hHp
@@ -104,7 +104,7 @@ theorem quasiprimitiveNormalComponentOrbitAvoidingSynchronization
     (hd : 0 < d) (hrTwo : r ≠ 2)
     (hqp : IsQuasiprimitiveLinearAction r d K) :
     NormalComponentOrbitAvoidingSynchronization.{uJ} r d K := by
-  letI : NeZero r := ⟨(Fact.out : Nat.Prime r).ne_zero⟩
+  let : NeZero r := ⟨(Fact.out : Nat.Prime r).ne_zero⟩
   intro J _ p hp hinj hpTwo hcross H hHnormal hHp
   exact
     orbitAvoidingCommonRegularTranslates_of_quasiprimitive

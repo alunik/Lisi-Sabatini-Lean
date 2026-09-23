@@ -83,7 +83,7 @@ theorem normalComponentAffineSynchronization
     NormalComponentAffineSynchronizationOn.{uJ} r V K := by
   intro J _ p hp hinj hpTwo hcross H hHnormal hHp t
   by_cases hJ : Nonempty J
-  · letI : Nonempty J := hJ
+  · let : Nonempty J := hJ
     obtain ⟨v, hregular, _havoid⟩ :=
       h p hp hinj hpTwo hcross H hHnormal hHp
         (Classical.choice hJ) t 0

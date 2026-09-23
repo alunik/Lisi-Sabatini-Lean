@@ -25,10 +25,10 @@ theorem prime_dvd_natCard_sub_one_of_nontrivial_pGroup_fixedPointFreeOffZero
     (hH : H ≠ ⊥) (hP : IsPGroup p H)
     (hfp : FixedPointFreeOffZero H) :
     p ∣ Nat.card V - 1 := by
-  letI : Fact (Nat.Prime p) := ⟨hp⟩
-  letI : Finite H :=
+  let : Fact (Nat.Prime p) := ⟨hp⟩
+  let : Finite H :=
     finite_linearSubgroup_of_finite (R := R) (W := V) H
-  haveI : Nontrivial H := (H.nontrivial_iff_ne_bot).2 hH
+  have : Nontrivial H := (H.nontrivial_iff_ne_bot).2 hH
   obtain ⟨e, he⟩ := IsPGroup.iff_card.mp hP
   have he0 : e ≠ 0 := by
     intro hezero

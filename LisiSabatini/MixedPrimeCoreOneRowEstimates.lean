@@ -26,9 +26,9 @@ theorem fixedSpectrumNonregularBound_eq_one_of_fixedPointFreeOffZero
     (hne : P ≠ ⊥) (hfp : FixedPointFreeOffZero P) :
     fixedSpectrumNonregularBound P = 1 := by
   classical
-  letI : Finite P := finite_linearSubgroup_of_finite P
-  letI : Fintype P := Fintype.ofFinite P
-  rw [fixedSpectrumNonregularBound, if_neg hne]
+  let : Finite P := finite_linearSubgroup_of_finite P
+  let : Fintype P := Fintype.ofFinite P
+  rw [fixedSpectrumNonregularBound, ite_eq_right hne]
   have hfixed (g : P) (hg : g ≠ 1) : fixedVectorSet g.1 = {0} := by
     ext v
     constructor
@@ -63,7 +63,7 @@ theorem three_mul_natCard_le_cyclicCenterOperatorSpectrumBound_of_fullCenterRow
       r e q hP.cyclicCenterStructuralRank := by
   let n := hP.cyclicCenterStructuralRank
   let z := Nat.card (Subgroup.center P)
-  letI : Fact q.Prime := ⟨hP.prime⟩
+  let : Fact q.Prime := ⟨hP.prime⟩
   have hn : 0 < n := hP.cyclicCenterStructuralRank_pos
   have hqThree : 3 ≤ q := by
     obtain ⟨k, hk⟩ := hP.odd

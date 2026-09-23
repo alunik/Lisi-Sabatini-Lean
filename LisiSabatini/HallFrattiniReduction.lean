@@ -69,7 +69,7 @@ theorem zpowers_le_or_le_of_isCyclic_isPGroup
     (a b : G) :
     Subgroup.zpowers a ≤ Subgroup.zpowers b ∨
       Subgroup.zpowers b ≤ Subgroup.zpowers a := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   obtain ⟨g, hg⟩ := IsCyclic.exists_monoid_generator (α := G)
   obtain ⟨m, hm⟩ := hg a
   obtain ⟨n, hn⟩ := hg b
@@ -107,8 +107,8 @@ theorem basic_commutator_pow_eq_one_of_frattini_isCyclic
     (hclass : commutator G ≤ Subgroup.center G)
     (hPhiCyclic : IsCyclic (frattini G)) (x y : G) :
     ⁅x, y⁆ ^ p = 1 := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : IsCyclic (frattini G) := hPhiCyclic
+  let : Fact p.Prime := ⟨hp⟩
+  let : IsCyclic (frattini G) := hPhiCyclic
   let xp : frattini G :=
     ⟨x ^ p, pow_prime_mem_frattini_of_isPGroup hp hGp x⟩
   let yp : frattini G :=
@@ -195,7 +195,7 @@ theorem commutator_eq_centerPrimeKernel_of_frattini_isMulCommutative
     (h : IsHallClassTwoIntermediate p P)
     (hPhiComm : IsMulCommutative (frattini P)) :
     commutator P = centerPrimeKernel p P := by
-  letI : IsMulCommutative (frattini P) := hPhiComm
+  let : IsMulCommutative (frattini P) := hPhiComm
   have hPhiCyclic : IsCyclic (frattini P) :=
     h.hall.isCyclic (frattini P)
   exact h.commutator_eq_centerPrimeKernel_of_frattini_isCyclic

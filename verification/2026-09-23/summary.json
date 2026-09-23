@@ -1,0 +1,138 @@
+{
+  "schema": "lisi-sabatini-paper-verification-v1",
+  "record_kind": "Selected fields derived from successful build and replay receipts; machine paths omitted.",
+  "verified_utc": "2026-09-23T07:10:09.747158+00:00",
+  "status": "PASS",
+  "toolchain": "leanprover/lean4:v4.34.0-rc2",
+  "dependency_pins": {
+    "Cli": "ab3a82db9fea14cf0fd7f5a2de650f4b534640af",
+    "LeanSearchClient": "ba67e212be1197b84c1f1f6299488a10a3002713",
+    "Qq": "507746ab8f4b643ccdacb2ec4cdb5853fa9f8ab3",
+    "aesop": "18889deb9e83ea7420ef51c160d6f88552e744e3",
+    "batteries": "d54dddc581e08be364c278052863524bff7a99a9",
+    "importGraph": "d8823026ac7ef130c253089d95685f9877b95323",
+    "mathlib": "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70",
+    "plausible": "d9598f07b1bc701f1e3aae163d2681c1fd978793",
+    "proofwidgets": "a8acbfd87375ff4abe14ce09db5b7664d383bc7f"
+  },
+  "inputs": {
+    "manifest": "source-files.sha256",
+    "file_count": 2163,
+    "manifest_sha256": "f3e12be37210bb04b7c89589e1e7dbe053e3528471bb23f29f5e13a9784d8e04",
+    "source_unchanged_during_verification": true,
+    "current_checkout_inputs_match": true,
+    "packaging_note": "README, license, Git attributes, CI workflow and publication documentation are outside this proof/configuration manifest. After verification, GitHub caching was restricted to project build products; proof commands and all recorded inputs are unchanged."
+  },
+  "axiom_audit": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "exact_declaration_count": 24,
+    "declarations": [
+      "LisiSabatini.SylowCoreAttainment.of_normal_subgroup",
+      "LisiSabatini.exists_common_mixedSylowInter_bot_alternatingGroup_ge_five",
+      "LisiSabatini.exists_common_mixedSylowInter_bot_symmetricGroup_ge_five_of_ne_eight",
+      "LisiSabatini.exists_translated_regular_sylows",
+      "LisiSabatini.hasLisiSabatini_alternatingGroup",
+      "LisiSabatini.hasLisiSabatini_of_odd",
+      "LisiSabatini.hasLisiSabatini_of_solvable_of_normal_quotients",
+      "LisiSabatini.hasLisiSabatini_symmetricGroup",
+      "LisiSabatini.mixedNilpotentIntersectionInFitting_alternatingGroup",
+      "LisiSabatini.mixedNilpotentIntersectionInFitting_of_odd",
+      "LisiSabatini.mixedNilpotentIntersectionTrivial_alternatingGroup_ge_five",
+      "LisiSabatini.mixedNilpotentIntersectionTrivial_symmetricGroup_ge_five_of_ne_eight",
+      "LisiSabatini.mixedStrongLisiSabatini_of_odd",
+      "LisiSabatini.mixedTwoSylowCoreSynchronization_alternatingGroup",
+      "LisiSabatini.mixedTwoSylowCoreSynchronization_symmetricGroup_of_ne_eight",
+      "LisiSabatini.nilpotentSelfIntersectionInFitting_of_odd",
+      "LisiSabatini.nilpotentSelfIntersectionInFitting_of_solvable_of_quotientSylowCoreAttainment",
+      "LisiSabatini.pCore_eq_comap_of_normal",
+      "LisiSabatini.quotientSylowCoreAttainment_iff_normal_quotients",
+      "LisiSabatini.strongLisiSabatini_alternatingGroup",
+      "LisiSabatini.strongLisiSabatini_of_odd",
+      "LisiSabatini.strongLisiSabatini_of_solvable_of_quotientSylowCoreAttainment",
+      "LisiSabatini.sylowCoreAttainmentAt_iff_exists_pair",
+      "OddOrder.feitThompson"
+    ]
+  },
+  "checks": [
+    {
+      "name": "build",
+      "exit_code": 0,
+      "elapsed_seconds": 18.238,
+      "log_sha256": "7fd799954812149df3948516cd3989a38e05b34c5e12b3a380673c8ec4aa7089"
+    },
+    {
+      "name": "build-legacy-feit-thompson",
+      "exit_code": 0,
+      "elapsed_seconds": 10.363,
+      "log_sha256": "08c2ba76bdf9af373a2383bad4efc883d8edfcb14116ea6a176f1fa54735b3a0"
+    },
+    {
+      "name": "strict-LisiSabatini.FeitThompsonApplications",
+      "exit_code": 0,
+      "elapsed_seconds": 6.726,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict-LisiSabatini.FeitThompsonApplicationsAxiomAudit",
+      "exit_code": 0,
+      "elapsed_seconds": 6.962,
+      "log_sha256": "74133da128a4ac21bd448b563d6591be75b779aae4d1e0973e40c542e56cee1b"
+    },
+    {
+      "name": "axioms",
+      "exit_code": 0,
+      "elapsed_seconds": 7.168,
+      "log_sha256": "3152cf5e8eba4c188c255b78a7c38864e5ab8792d9170d93217988dba014b158"
+    },
+    {
+      "name": "leanchecker-LisiSabatini.FeitThompsonApplications",
+      "exit_code": 0,
+      "elapsed_seconds": 12.018,
+      "log_sha256": "e199bc62b0c04da0de932d8b04a24107454e1d49da1b0c5ca31f2b0f599eaac7"
+    },
+    {
+      "name": "leanchecker-fresh-LisiSabatini.FeitThompsonApplications",
+      "exit_code": 0,
+      "elapsed_seconds": 604.118,
+      "log_sha256": "b27b8a02ce1116fbf4df43f979692199574b6a135a90dfbdb78196d799867ff9"
+    }
+  ],
+  "vendor_warnings": {
+    "count": 1835,
+    "allowed_source_prefix": "OddOrder/",
+    "vendor_source_unchanged": true,
+    "project_entrypoints_warning_fatal": true
+  },
+  "kernel_replay_scope": {
+    "ordinary": [
+      "LisiSabatini.FeitThompsonApplications"
+    ],
+    "fresh": [
+      "LisiSabatini.FeitThompsonApplications"
+    ],
+    "core_continuity": {
+      "prior_verification_date": "2026-09-21",
+      "prior_core_fresh_replay_module": "LisiSabatini",
+      "prior_receipt_sha256": "8950c900700f172c271cc1d27f5ab6ed8ed41108c2c55ae47e20084294d59154",
+      "unchanged_project_lean_files": 414,
+      "current_project_lean_files": 418,
+      "changed_project_lean_files": [
+        "LisiSabatini/FeitThompsonApplications.lean",
+        "LisiSabatini/PaperAlignment.lean",
+        "LisiSabatini/PaperAlignmentAxiomAudit.lean",
+        "LisiSabatini.lean"
+      ],
+      "meaning": "Core proof modules are unchanged from the prior successful fresh replay. Two import-only entrypoints and the audit leaf were narrowed and strictly rebuilt. The changed odd-order wrapper received the new fresh replay."
+    }
+  },
+  "receipt_provenance": {
+    "receipt_sha256": "1ae3681c1079743bef2398683a8ff6ea4300d4c598f46b0521f1d01f9452ca84",
+    "source_snapshot_sha256": "5dfa6a7606c2cf46c378ceb74fe5596e727bc1ee0f34f786e559a21f91f9dbff",
+    "source_hashes_after_json_sha256": "e8540326a0f143cf3b237787cb2761cd1c6e7140047f8c4702569bf07327b0ac",
+    "ci_workflow_at_verification_sha256": "ad712e22b484af4b5eb45f8fa463d78486013517f02a1cc736def37c64651c34"
+  }
+}

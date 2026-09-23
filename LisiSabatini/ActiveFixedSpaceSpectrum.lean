@@ -106,7 +106,7 @@ theorem ncard_nonzeroFixedVectorSet_eq_pow_finrank_sub_one_zmod
     (g : LinearMap.GeneralLinearGroup (ZMod r) W) :
     (nonzeroFixedVectorSet g).ncard =
       r ^ Module.finrank (ZMod r) (fixedSpace g) - 1 := by
-  letI : Finite W := Module.finite_of_finite (ZMod r)
+  let : Finite W := Module.finite_of_finite (ZMod r)
   rw [ncard_nonzeroFixedVectorSet,
     ncard_fixedVectorSet_eq_pow_finrank_fixedSpace_zmod]
 

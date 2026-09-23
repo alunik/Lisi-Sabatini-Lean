@@ -123,8 +123,9 @@ theorem stabilizer_map_conjugation_eq_bot_iff
     rw [hmap] at hcg
     have hcgeq : cg = 1 := Subgroup.mem_bot.mp hcg
     apply Subgroup.mem_bot.mpr
-    exact (c.subgroupMap A).injective (by
-      simpa only [cg, map_one] using hcgeq)
+    apply (c.subgroupMap A).injective
+    rw [map_one]
+    exact hcgeq
   · intro hsource
     apply (Subgroup.eq_bot_iff_forall _).mpr
     intro g hg
@@ -146,9 +147,9 @@ theorem stabilizer_map_conjugation_eq_bot_iff
     rw [hsource] at ha
     have haone : a = 1 := Subgroup.mem_bot.mp ha
     apply Subgroup.mem_bot.mpr
-    calc
-      g = c.subgroupMap A a := hag.symm
-      _ = 1 := by rw [haone]; exact map_one _
+    change g = (1 : A.map c.toMonoidHom)
+    rw [← hag, haone]
+    exact map_one _
 
 /-! ## NCAS transport -/
 

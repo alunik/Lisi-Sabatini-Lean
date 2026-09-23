@@ -189,7 +189,7 @@ through `Subrepresentation` or a typeclass-valued irreducibility theorem. -/
 theorem chiefAction_isIrreducibleLinearAction :
     IsIrreducibleLinearAction S.r S.d S.chiefAction := by
   intro U hU
-  letI : (S.ambientCoordinateSubgroup U).Normal :=
+  let : (S.ambientCoordinateSubgroup U).Normal :=
     S.ambientCoordinateSubgroup_normal U hU
   rcases S.minimal.eq_bot_or_eq (S.ambientCoordinateSubgroup U)
       inferInstance (S.ambientCoordinateSubgroup_le_N U) with hbot | htop

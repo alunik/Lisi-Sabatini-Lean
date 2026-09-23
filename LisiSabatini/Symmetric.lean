@@ -45,7 +45,7 @@ theorem exists_common_mixedSylowInter_bot_symmetricGroup_ge_forty
     (P Q : ∀ i, Sylow (p i) (Equiv.Perm (Fin n))) :
     ∃ x : Equiv.Perm (Fin n),
       ∀ i, mixedSylowInter (P i) (Q i) x = ⊥ := by
-  letI := Fintype.ofFinite I
+  let := Fintype.ofFinite I
   apply
     exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one
       p hp P Q

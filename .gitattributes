@@ -1,0 +1,11 @@
+vendor/odd-order/** linguist-vendored=true
+LisiSabatini/FiniteCertificates/A8FingerprintData.lean linguist-generated=true
+LisiSabatini/FiniteCertificates/A8Rows.lean linguist-generated=true
+LisiSabatini/SymmetricDoubleCosetCertificates/**/*.lean linguist-generated=true
+LisiSabatini/SymmetricEightCertificates/FastChecks/*.lean linguist-generated=true
+LisiSabatini/SymmetricEightCertificates/FastChecks.lean linguist-generated=true
+LisiSabatini/SymmetricEightCertificates/FastData.lean linguist-generated=true
+LisiSabatini/SymmetricEightCertificates/Table.lean linguist-generated=true
+LisiSabatini/SymmetricFiniteCertificates/S6ThreeCounts.lean linguist-generated=true
+LisiSabatini/SymmetricFiniteCertificates/S6ThreeTable.lean linguist-generated=true
+LisiSabatini/SymmetricFiniteCertificates/SylowTwoWitnesses.lean linguist-generated=true

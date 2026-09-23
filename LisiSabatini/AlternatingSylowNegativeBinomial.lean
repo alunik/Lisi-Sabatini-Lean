@@ -692,7 +692,7 @@ theorem sylowTowerCycleProfile_negativeBinomialMajorized
             Polynomial.coeff_X_pow]
           by_cases hj : j = p * m
           · subst j
-            rw [if_pos hM,
+            rw [ite_eq_left hM,
               Nat.mul_one,
               Polynomial.coeff_pow_of_natDegree_le hdegree,
               sylowTowerOrder_pow_pred hp, ← hM]
@@ -718,7 +718,7 @@ theorem sylowTowerCycleProfile_negativeBinomialMajorized
                   pow_succ']
           · have hj' : j ≠ p ^ (k + 1) := by
               simpa only [← hM] using hj
-            rw [if_neg hj', Nat.mul_zero, Nat.add_zero]
+            rw [ite_eq_right hj', Nat.mul_zero, Nat.add_zero]
             simpa only [sylowTowerCycleCapacity_succ, m,
               pow_succ'] using hpow j
 
@@ -786,7 +786,7 @@ theorem sylowCycleProfile_coeff_le_negativeBinomialMajorant
       (by
         intro k _hk
         by_cases hdigit : basePDigit n p k = 0
-        · simp only [hdigit, if_pos, zero_mul]
+        · simp only [hdigit, ite_eq_left, zero_mul]
           exact
             isSylowCycleNegativeBinomialMajorized_one p
         · simp only [hdigit]

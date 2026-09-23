@@ -115,7 +115,7 @@ theorem inf_conj_smul_eq_inf_sections_of_le
     (hle : P ⊓ (MulAut.conj n • B) ≤ L) :
     P ⊓ (MulAut.conj n • B) =
       (P ⊓ L) ⊓ (MulAut.conj n • (B ⊓ L)) := by
-  letI : L.Normal := hL
+  let : L.Normal := hL
   ext g
   constructor
   · intro hg
@@ -153,7 +153,8 @@ theorem sylowInter_le_comap_quotient_pCore_of_quotient_eq
     have hmn : QuotientGroup.mk' N n = 1 := by
       rw [← MonoidHom.mem_ker, QuotientGroup.ker_mk']
       exact hn
-    simpa [map_mul, hmn] using hgmap
+    rw [map_mul, hmn, one_mul] at hgmap
+    exact hgmap
 
 /-- A Sylow subgroup whose quotient image contains the quotient `p`-core
 cuts the pullback of that core in a Sylow `p`-subgroup.  The proof uses only
@@ -535,7 +536,7 @@ theorem map_restrictedConjugation_ker_normal_of_quotientCore
           (pCore p (G ⧸ S.N)).comap (QuotientGroup.mk' S.N))).ker.map
       ((P : Subgroup G) ⊓
         (pCore p (G ⧸ S.N)).comap (QuotientGroup.mk' S.N)).subtype).Normal := by
-  letI : Fact S.r.Prime := ⟨S.prime⟩
+  let : Fact S.r.Prime := ⟨S.prime⟩
   let L := (pCore p (G ⧸ S.N)).comap (QuotientGroup.mk' S.N)
   let A : Subgroup G := (P : Subgroup G) ⊓ L
   rw [S.map_restrictedConjugation_ker_eq_inf_centralizer A]
@@ -549,7 +550,7 @@ theorem map_restrictedConjugation_ker_normal_of_quotientCore
   have hcL : c ∈ L :=
     hLNormal.conj_mem k hk.1.2 g
   have hcCent : c ∈ Subgroup.centralizer (S.N : Set G) := by
-    letI : (Subgroup.centralizer (S.N : Set G)).Normal := inferInstance
+    let : (Subgroup.centralizer (S.N : Set G)).Normal := inferInstance
     exact Subgroup.Normal.conj_mem inferInstance k hk.2 g
   have hcSup : c ∈ S.N ⊔ A := by
     rw [hsup]
@@ -615,7 +616,7 @@ theorem pCore_eq_map_restrictedConjugation_ker
     (hcoreA : pCore p G ≤ A)
     (hkerNormal : ((S.restrictedConjugation A).ker.map A.subtype).Normal) :
     pCore p G = (S.restrictedConjugation A).ker.map A.subtype := by
-  letI : Fact S.r.Prime := ⟨S.prime⟩
+  let : Fact S.r.Prime := ⟨S.prime⟩
   apply le_antisymm
   · rw [S.map_restrictedConjugation_ker_eq_inf_centralizer A]
     exact le_inf hcoreA
@@ -685,7 +686,7 @@ theorem exists_translation_sylowInter_eq_pCore_iff_regular
               (pCore p (G ⧸ S.N)).comap
                 (QuotientGroup.mk' S.N))).range
           (S.coordinates (Additive.ofMul (n * t))) = ⊥ := by
-  letI : Fact S.r.Prime := ⟨S.prime⟩
+  let : Fact S.r.Prime := ⟨S.prime⟩
   let L := (pCore p (G ⧸ S.N)).comap (QuotientGroup.mk' S.N)
   let A : Subgroup G := (P : Subgroup G) ⊓ L
   have himage : pCore p (G ⧸ S.N) ≤

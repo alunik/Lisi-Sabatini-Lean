@@ -182,7 +182,7 @@ theorem pred_mul_geom_sum
 theorem basePBlockExponent_eq_factorization_factorial
     {n p : ℕ} (hp : p.Prime) :
     basePBlockExponent n p = n.factorial.factorization p := by
-  letI : NeZero p := ⟨hp.ne_zero⟩
+  let : NeZero p := ⟨hp.ne_zero⟩
   apply Nat.mul_left_cancel (Nat.sub_pos_of_lt hp.one_lt)
   calc
     (p - 1) * basePBlockExponent n p =
@@ -312,7 +312,7 @@ def basePBlockPermHom
 theorem basePBlockPermHom_injective
     (n p : ℕ) (hp : p.Prime) :
     Function.Injective (basePBlockPermHom n p hp) := by
-  letI : NeZero p := ⟨hp.ne_zero⟩
+  let : NeZero p := ⟨hp.ne_zero⟩
   exact
     ((basePBlockPointEquivFin hp).permCongrHom.comp_injective
       (basePBlockPointSumPermHom n p)).mpr
@@ -328,7 +328,7 @@ theorem natCard_basePBlockWreathProduct
     (n p : ℕ) (hp : p.Prime) :
     Nat.card (BasePBlockWreathProduct n p) =
       p ^ n.factorial.factorization p := by
-  letI : NeZero p := ⟨hp.ne_zero⟩
+  let : NeZero p := ⟨hp.ne_zero⟩
   classical
   calc
     Nat.card (BasePBlockWreathProduct n p) =
@@ -386,7 +386,7 @@ theorem coe_basePBlockSylow
     (basePBlockSylow n p hp :
       Subgroup (Equiv.Perm (Fin n))) =
         basePBlockSubgroup n p hp := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   rfl
 
 /-! ## Multiplication of the block cycle profiles -/
@@ -470,15 +470,15 @@ theorem prod_iteratedWreathCycleWeight_eq
           else 0) := by
   classical
   by_cases hw : w ^ p = 1
-  · rw [if_pos hw]
+  · rw [ite_eq_left hw]
     have hwi :
         ∀ i : BasePBlockIndex n p, (w i) ^ p = 1 := by
       intro i
       exact congrFun hw i
-    simp_rw [iteratedWreathCycleWeight, if_pos (hwi _)]
+    simp_rw [iteratedWreathCycleWeight, ite_eq_left (hwi _)]
     rw [Finset.prod_pow_eq_pow_sum]
     rfl
-  · rw [if_neg hw]
+  · rw [ite_eq_right hw]
     have hnotall :
         ¬ ∀ i : BasePBlockIndex n p, (w i) ^ p = 1 := by
       intro hall
@@ -661,7 +661,7 @@ theorem coeff_basePBlockCycleProfile
       (basePBlockCycleCountFinset n p j).card := by
   classical
   rw [basePBlockCycleProfile_eq_sum_monomials]
-  simp only [Polynomial.finset_sum_coeff]
+  simp only [Polynomial.finsetSum_coeff]
   calc
     (∑ w : BasePBlockWreathProduct n p,
       (if w ^ p = 1 then
@@ -739,7 +739,7 @@ theorem mem_primeCycleTypeSylowRow_basePBlockPermHom_iff
         basePBlockPermHom n p hp.out w ∈
           basePBlockSubgroup n p hp.out :=
       ⟨w, rfl⟩
-    simpa only [coe_basePBlockSylow] using hmem
+    exact hmem
 
 theorem card_primeCycleTypeSylowRow_basePBlockSylow
     (n p j : ℕ) [hp : Fact p.Prime] :
@@ -806,7 +806,7 @@ degree. -/
 theorem hasSymmetricSylowCycleProfileCoefficients
     (n p : ℕ) (hp : p.Prime) :
     HasSymmetricSylowCycleProfileCoefficients n p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   refine ⟨basePBlockSylow n p hp, ?_⟩
   intro j _hj
   exact card_primeCycleTypeSylowRow_eq_coeff n p j
