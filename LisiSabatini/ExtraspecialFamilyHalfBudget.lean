@@ -148,10 +148,10 @@ theorem two_mul_extraspecial_family_activeSpectrum_budget_lt
     1 + (p i ^ (2 * n i + 1) - 1) * (r ^ (d / p i) - 1)
   cases isEmpty_or_nonempty I with
   | inl hI =>
-      letI : IsEmpty I := hI
+      let : IsEmpty I := hI
       simpa using pow_pos hr.pos d
   | inr hI =>
-      letI : Nonempty I := hI
+      let : Nonempty I := hI
       by_cases hcardOne : Fintype.card I = 1
       · let i₀ : I := Classical.choice hI
         have hsub : Subsingleton I :=

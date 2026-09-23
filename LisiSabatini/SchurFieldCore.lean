@@ -105,8 +105,8 @@ theorem centralConstituentActionHom_injective_of_decomposition
     apply funext
     intro i
     have hi := DFunLike.congr_fun hzw (e (rho.asModuleEquiv.symm v) i)
-    simpa only [centralConstituentActionHom,
-      centralConstituentAction, LinearEquiv.map_smul] using hi
+    rw [e.map_smul, e.map_smul]
+    exact hi
   simpa only [rho.asModuleEquiv_symm_map_rho] using heq
 
 end CentralAction

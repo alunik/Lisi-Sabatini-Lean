@@ -7,11 +7,17 @@ defaultTargets = ["LisiSabatini"]
 pp.unicode.fun = true
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
+# This standalone project does not use Mathlib's Apache copyright headers.
+weak.linter.style.header = false
 
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.29.1"
+rev = "87f6d5ec4c780581c9a78b06a9c5f1cf86dc5a70"
+
+[[require]]
+name = "OddOrder"
+path = "vendor/odd-order"
 
 [[lean_lib]]
 name = "LisiSabatini"

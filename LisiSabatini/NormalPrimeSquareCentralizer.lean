@@ -30,6 +30,8 @@ set_option backward.isDefEq.respectTransparency false
 
 open Subgroup
 
+open scoped IsMulCommutative
+
 /-! ## Elementary arithmetic for the two automorphism groups -/
 
 /-- A `p`-power dividing `p * (p - 1)` has exponent at most one. -/
@@ -83,7 +85,7 @@ theorem ker_conjNormal_eq_centralizer
     letI : N.Normal := hN
     (MulAut.conjNormal : G →* MulAut N).ker =
       Subgroup.centralizer (N : Set G) := by
-  letI : N.Normal := hN
+  let : N.Normal := hN
   let conjN : G →* MulAut N := MulAut.conjNormal
   ext g
   simp only [MonoidHom.mem_ker]
@@ -114,9 +116,9 @@ private theorem natCard_conjNormal_range_le_prime_of_isCyclic
     (hcard : Nat.card N = p ^ 2) (hcyclic : IsCyclic N) :
     letI : N.Normal := hN
     Nat.card (MulAut.conjNormal : G →* MulAut N).range ≤ p := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : N.Normal := hN
-  letI : IsCyclic N := hcyclic
+  let : Fact p.Prime := ⟨hp⟩
+  let : N.Normal := hN
+  let : IsCyclic N := hcyclic
   let conjN : G →* MulAut N := MulAut.conjNormal
   have hRangeP : IsPGroup p conjN.range :=
     hGp.of_surjective conjN.rangeRestrict conjN.rangeRestrict_surjective
@@ -142,7 +144,7 @@ private theorem natCard_linearGeneralLinearTwo_zmod
     Nat.card
         (LinearMap.GeneralLinearGroup (ZMod p) (Fin 2 → ZMod p)) =
       (p ^ 2 - 1) * (p ^ 2 - p) := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   calc
     Nat.card
         (LinearMap.GeneralLinearGroup (ZMod p) (Fin 2 → ZMod p)) =
@@ -162,21 +164,21 @@ private theorem natCard_coordinateConjugation_range_le_prime_of_not_isCyclic
     ∃ S : ElementaryAbelianSection G,
       S.N = N ∧ S.r = p ∧ S.d = 2 ∧
         Nat.card S.conjugation.range ≤ p := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : IsMulCommutative N :=
-    ⟨⟨IsPGroup.commutative_of_card_eq_prime_sq hcard⟩⟩
+  let : Fact p.Prime := ⟨hp⟩
+  let : IsMulCommutative N :=
+    IsPGroup.isMulCommutative_of_card_eq_prime_sq hcard
   have hexponent : Monoid.exponent N = p :=
     (not_isCyclic_iff_exponent_eq_prime hp hcard).mp hnotCyclic
   have hpow : ∀ x : N, x ^ p = 1 := by
     intro x
     rw [← hexponent]
     exact Monoid.pow_exponent_eq_one x
-  letI zmodModule : Module (ZMod p) (Additive N) :=
+  let zmodModule : Module (ZMod p) (Additive N) :=
     AddCommGroup.zmodModule fun x ↦ by
       simpa using congrArg Additive.ofMul (hpow x.toMul)
-  letI finiteModule : Module.Finite (ZMod p) (Additive N) :=
+  let finiteModule : Module.Finite (ZMod p) (Additive N) :=
     Module.Finite.of_finite
-  letI freeModule : Module.Free (ZMod p) (Additive N) :=
+  let freeModule : Module.Free (ZMod p) (Additive N) :=
     @Module.Free.of_divisionRing (ZMod p) (Additive N)
       (inferInstance) (inferInstance) zmodModule
   have hfinrank : Module.finrank (ZMod p) (Additive N) = 2 := by
@@ -191,13 +193,13 @@ private theorem natCard_coordinateConjugation_range_le_prime_of_not_isCyclic
       _ = p ^ 2 := hcard
   let basis : Module.Basis (Fin 2) (ZMod p) (Additive N) :=
     @Module.finBasisOfFinrankEq (ZMod p) (Additive N)
-      (inferInstance) (inferInstance) (inferInstance)
-      zmodModule freeModule finiteModule 2 hfinrank
+      (inferInstance) (inferInstance) zmodModule freeModule
+      (inferInstance) finiteModule 2 hfinrank
   let coordinates : Additive N ≃+ (Fin 2 → ZMod p) :=
     basis.equivFun.toAddEquiv
   let S : ElementaryAbelianSection G :=
     ElementaryAbelianSection.ofCoordinates N hN p 2 hp coordinates
-  letI : Finite S.conjugation.range :=
+  let : Finite S.conjugation.range :=
     Finite.of_surjective S.conjugation.rangeRestrict
       S.conjugation.rangeRestrict_surjective
   have hRangeP : IsPGroup p S.conjugation.range :=
@@ -229,7 +231,7 @@ theorem centralizer_index_le_prime_of_normal_natCard_eq_prime_sq
     (hcard : Nat.card N = p ^ 2) :
     (Subgroup.centralizer (N : Set G)).index ≤ p := by
   by_cases hcyclic : IsCyclic N
-  · letI : N.Normal := hN
+  · let : N.Normal := hN
     let conjN : G →* MulAut N := MulAut.conjNormal
     rw [← ker_conjNormal_eq_centralizer N hN,
       Subgroup.index_ker]

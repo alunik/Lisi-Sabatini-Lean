@@ -46,15 +46,15 @@ theorem fixedSpectrumNonregularBound_le_cyclicCenterOperatorSpectrumBound
       cyclicCenterOperatorSpectrumBound
         r e q hP.cyclicCenterStructuralRank := by
   classical
-  letI : Finite P := finite_linearSubgroup_of_finite P
-  letI : Fintype P := Fintype.ofFinite P
+  let : Finite P := finite_linearSubgroup_of_finite P
+  let : Fintype P := Fintype.ofFinite P
   have hPne : P ≠ ⊥ := by
     intro hbot
-    haveI : Subsingleton P := by
+    have : Subsingleton P := by
       rw [hbot]
       infer_instance
     exact (not_nontrivial P) hP.nontrivial
-  rw [fixedSpectrumNonregularBound, if_neg hPne]
+  rw [fixedSpectrumNonregularBound, ite_eq_right hPne]
   simp_rw [← ncard_nonzeroFixedVectorSet]
   rw [sum_nonidentity_ncard_nonzeroFixedVectorSet_eq_active]
   unfold cyclicCenterOperatorSpectrumBound

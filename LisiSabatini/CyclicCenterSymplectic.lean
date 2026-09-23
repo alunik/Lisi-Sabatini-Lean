@@ -32,6 +32,8 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 namespace IsOddCyclicCenterClassTwo
 
 variable {p : ℕ} {P : Type*} [Group P] [Finite P]
@@ -260,7 +262,7 @@ theorem even_finrank_centralQuotient
 theorem exists_card_quotient_center_eq_prime_pow_two_mul
     (h : IsOddCyclicCenterClassTwo p P) :
     ∃ n : ℕ, Nat.card (P ⧸ Subgroup.center P) = p ^ (2 * n) := by
-  letI : Fact p.Prime := ⟨h.prime⟩
+  let : Fact p.Prime := ⟨h.prime⟩
   have hpTwo : p ≠ 2 := by
     rintro rfl
     exact (Nat.not_even_iff_odd.mpr h.odd) even_two

@@ -37,7 +37,8 @@ theorem blockLinear_one
   ext w
   let x : I → W := fun _ ↦ w
   have hi := D.action_apply (1 : H) x i
-  simpa [x] using hi.symm
+  simp only [map_one, x] at hi
+  exact hi.symm
 
 /-- The local factors obey the monomial cocycle law. -/
 theorem blockLinear_mul

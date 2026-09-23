@@ -55,22 +55,21 @@ theorem nilpotentSubgroup_le_of_sylow_map_le
     (h : ∀ (q : (Nat.card L).primeFactors) (Q : Sylow (q : ℕ) L),
       (Q : Subgroup L).map L.subtype ≤ K) : L ≤ K := by
   classical
-  letI : Group.IsNilpotent L := hLnil
-  letI : Fintype L := Fintype.ofFinite L
+  let : Group.IsNilpotent L := hLnil
+  let : Fintype L := Fintype.ofFinite L
   let ps := (Nat.card L).primeFactors
   let P : ∀ p : ps, Sylow (p : ℕ) L := fun _ ↦ default
-  letI : ∀ p : ps, Fintype (P p) := fun _ ↦ Fintype.ofFinite _
+  let : ∀ p : ps, Fintype (P p) := fun _ ↦ Fintype.ofFinite _
   have hn : ∀ {p : ℕ} [Fact p.Prime] (Q : Sylow p L),
       (Q : Subgroup L).Normal := by
     intro p hp Q
-    have hall := ((isNilpotent_of_finite_tfae (G := L)).out 0 3).mp hLnil
-    exact hall p hp Q
+    infer_instance
   have hcomm : Pairwise fun p₁ p₂ : ps ↦
       ∀ x y : L, x ∈ P p₁ → y ∈ P p₂ → Commute x y := by
     rintro ⟨p₁, hp₁⟩ ⟨p₂, hp₂⟩ hne
-    haveI hp₁' : Fact (Nat.Prime p₁) :=
+    have hp₁' : Fact (Nat.Prime p₁) :=
       ⟨Nat.prime_of_mem_primeFactors hp₁⟩
-    haveI hp₂' : Fact (Nat.Prime p₂) :=
+    have hp₂' : Fact (Nat.Prime p₂) :=
       ⟨Nat.prime_of_mem_primeFactors hp₂⟩
     have hne' : p₁ ≠ p₂ := by simpa using hne
     apply Subgroup.commute_of_normal_of_disjoint _ _ (hn (P ⟨p₁, hp₁⟩))
@@ -84,9 +83,9 @@ theorem nilpotentSubgroup_le_of_sylow_map_le
     · apply Subgroup.injective_noncommPiCoprod_of_iSupIndep
       apply Subgroup.independent_of_coprime_order hcomm
       rintro ⟨p₁, hp₁⟩ ⟨p₂, hp₂⟩ hne
-      haveI hp₁' : Fact (Nat.Prime p₁) :=
+      have hp₁' : Fact (Nat.Prime p₁) :=
         ⟨Nat.prime_of_mem_primeFactors hp₁⟩
-      haveI hp₂' : Fact (Nat.Prime p₂) :=
+      have hp₂' : Fact (Nat.Prime p₂) :=
         ⟨Nat.prime_of_mem_primeFactors hp₂⟩
       have hne' : p₁ ≠ p₂ := by simpa using hne
       simp only [← Nat.card_eq_fintype_card]

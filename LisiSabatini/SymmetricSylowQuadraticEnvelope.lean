@@ -201,19 +201,19 @@ theorem sum_symmetricSylowProfileQuadraticCost_lt_one
     intro i hi
     by_cases htwo : p i = 2
     · rw [htwo]
-      simp only [if_pos]
+      simp only [ite_eq_left]
       have hbinary :=
         symmetricSylowProfileQuadraticCost_two_lt_three_div_four hn
       have haltNonneg :
           0 ≤ alternatingSylowProfileQuadraticCost n 2 := by
-        rw [alternatingSylowProfileQuadraticCost, if_pos rfl]
+        rw [alternatingSylowProfileQuadraticCost, ite_eq_left rfl]
         apply Finset.sum_nonneg
         intro j hj
         split_ifs
         · exact div_nonneg (sq_nonneg _) (by positivity)
         · exact le_rfl
       linarith
-    · rw [alternatingSylowProfileQuadraticCost, if_neg htwo]
+    · rw [alternatingSylowProfileQuadraticCost, ite_eq_right htwo]
       simp [htwo]
   have hindicator :
       (∑ i ∈ s,

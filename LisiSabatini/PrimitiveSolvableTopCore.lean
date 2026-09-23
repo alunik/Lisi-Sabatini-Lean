@@ -72,7 +72,7 @@ theorem isCancelSMul_of_isMulCommutative_of_isPretransitive
       smul_smul _ _ _
     _ = ((m : G) * (n : G)) • ω := by
       rw [show (n : G) * m = m * n by
-        exact congrArg Subtype.val (mul_comm n m)]
+        exact congrArg Subtype.val (mul_comm' n m)]
     _ = (m : G) • ((n : G) • ω) := (smul_smul _ _ _).symm
     _ = (m : G) • ω := congrArg ((m : G) • ·) hnω'
 
@@ -100,7 +100,7 @@ theorem centralizer_le_of_isMulCommutative_of_isPretransitive
       _ = ((m : G) * (n : G)) • ω := smul_smul _ _ _
       _ = ((n : G) * (m : G)) • ω := by
         rw [show (m : G) * (n : G) = n * m by
-          exact congrArg Subtype.val (mul_comm m n)]
+          exact congrArg Subtype.val (mul_comm' m n)]
       _ = (n : G) • ((m : G) • ω) := (smul_smul _ _ _).symm
   rw [hgn]
   exact n.property

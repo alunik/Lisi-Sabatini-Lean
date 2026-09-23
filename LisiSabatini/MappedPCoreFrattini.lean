@@ -30,8 +30,8 @@ theorem mapped_pCore_frattini_isMulCommutative_of_quasiprimitive
     IsMulCommutative
       (frattini ((pCore q K).map K.subtype)) := by
   let Pbar := (pCore q K).map K.subtype
-  letI : Finite K := finite_linearSubgroup_of_finite K
-  letI : Finite Pbar := finite_linearSubgroup_of_finite Pbar
+  let : Finite K := finite_linearSubgroup_of_finite K
+  let : Finite Pbar := finite_linearSubgroup_of_finite Pbar
   have hPbarPGroup : IsPGroup q Pbar :=
     (pCore_isPGroup q K).map K.subtype
   have hPbarHall : HasCyclicCharacteristicAbelianSubgroups Pbar :=

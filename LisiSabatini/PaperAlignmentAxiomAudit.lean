@@ -1,0 +1,31 @@
+import LisiSabatini.PaperAlignment
+
+/-!
+Transitive axiom audit of the paper's public results and property-(*) API.
+The separate Feit–Thompson audit is opt-in.
+-/
+
+namespace LisiSabatini
+
+set_option linter.hashCommand false
+
+#print axioms sylowCoreAttainmentAt_iff_exists_pair
+#print axioms quotientSylowCoreAttainment_iff_normal_quotients
+#print axioms SylowCoreAttainment.of_normal_subgroup
+#print axioms pCore_eq_comap_of_normal
+#print axioms exists_translated_regular_sylows
+#print axioms strongLisiSabatini_of_solvable_of_quotientSylowCoreAttainment
+#print axioms hasLisiSabatini_of_solvable_of_normal_quotients
+#print axioms nilpotentSelfIntersectionInFitting_of_solvable_of_quotientSylowCoreAttainment
+#print axioms strongLisiSabatini_alternatingGroup
+#print axioms hasLisiSabatini_alternatingGroup
+#print axioms exists_common_mixedSylowInter_bot_alternatingGroup_ge_five
+#print axioms mixedTwoSylowCoreSynchronization_alternatingGroup
+#print axioms mixedNilpotentIntersectionTrivial_alternatingGroup_ge_five
+#print axioms mixedNilpotentIntersectionInFitting_alternatingGroup
+#print axioms hasLisiSabatini_symmetricGroup
+#print axioms mixedTwoSylowCoreSynchronization_symmetricGroup_of_ne_eight
+#print axioms exists_common_mixedSylowInter_bot_symmetricGroup_ge_five_of_ne_eight
+#print axioms mixedNilpotentIntersectionTrivial_symmetricGroup_ge_five_of_ne_eight
+
+end LisiSabatini

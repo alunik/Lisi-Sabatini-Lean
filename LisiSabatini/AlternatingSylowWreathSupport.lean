@@ -29,7 +29,7 @@ abbrev PrimeCycleGroup (p : ℕ) :=
 theorem natCard_primeCycleGroup
     {p : ℕ} (hp : p.Prime) :
     Nat.card (PrimeCycleGroup p) = p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   simp [PrimeCycleGroup, ZMod.card]
 
 /-- The cardinal recurrence for mathlib's iterated regular wreath
@@ -501,8 +501,8 @@ noncomputable def primeCycleInversePowersEquiv
   · intro i j hij
     apply Fin.ext
     apply pow_injOn_Iio_orderOf (x := q)
-    · simpa only [horder] using i.isLt
-    · simpa only [horder] using j.isLt
+    · simpa only [Set.mem_Iio, horder] using i.isLt
+    · simpa only [Set.mem_Iio, horder] using j.isLt
     · exact inv_injective hij
   · intro x
     have hxpow :
@@ -753,7 +753,7 @@ theorem card_nontrivialTopTorsionBase
           (IteratedWreathProduct
             (PrimeCycleGroup p) k) ^ (p - 1) := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
     Fintype.ofFinite _
   calc
@@ -790,7 +790,7 @@ theorem iteratedWreathCycleWeight_mk_one
       ∏ q : PrimeCycleGroup p,
         iteratedWreathCycleWeight p k (f q) := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
     Fintype.ofFinite _
   let w :
@@ -803,8 +803,9 @@ theorem iteratedWreathCycleWeight_mk_one
   · have hpow : w ^ p = 1 :=
       (pow_eq_one_iff_left_pow_eq_one_of_right_eq_one
         w hw p).mpr hall
-    rw [iteratedWreathCycleWeight, if_pos hpow]
-    simp_rw [iteratedWreathCycleWeight, if_pos (hall _)]
+    unfold iteratedWreathCycleWeight
+    rw [ite_eq_left hpow]
+    simp_rw [ite_eq_left (hall _)]
     change
       (Polynomial.X : Polynomial ℕ) ^
           (iteratedWreathToPermHom
@@ -829,17 +830,18 @@ theorem iteratedWreathCycleWeight_mk_one
       exact hq
         ((pow_eq_one_iff_left_pow_eq_one_of_right_eq_one
           w hw p).mp hpow q)
-    rw [iteratedWreathCycleWeight, if_neg hnotPow]
+    unfold iteratedWreathCycleWeight
+    rw [ite_eq_right hnotPow]
     symm
     apply Finset.prod_eq_zero (Finset.mem_univ q)
-    rw [iteratedWreathCycleWeight, if_neg hq]
+    rw [ite_eq_right hq]
 
 theorem iteratedWreathCycleProfileFiber_one
     (p k : ℕ) [hp : Fact p.Prime] :
     iteratedWreathCycleProfileFiber p k 1 =
       iteratedWreathCycleProfile p k ^ p := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
     Fintype.ofFinite _
   rw [iteratedWreathCycleProfileFiber]
@@ -879,7 +881,7 @@ theorem iteratedWreathCycleProfileFiber_ne_one
           (nontrivialTopTorsionBase p k q).card *
         Polynomial.X ^ (p ^ k) := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
     Fintype.ofFinite _
   rw [iteratedWreathCycleProfileFiber]
@@ -927,7 +929,7 @@ theorem iteratedWreathCycleProfileFiber_ne_one
         Polynomial.C
             (nontrivialTopTorsionBase p k q).card *
           Polynomial.X ^ (p ^ k) := by
-      simpa only [Polynomial.C_eq_natCast] using
+      simpa only [← Polynomial.C_eq_natCast, Nat.cast_id] using
         (Polynomial.natCast_mul
           (R := ℕ)
           (nontrivialTopTorsionBase p k q).card
@@ -952,15 +954,15 @@ theorem iteratedWreathCycleProfile_succ_eq_sum_fibers
       ∑ q : PrimeCycleGroup p,
         iteratedWreathCycleProfileFiber p k q := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) k) :=
     Fintype.ofFinite _
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) (k + 1)) :=
     Fintype.ofFinite _
   let lower :=
     IteratedWreathProduct (PrimeCycleGroup p) k
-  letI : Fintype
+  let : Fintype
       (lower ≀ᵣ PrimeCycleGroup p) :=
     Fintype.ofFinite _
   calc
@@ -1104,17 +1106,17 @@ theorem iteratedWreathCycleProfile_zero
     (p : ℕ) [Fact p.Prime] :
     iteratedWreathCycleProfile p 0 = 1 := by
   classical
-  letI : Fintype
+  let : Fintype
       (IteratedWreathProduct (PrimeCycleGroup p) 0) :=
     Fintype.ofFinite _
-  letI : Unique
+  let : Unique
       (IteratedWreathProduct (PrimeCycleGroup p) 0) := by
     change Unique PUnit
     infer_instance
   simp only [iteratedWreathCycleProfile,
     iteratedWreathCycleWeight]
   rw [Fintype.sum_unique]
-  rw [if_pos (Subsingleton.elim _ _)]
+  rw [ite_eq_left (Subsingleton.elim _ _)]
   have hperm :
       iteratedWreathToPermHom
         (PrimeCycleGroup p) 0 default = 1 :=

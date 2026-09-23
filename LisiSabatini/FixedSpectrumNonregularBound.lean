@@ -45,8 +45,8 @@ theorem ncard_nonregularVectors_le_fixedSpectrumNonregularBound
     (A : Subgroup (LinearMap.GeneralLinearGroup R V)) :
     (nonregularVectors A).ncard ≤ fixedSpectrumNonregularBound A := by
   classical
-  letI : Finite A := finite_linearSubgroup_of_finite A
-  letI : Fintype A := Fintype.ofFinite A
+  let : Finite A := finite_linearSubgroup_of_finite A
+  let : Fintype A := Fintype.ofFinite A
   by_cases hA : A = ⊥
   · subst A
     rw [nonregularVectors_bot]

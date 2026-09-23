@@ -39,7 +39,7 @@ abbrev normalConj (N : Subgroup G) (hN : N.Normal) (g : G) : MulAut N :=
 @[simp]
 theorem coe_normalConj (N : Subgroup G) (hN : N.Normal) (g : G) (n : N) :
     (normalConj N hN g n : G) = g * n * g⁻¹ := by
-  letI : N.Normal := hN
+  let : N.Normal := hN
   exact MulAut.conjNormal_apply g n
 
 @[simp]

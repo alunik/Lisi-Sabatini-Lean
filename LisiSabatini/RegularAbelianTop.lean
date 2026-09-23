@@ -70,7 +70,7 @@ theorem isSemiregularPermutationSubgroup_of_transitive_of_pairwiseCommute
   have hab :
       (a : Equiv.Perm I) ((b : Equiv.Perm I) ω) =
         (b : Equiv.Perm I) ((a : Equiv.Perm I) ω) := by
-    simpa only [Equiv.Perm.mul_apply] using
+    simpa only [Subgroup.coe_mul, Equiv.Perm.mul_apply] using
       congrArg (fun τ : Equiv.Perm I ↦ τ ω)
         (congrArg Subtype.val (hcomm a b).eq)
   calc
@@ -118,7 +118,7 @@ theorem mem_of_commutes_with_transitive_abelian_permutationSubgroup
       have hab :
           (a : Equiv.Perm I) ((b : Equiv.Perm I) ω) =
             (b : Equiv.Perm I) ((a : Equiv.Perm I) ω) := by
-        simpa only [Equiv.Perm.mul_apply] using
+        simpa only [Subgroup.coe_mul, Equiv.Perm.mul_apply] using
           congrArg (fun τ : Equiv.Perm I ↦ τ ω)
             (congrArg Subtype.val (hcomm a b).eq)
       have hbσ :

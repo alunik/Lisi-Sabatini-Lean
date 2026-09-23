@@ -24,7 +24,11 @@ namespace LisiSabatini
 universe uI uJ uR uW
 
 variable {I : Type uI} {J : Type uJ} {R : Type uR} {W : Type uW}
-variable [Semiring R] [AddCommMonoid W] [Module R W]
+variable [Semiring R]
+
+section AddCommMonoid
+
+variable [AddCommMonoid W] [Module R W]
 
 /-- Every factor of a block-permutation-kernel element belongs to the base
 subgroup assigned to its target block. -/
@@ -57,7 +61,7 @@ theorem pointStabilizerBlockPerm_ker_eq_bot_of_indexedBase_regular
     rw [D.action_apply, hg] at hi
     have hbmem : b ∈ MulAction.stabilizer (B i) (x i) := by
       apply MulAction.mem_stabilizer_iff.mpr
-      simpa [b] using hi
+      exact hi
     rw [hx i] at hbmem
     exact congrArg Subtype.val hbmem
   apply Subtype.ext
@@ -65,7 +69,7 @@ theorem pointStabilizerBlockPerm_ker_eq_bot_of_indexedBase_regular
   ext y i
   change (g.1.1 • y) i = y i
   rw [D.action_apply, hg, hlocal i]
-  simp
+  exact one_smul L (y i)
 
 /-- Injective form of the block-indexed base-kernel theorem. -/
 theorem pointStabilizerBlockPerm_injective_of_indexedBase_regular
@@ -109,10 +113,15 @@ theorem stabilizer_eq_bot_of_indexedBase_regular_of_top_color_disjoint
     simpa using hperm
   exact congrArg Subtype.val hgs
 
+end AddCommMonoid
+
+section AddCommGroup
+
+variable [AddCommGroup W] [Module R W]
+
 /-- Simultaneous affine form with block-dependent base subgroups and one
 colour group per family member. -/
 theorem exists_common_regular_translate_of_imprimitive_indexedBase_color
-    [AddCommGroup W]
     (L : J → Subgroup (LinearMap.GeneralLinearGroup R W))
     (B : ∀ j, I → Subgroup (L j))
     (H : J → Subgroup (LinearMap.GeneralLinearGroup R (I → W)))
@@ -129,6 +138,12 @@ theorem exists_common_regular_translate_of_imprimitive_indexedBase_color
   refine ⟨v, fun j ↦ ?_⟩
   exact stabilizer_eq_bot_of_indexedBase_regular_of_top_color_disjoint
     (D j) (B j) (hkernel j) (v + t j) (hv j).1 (hv j).2
+
+end AddCommGroup
+
+section AddCommMonoid
+
+variable [AddCommMonoid W] [Module R W]
 
 namespace ImprimitiveLinearActionData
 
@@ -178,5 +193,7 @@ theorem restrictComponent_stabilizer_eq_bot_of_baseImages_regular_of_top_color_d
     x hbase htop
 
 end ImprimitiveLinearActionData
+
+end AddCommMonoid
 
 end LisiSabatini

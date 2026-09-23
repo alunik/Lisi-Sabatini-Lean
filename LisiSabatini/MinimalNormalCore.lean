@@ -14,6 +14,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 universe u
 
 /-- `N` is a nontrivial normal subgroup of `G` with no proper nontrivial
@@ -41,12 +43,12 @@ namespace MinimalNormal
 
 /-- A minimal normal subgroup of a solvable group is abelian. -/
 theorem isMulCommutative
-    {G : Type u} [Group G] [IsSolvable G]
+    {G : Type u} [Group G] [Group.IsSolvable G]
     {N : Subgroup G} (hN : MinimalNormal N) :
     IsMulCommutative N := by
-  letI : N.Normal := hN.normal
+  let : N.Normal := hN.normal
   have hcommutator_lt : ⁅N, N⁆ < N :=
-    IsSolvable.commutator_lt_of_ne_bot hN.ne_bot
+    Group.IsSolvable.commutator_lt_of_ne_bot hN.ne_bot
   have hcommutator : ⁅N, N⁆ = ⊥ :=
     (hN.eq_bot_or_eq ⁅N, N⁆ inferInstance
       (Subgroup.commutator_le_self N)).resolve_right
@@ -61,20 +63,20 @@ theorem exists_prime_isPGroup
     {N : Subgroup G} (hN : MinimalNormal N)
     (hcomm : IsMulCommutative N) :
     ∃ p : ℕ, p.Prime ∧ IsPGroup p N := by
-  letI : N.Normal := hN.normal
-  letI : IsMulCommutative N := hcomm
+  let : N.Normal := hN.normal
+  let : IsMulCommutative N := hcomm
   let p := (Nat.card N).minFac
   have hcard : 1 < Nat.card N :=
     N.one_lt_card_iff_ne_bot.mpr hN.ne_bot
   have hp : p.Prime := Nat.minFac_prime hcard.ne'
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   let P : Sylow p N := Classical.choice Sylow.nonempty
   have hPne : (P : Subgroup N) ≠ ⊥ :=
     P.ne_bot_of_dvd_card (Nat.card N).minFac_dvd
-  letI : (P : Subgroup N).Characteristic :=
+  let : (P : Subgroup N).Characteristic :=
     Sylow.characteristic_of_normal P
-      (Subgroup.normal_of_comm (P : Subgroup N))
-  letI : ((P : Subgroup N).map N.subtype).Normal :=
+      (Subgroup.normal_of_isMulCommutative (P : Subgroup N))
+  let : ((P : Subgroup N).map N.subtype).Normal :=
     ConjAct.normal_of_characteristic_of_normal
   have hmap_ne : (P : Subgroup N).map N.subtype ≠ ⊥ := by
     intro h
@@ -99,9 +101,9 @@ theorem pow_prime_eq_one
     (hcomm : IsMulCommutative N) {p : ℕ}
     (hp : p.Prime) (hpg : IsPGroup p N) :
     ∀ x : N, x ^ p = 1 := by
-  letI : N.Normal := hN.normal
-  letI : IsMulCommutative N := hcomm
-  letI : Fact p.Prime := ⟨hp⟩
+  let : N.Normal := hN.normal
+  let : IsMulCommutative N := hcomm
+  let : Fact p.Prime := ⟨hp⟩
   let K : Subgroup N := (powMonoidHom p).ker
   have hKchar : K.Characteristic := by
     rw [Subgroup.characteristic_iff_map_eq]
@@ -117,8 +119,8 @@ theorem pow_prime_eq_one
       change (e.symm y) ^ p = 1
       change y ^ p = 1 at hy
       simpa using congrArg e.symm hy
-  letI : K.Characteristic := hKchar
-  letI : (K.map N.subtype).Normal :=
+  let : K.Characteristic := hKchar
+  let : (K.map N.subtype).Normal :=
     ConjAct.normal_of_characteristic_of_normal
   have hp_dvd : p ∣ Nat.card N :=
     hpg.card_eq_or_dvd.resolve_left

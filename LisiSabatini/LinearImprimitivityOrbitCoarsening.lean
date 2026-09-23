@@ -207,7 +207,7 @@ theorem orbitBlock_isPartition (B : Set I)
     (hB : MulAction.IsBlock S.fineTop B) (hBne : B.Nonempty) :
     Setoid.IsPartition
       (Set.range (fun σ : S.fineTop => σ • B)) := by
-  letI := hpre
+  let := hpre
   exact (hB.isBlockSystem hBne).1
 
 /-- Every fine index belongs to a unique translate of `B`. -/
@@ -370,7 +370,7 @@ theorem orbitBlockPerm_isIndexPretransitive (B : Set I)
   intro C D
   obtain ⟨i, hi⟩ := S.containingOrbitBlock_surjective B hpre hB hBne C
   obtain ⟨j, hj⟩ := S.containingOrbitBlock_surjective B hpre hB hBne D
-  letI := hpre
+  let := hpre
   obtain ⟨σ, hσ⟩ := hpre.exists_smul_eq i j
   rcases σ.2 with ⟨g, hg⟩
   refine ⟨g, ?_⟩
@@ -489,10 +489,10 @@ theorem fineTop_orbitBlock_isPreprimitive_of_isCoatom (B : Set I)
     apply hmax.ne_top
     apply Subtype.ext
     exact hBuniv
-  letI : MulAction.IsPretransitive S.fineTop I := hpre
-  letI : MulAction.IsPretransitive S.fineTop (S.OrbitBlockIndex B) :=
+  let : MulAction.IsPretransitive S.fineTop I := hpre
+  let : MulAction.IsPretransitive S.fineTop (S.OrbitBlockIndex B) :=
     S.orbitBlockIndex_isPretransitive B hpre hB hBne
-  letI : Nontrivial (S.OrbitBlockIndex B) :=
+  let : Nontrivial (S.OrbitBlockIndex B) :=
     S.orbitBlockIndex_nontrivial_of_ne_univ B hpre hB hBne hBproper
   have hstabIci : IsCoatom
       ((MulAction.block_stabilizerOrderIso S.fineTop i₀) b) :=
@@ -516,7 +516,7 @@ theorem fineTopOrbitBlockPerm_range_isPreprimitive_of_isCoatom (B : Set I)
       (⟨B, hi₀, hB⟩ : MulAction.BlockMem S.fineTop i₀)) :
     MulAction.IsPreprimitive (S.fineTopOrbitBlockPerm B).range
       (S.OrbitBlockIndex B) := by
-  letI : MulAction.IsPreprimitive S.fineTop (S.OrbitBlockIndex B) :=
+  let : MulAction.IsPreprimitive S.fineTop (S.OrbitBlockIndex B) :=
     S.fineTop_orbitBlock_isPreprimitive_of_isCoatom
       B hpre hB hBne hi₀ hmax
   let φ : S.fineTop →* (S.fineTopOrbitBlockPerm B).range :=
@@ -583,9 +583,8 @@ theorem exists_primitiveCoarsening_of_irreducible [Nontrivial I] (i₀ : I)
           (S.coarsenAlongOrbitBlockOfIrreducible C.1 hirr C.2.2
             ⟨i₀, C.2.1⟩).blockPerm.range
           (S.OrbitBlockIndex C.1) := by
-  simpa [coarsenAlongOrbitBlockOfIrreducible] using
-    S.exists_primitiveCoarsening i₀
-      (S.blockPerm_range_isPretransitive_of_irreducible hirr)
+  exact S.exists_primitiveCoarsening i₀
+    (S.blockPerm_range_isPretransitive_of_irreducible hirr)
 
 end LinearImprimitivitySystem
 

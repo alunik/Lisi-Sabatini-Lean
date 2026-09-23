@@ -86,7 +86,7 @@ theorem cycleType_rep_primeCycleTypeClass
       (α := Fin n) (m := Multiset.replicate j p)).mpr
         (by simpa [IsValidPrimeCycleType] using h)
   refine ⟨Classical.choose hex, ?_, ?_⟩
-  · simp only [primeCycleTypeClass, dif_pos h]
+  · simp only [primeCycleTypeClass, dite_eq_left h]
   · exact Classical.choose_spec hex
 
 theorem carrier_primeCycleTypeClass
@@ -99,7 +99,7 @@ theorem carrier_primeCycleTypeClass
     cycleType_rep_primeCycleTypeClass h
   rw [ConjClasses.mem_carrier_iff_mk_eq, ← hg₀class,
     ConjClasses.mk_eq_mk_iff_isConj,
-    Equiv.Perm.isConj_iff_cycleType_eq, Set.mem_setOf_eq,
+    Equiv.Perm.isConj_iff_cycleType_eq, Set.mem_ofPred_eq,
     hg₀type]
 
 theorem primeCycleTypeClass_injective
@@ -164,7 +164,7 @@ theorem card_primeCycleTypeSylowRow_eq_ncard_inter
   simp only [SetLike.mem_coe, Set.mem_inter_iff,
     primeCycleTypeSylowRow, Finset.mem_filter,
     primeCycleTypeFinset, Finset.mem_univ, true_and,
-    carrier_primeCycleTypeClass hvalid, Set.mem_setOf_eq]
+    carrier_primeCycleTypeClass hvalid, Set.mem_ofPred_eq]
   apply and_congr_right
   intro _hcycle
   rfl

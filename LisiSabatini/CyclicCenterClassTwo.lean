@@ -29,7 +29,7 @@ namespace LisiSabatini
 
 set_option backward.isDefEq.respectTransparency false
 
-open scoped commutatorElement
+open scoped commutatorElement IsMulCommutative
 
 /-- The intrinsic class-two structure needed from Hall's theorem, without a
 choice of extraspecial central-product factor. -/
@@ -62,7 +62,7 @@ theorem nontrivial (h : IsOddCyclicCenterClassTwo p P) : Nontrivial P := by
 /-- The canonical derived kernel has order `p`. -/
 theorem card_centerPrimeKernel (h : IsOddCyclicCenterClassTwo p P) :
     Nat.card (centerPrimeKernel p P) = p := by
-  letI : Nontrivial P := h.nontrivial
+  let : Nontrivial P := h.nontrivial
   exact card_centerPrimeKernel_of_center_isCyclic
     h.prime h.pGroup h.center_isCyclic
 
@@ -76,7 +76,7 @@ theorem card_commutator (h : IsOddCyclicCenterClassTwo p P) :
 theorem centerPrimeKernel_isCyclic
     (h : IsOddCyclicCenterClassTwo p P) :
     IsCyclic (centerPrimeKernel p P) := by
-  letI : IsCyclic (Subgroup.center P) := h.center_isCyclic
+  let : IsCyclic (Subgroup.center P) := h.center_isCyclic
   exact Subgroup.isCyclic_of_le (centerPrimeKernel_le_center p P)
 
 /-- The central quotient is abelian. -/
@@ -84,8 +84,8 @@ theorem quotient_center_commutative
     (h : IsOddCyclicCenterClassTwo p P) :
     Std.Commutative
       (· * · : (P ⧸ Subgroup.center P) → _ → _) := by
-  rw [Subgroup.Normal.quotient_commutative_iff_commutator_le]
-  exact h.commutator_le_center
+  exact (Subgroup.Normal.quotient_commutative_iff_commutator_le.mpr
+    h.commutator_le_center).is_comm
 
 /-- Every derived element has `p`-th power one. -/
 theorem commutator_pow_prime_eq_one
@@ -127,7 +127,7 @@ theorem quotient_center_isPGroup
 theorem exists_card_quotient_center_eq_prime_pow
     (h : IsOddCyclicCenterClassTwo p P) :
     ∃ m : ℕ, Nat.card (P ⧸ Subgroup.center P) = p ^ m := by
-  letI : Fact p.Prime := ⟨h.prime⟩
+  let : Fact p.Prime := ⟨h.prime⟩
   exact IsPGroup.iff_card.mp h.quotient_center_isPGroup
 
 /-! ## The kernel-valued commutator pairing -/
@@ -342,7 +342,7 @@ theorem centralQuotientKernelPairing_injective
         intro y
         have heval := DFunLike.congr_fun hq
           (QuotientGroup.mk' (Subgroup.center P) y)
-        simpa using heval
+        exact heval
   · rintro rfl
     exact map_one _
 
@@ -354,7 +354,7 @@ variable {p : ℕ} {P : Type*} [Group P] [Finite P]
 
 /-- A Hall intermediate with central Frattini subgroup already has the
 unsplit cyclic-center symplectic structure. -/
-def toOddCyclicCenterClassTwo
+theorem toOddCyclicCenterClassTwo
     (h : IsHallClassTwoIntermediate p P)
     (hPhi : frattini P ≤ Subgroup.center P) :
     IsOddCyclicCenterClassTwo p P where

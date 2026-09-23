@@ -1,0 +1,494 @@
+/-
+Copyright (c) 2026 Yawara Ishida. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Yawara Ishida
+-/
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.Ring.Defs
+import Mathlib.Algebra.Group.Subgroup.Defs
+import Mathlib.Dynamics.PeriodicPts.Lemmas
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Push
+import Mathlib.Algebra.Group.Fin.Basic
+import Mathlib.Algebra.BigOperators.GroupWithZero.Action
+import Mathlib.GroupTheory.QuotientGroup.Defs
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.NoncommRing
+
+/-!
+# The noncommutative binomial expansion
+
+In a ring where `x` and `y` need not commute, `(x + y) ^ n` expands as the sum over all
+`2 ^ n` *words* of length `n` in the two letters of the corresponding ordered product.  This is
+the starting point of Brauer's count of irreducible modular representations: in characteristic
+`p` the non-constant words fall into rotation orbits of size `p`, and cyclic rotation does not
+change a product modulo the commutator subspace, so `(x + y) ^ p ≡ x ^ p + y ^ p`.
+
+## Main results
+
+* `OddOrder.wordProd` — the ordered product along a word
+* `OddOrder.add_pow_eq_sum_wordProd` — the expansion
+-/
+
+namespace OddOrder
+
+variable {R : Type*} [Ring R]
+
+/-- The ordered product of the letters of a word: `w i = true` selects `x`, `false` selects
+`y`. -/
+def wordProd (x y : R) {n : ℕ} (w : Fin n → Bool) : R :=
+  (List.ofFn fun i => if w i then x else y).prod
+
+@[simp]
+theorem wordProd_zero (x y : R) (w : Fin 0 → Bool) : wordProd x y w = 1 := by
+  simp [wordProd]
+
+theorem wordProd_cons (x y : R) {n : ℕ} (b : Bool) (v : Fin n → Bool) :
+    wordProd x y (Fin.cons b v) = (if b then x else y) * wordProd x y v := by
+  simp [wordProd, List.ofFn_succ]
+
+/-- **The noncommutative binomial expansion.**  `(x + y) ^ n` is the sum, over all words of
+length `n` in the letters `x` and `y`, of the ordered product of the word. -/
+theorem add_pow_eq_sum_wordProd (x y : R) (n : ℕ) :
+    (x + y) ^ n = ∑ w : Fin n → Bool, wordProd x y w := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [pow_succ', ih, Finset.mul_sum,
+      ← (Fin.consEquiv fun _ : Fin (n + 1) => Bool).sum_comp (fun w => wordProd x y w),
+      Fintype.sum_prod_type]
+    have hcons : ∀ (b : Bool) (v : Fin n → Bool),
+        (Fin.consEquiv fun _ : Fin (n + 1) => Bool) (b, v) = Fin.cons b v := fun _ _ => rfl
+    simp only [hcons, wordProd_cons, Fintype.sum_bool, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun v _ => by simp [add_mul]
+
+/-! ### Cyclic rotation -/
+
+section Rotate
+
+variable {n : ℕ}
+
+/-- Rotating a word: move the first letter to the end. -/
+def rotateWord (w : Fin (n + 1) → Bool) : Fin (n + 1) → Bool :=
+  Fin.snoc (Fin.tail w) (w 0)
+
+theorem wordProd_snoc (x y : R) (v : Fin n → Bool) (b : Bool) :
+    wordProd x y (Fin.snoc v b) = wordProd x y v * (if b then x else y) := by
+  rw [wordProd, wordProd, List.ofFn_succ']
+  simp
+
+theorem wordProd_eq_head_mul (x y : R) (w : Fin (n + 1) → Bool) :
+    wordProd x y w = (if w 0 then x else y) * wordProd x y (Fin.tail w) := by
+  conv_lhs => rw [← Fin.cons_self_tail w]
+  rw [wordProd_cons]
+
+theorem wordProd_rotateWord (x y : R) (w : Fin (n + 1) → Bool) :
+    wordProd x y (rotateWord w) = wordProd x y (Fin.tail w) * (if w 0 then x else y) := by
+  rw [rotateWord, wordProd_snoc]
+
+/-- **Cyclic rotation changes a word product by a commutator.**  Modulo any additive subgroup
+containing all commutators, the product along a word depends only on its cyclic class. -/
+theorem wordProd_rotateWord_sub_mem (x y : R) (w : Fin (n + 1) → Bool) (T : AddSubgroup R)
+    (hT : ∀ a b : R, a * b - b * a ∈ T) :
+    wordProd x y (rotateWord w) - wordProd x y w ∈ T := by
+  rw [wordProd_rotateWord, wordProd_eq_head_mul]
+  exact hT _ _
+
+end Rotate
+
+/-! ### Rotation is the cyclic shift, and its periods -/
+
+section Period
+
+variable {n : ℕ}
+
+theorem rotateWord_apply (w : Fin (n + 1) → Bool) (i : Fin (n + 1)) :
+    rotateWord w i = w (i + 1) := by
+  refine Fin.lastCases ?_ ?_ i
+  · rw [rotateWord, Fin.snoc_last]
+    congr 1
+    ext
+    simp
+  · intro j
+    rw [rotateWord, Fin.snoc_castSucc]
+    change w j.succ = _
+    congr 1
+    ext
+    simp [Fin.val_succ]
+
+/-- Iterating the shift on indices. -/
+theorem val_iterate_add_one (i : Fin (n + 1)) (m : ℕ) :
+    ((fun j : Fin (n + 1) => j + 1)^[m] i).val = (i.val + m) % (n + 1) := by
+  induction m with
+  | zero => simp [Nat.mod_eq_of_lt i.isLt]
+  | succ m ih =>
+    rw [Function.iterate_succ_apply', Fin.val_add, ih, Fin.val_one', ← Nat.add_mod,
+      Nat.add_assoc]
+
+theorem iterate_rotateWord_apply (w : Fin (n + 1) → Bool) (m : ℕ) (i : Fin (n + 1)) :
+    rotateWord^[m] w i = w ((fun j : Fin (n + 1) => j + 1)^[m] i) := by
+  induction m generalizing w with
+  | zero => simp
+  | succ m ih =>
+    rw [Function.iterate_succ_apply, ih, Function.iterate_succ_apply', rotateWord_apply]
+
+/-- A full turn is the identity. -/
+theorem isPeriodicPt_rotateWord (w : Fin (n + 1) → Bool) :
+    Function.IsPeriodicPt rotateWord (n + 1) w := by
+  funext i
+  rw [iterate_rotateWord_apply]
+  congr 1
+  refine Fin.ext ?_
+  rw [val_iterate_add_one, Nat.add_mod_right, Nat.mod_eq_of_lt i.isLt]
+
+/-- A word fixed by one rotation is constant. -/
+theorem const_of_isFixedPt_rotateWord {w : Fin (n + 1) → Bool} (h : rotateWord w = w)
+    (i j : Fin (n + 1)) : w i = w j := by
+  have hiter : ∀ (m : ℕ) (i : Fin (n + 1)),
+      w ((fun j : Fin (n + 1) => j + 1)^[m] i) = w i := by
+    intro m
+    induction m with
+    | zero => simp
+    | succ m ih =>
+      intro i
+      rw [Function.iterate_succ_apply, ih]
+      have hi := congrFun h i
+      rw [rotateWord_apply] at hi
+      exact hi
+  have key : ∀ j : Fin (n + 1), w j = w 0 := by
+    intro j
+    have hj : (fun j : Fin (n + 1) => j + 1)^[j.val] 0 = j := by
+      refine Fin.ext ?_
+      rw [val_iterate_add_one]
+      simp [Nat.mod_eq_of_lt j.isLt]
+    rw [← hj, hiter]
+  rw [key i, key j]
+
+/-- **Non-constant words have full rotation period.**  If some rotation by an amount prime to
+`p` fixes a word of length `p`, the word is constant. -/
+theorem const_of_iterate_rotateWord_eq {p : ℕ} (hp : p.Prime) (hn : n + 1 = p)
+    {w : Fin (n + 1) → Bool} {k : ℕ} (hk : ¬ p ∣ k) (h : rotateWord^[k] w = w)
+    (i j : Fin (n + 1)) : w i = w j := by
+  have hdvdk : Function.minimalPeriod rotateWord w ∣ k :=
+    Function.isPeriodicPt_iff_minimalPeriod_dvd.mp h
+  have hdvdp : Function.minimalPeriod rotateWord w ∣ p :=
+    hn ▸ Function.isPeriodicPt_iff_minimalPeriod_dvd.mp (isPeriodicPt_rotateWord w)
+  rcases (Nat.dvd_prime hp).mp hdvdp with h1 | hpe
+  · exact const_of_isFixedPt_rotateWord
+      (Function.minimalPeriod_eq_one_iff_isFixedPt.mp h1) i j
+  · exact absurd (hpe ▸ hdvdk) hk
+
+end Period
+
+/-! ### Orbits of a map of finite order
+
+A sum over a set on which iteration of `σ` acts freely with period `p` is `p` times something;
+in a ring of characteristic `p` such a sum vanishes.  This is what kills the non-constant words
+in the expansion of `(x + y) ^ p`.
+-/
+
+section Orbits
+
+variable {α : Type*}
+
+/-- Iterating a map of period `p` only depends on the exponent modulo `p`. -/
+theorem iterate_mod_of_period (σ : α → α) {p : ℕ} (hper : ∀ v, σ^[p] v = v) (m : ℕ) (w : α) :
+    σ^[m] w = σ^[m % p] w := by
+  conv_lhs => rw [← Nat.mod_add_div m p]
+  rw [Function.iterate_add_apply, Function.iterate_mul]
+  congr 1
+  induction m / p with
+  | zero => simp
+  | succ j ih => rw [Function.iterate_succ_apply', ih]; exact hper _
+
+variable [DecidableEq α]
+
+/-- The orbit of `w` under the first `p` iterates of `σ`. -/
+def iterateOrbit (σ : α → α) (p : ℕ) (w : α) : Finset α :=
+  (Finset.range p).image fun k => σ^[k] w
+
+theorem mem_iterateOrbit_iff {σ : α → α} {p : ℕ} {w v : α} :
+    v ∈ iterateOrbit σ p w ↔ ∃ k < p, σ^[k] w = v := by
+  simp [iterateOrbit, Finset.mem_image, Finset.mem_range]
+
+theorem self_mem_iterateOrbit (σ : α → α) {p : ℕ} (hp : 0 < p) (w : α) :
+    w ∈ iterateOrbit σ p w :=
+  mem_iterateOrbit_iff.mpr ⟨0, hp, rfl⟩
+
+theorem iterate_mem_iterateOrbit (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v)
+    (m : ℕ) (w : α) : σ^[m] w ∈ iterateOrbit σ p w :=
+  mem_iterateOrbit_iff.mpr ⟨m % p, Nat.mod_lt _ hp, (iterate_mod_of_period σ hper m w).symm⟩
+
+/-- The orbit finset does not change along the action. -/
+theorem iterateOrbit_apply (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v) (w : α) :
+    iterateOrbit σ p (σ w) = iterateOrbit σ p w := by
+  ext v
+  rw [mem_iterateOrbit_iff, mem_iterateOrbit_iff]
+  constructor
+  · rintro ⟨k, hk, rfl⟩
+    rw [← Function.iterate_succ_apply]
+    exact ⟨(k + 1) % p, Nat.mod_lt _ hp, (iterate_mod_of_period σ hper (k + 1) w).symm⟩
+  · rintro ⟨j, hj, rfl⟩
+    refine ⟨(j + (p - 1)) % p, Nat.mod_lt _ hp, ?_⟩
+    rw [← Function.iterate_succ_apply, iterate_mod_of_period σ hper _ w,
+      Nat.succ_eq_add_one, Nat.mod_add_mod, show j + (p - 1) + 1 = j + p by omega,
+      Nat.add_mod_right, ← iterate_mod_of_period σ hper j w]
+
+theorem iterateOrbit_iterate (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v)
+    (k : ℕ) (w : α) : iterateOrbit σ p (σ^[k] w) = iterateOrbit σ p w := by
+  induction k with
+  | zero => rfl
+  | succ k ih => rw [Function.iterate_succ_apply', iterateOrbit_apply σ hp hper, ih]
+
+/-- The orbit of any of its own members is the same finset. -/
+theorem iterateOrbit_of_mem (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v)
+    {w v : α} (hv : v ∈ iterateOrbit σ p w) : iterateOrbit σ p v = iterateOrbit σ p w := by
+  obtain ⟨k, _, rfl⟩ := mem_iterateOrbit_iff.mp hv
+  exact iterateOrbit_iterate σ hp hper k w
+
+omit [DecidableEq α] in
+theorem injective_of_period (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v) :
+    Function.Injective σ := by
+  intro a b hab
+  have ha : σ^[p - 1] (σ a) = a := by
+    rw [← Function.iterate_succ_apply, Nat.succ_eq_add_one, Nat.sub_add_cancel hp, hper]
+  have hb : σ^[p - 1] (σ b) = b := by
+    rw [← Function.iterate_succ_apply, Nat.succ_eq_add_one, Nat.sub_add_cancel hp, hper]
+  rw [← ha, ← hb, hab]
+
+/-- **A free orbit has exactly `p` elements.** -/
+theorem card_iterateOrbit (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v) {w : α}
+    (hfree : ∀ k < p, σ^[k] w = w → k = 0) : (iterateOrbit σ p w).card = p := by
+  rw [iterateOrbit, Finset.card_image_of_injOn, Finset.card_range]
+  intro a ha b hb hab
+  rw [Finset.coe_range, Set.mem_Iio] at ha hb
+  rcases le_total a b with hle | hle
+  · have hcancel : σ^[b - a] w = w := by
+      refine (Function.Injective.iterate (injective_of_period σ hp hper) a) ?_
+      rw [← Function.iterate_add_apply, Nat.add_sub_cancel' hle]
+      exact hab.symm
+    have := hfree (b - a) (by omega) hcancel
+    omega
+  · have hcancel : σ^[a - b] w = w := by
+      refine (Function.Injective.iterate (injective_of_period σ hp hper) b) ?_
+      rw [← Function.iterate_add_apply, Nat.add_sub_cancel' hle]
+      exact hab
+    have := hfree (a - b) (by omega) hcancel
+    omega
+
+variable {M : Type*} [AddCommMonoid M]
+
+theorem exists_nsmul_sum_of_forall {β : Type*} (t : Finset β) (F : β → M) (p : ℕ)
+    (h : ∀ b ∈ t, ∃ z, F b = p • z) : ∃ Z, ∑ b ∈ t, F b = p • Z := by
+  classical
+  choose z hz using h
+  refine ⟨∑ b ∈ t.attach, z b b.2, ?_⟩
+  rw [Finset.smul_sum, ← Finset.sum_attach t F]
+  exact Finset.sum_congr rfl fun b _ => hz b b.2
+
+/-- **A sum over a free orbit is `p` times something.** -/
+theorem exists_nsmul_sum_iterateOrbit (σ : α → α) {p : ℕ} (hp : 0 < p)
+    (hper : ∀ v, σ^[p] v = v) (f : α → M) (hinv : ∀ v, f (σ v) = f v) {w : α}
+    (hfree : ∀ k < p, σ^[k] w = w → k = 0) :
+    ∃ z : M, ∑ v ∈ iterateOrbit σ p w, f v = p • z := by
+  refine ⟨f w, ?_⟩
+  have hconst : ∀ v ∈ iterateOrbit σ p w, f v = f w := by
+    intro v hv
+    obtain ⟨k, hk, rfl⟩ := mem_iterateOrbit_iff.mp hv
+    clear hv hk
+    induction k with
+    | zero => rfl
+    | succ k ih => rw [Function.iterate_succ_apply', hinv, ih]
+  rw [Finset.sum_congr rfl hconst, Finset.sum_const, card_iterateOrbit σ hp hper hfree]
+
+/-- **A sum over a union of free orbits is `p` times something.** -/
+theorem exists_nsmul_sum_of_free (σ : α → α) {p : ℕ} (hp : 0 < p) (hper : ∀ v, σ^[p] v = v)
+    (s : Finset α) (f : α → M) (hinv : ∀ v, f (σ v) = f v)
+    (hs : ∀ w ∈ s, iterateOrbit σ p w ⊆ s)
+    (hfree : ∀ w ∈ s, ∀ k < p, σ^[k] w = w → k = 0) :
+    ∃ z : M, ∑ w ∈ s, f w = p • z := by
+  classical
+  rw [← Finset.sum_fiberwise_of_maps_to (g := fun w => iterateOrbit σ p w)
+    (t := s.image fun w => iterateOrbit σ p w) (fun w hw => Finset.mem_image_of_mem _ hw) f]
+  refine exists_nsmul_sum_of_forall _ _ p fun O hO => ?_
+  obtain ⟨w₀, hw₀, rfl⟩ := Finset.mem_image.mp hO
+  have hfib : (s.filter fun w => iterateOrbit σ p w = iterateOrbit σ p w₀)
+      = iterateOrbit σ p w₀ := by
+    ext v
+    simp only [Finset.mem_filter]
+    constructor
+    · rintro ⟨_, hv⟩
+      rw [← hv]
+      exact self_mem_iterateOrbit σ hp v
+    · intro hv
+      exact ⟨hs w₀ hw₀ hv, iterateOrbit_of_mem σ hp hper hv⟩
+  rw [hfib]
+  exact exists_nsmul_sum_iterateOrbit σ hp hper f hinv (hfree w₀ hw₀)
+
+
+end Orbits
+
+/-! ### Freshman's dream modulo commutators -/
+
+section Freshman
+
+variable {R : Type*} [Ring R]
+
+theorem wordProd_const (x y : R) (n : ℕ) (b : Bool) :
+    wordProd x y (fun _ : Fin n => b) = (if b then x else y) ^ n := by
+  rw [wordProd, List.ofFn_const, List.prod_replicate]
+
+/-- If a rotated word is constant then so was the original. -/
+theorem const_of_const_rotateWord {n : ℕ} {w : Fin (n + 1) → Bool}
+    (h : ∀ i j, rotateWord w i = rotateWord w j) (i j : Fin (n + 1)) : w i = w j := by
+  have h1 : rotateWord w (i - 1) = w i := by rw [rotateWord_apply, sub_add_cancel]
+  have h2 : rotateWord w (j - 1) = w j := by rw [rotateWord_apply, sub_add_cancel]
+  rw [← h1, ← h2]
+  exact h _ _
+
+theorem const_of_const_iterate_rotateWord {n : ℕ} (k : ℕ) : ∀ {w : Fin (n + 1) → Bool},
+    (∀ i j, (rotateWord^[k] w) i = (rotateWord^[k] w) j) → ∀ i j, w i = w j := by
+  induction k with
+  | zero => intro w h; exact h
+  | succ k ih =>
+    intro w h
+    rw [Function.iterate_succ_apply] at h
+    exact fun i j => const_of_const_rotateWord (ih h) i j
+
+/-- Non-constant words are stable under rotation. -/
+theorem not_const_iterate_rotateWord {n : ℕ} {w : Fin (n + 1) → Bool} (hw : ¬ ∀ i j, w i = w j)
+    (k : ℕ) : ¬ ∀ i j, (rotateWord^[k] w) i = (rotateWord^[k] w) j := fun hc =>
+  hw (const_of_const_iterate_rotateWord k hc)
+
+/-- The constant words form a two-element finset. -/
+theorem filter_const_eq {n : ℕ} :
+    (Finset.univ.filter fun w : Fin (n + 1) → Bool => ∀ i j, w i = w j)
+      = {fun _ => true, fun _ => false} := by
+  classical
+  ext w
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert,
+    Finset.mem_singleton]
+  constructor
+  · intro h
+    rcases Bool.eq_false_or_eq_true (w 0) with h0 | h0
+    · exact Or.inl (funext fun i => (h i 0).trans h0)
+    · exact Or.inr (funext fun i => (h i 0).trans h0)
+  · rintro (rfl | rfl) <;> intro i j <;> rfl
+
+/-- **Freshman's dream modulo commutators.**  In a ring of prime characteristic `p`, the map
+`z ↦ z ^ p` is additive modulo any additive subgroup containing all commutators.
+
+The non-constant words of length `p` fall into rotation orbits of size exactly `p` — rotation
+does not change a word product modulo `T`, and the orbits are free because `p` is prime — so
+their total contribution is `p` times something, which vanishes in characteristic `p`.  The two
+constant words contribute `x ^ p` and `y ^ p`. -/
+theorem add_pow_prime_sub_sub_mem {R : Type*} [Ring R] (x y : R) {p : ℕ} (hp : p.Prime)
+    (hchar : (p : R) = 0) (T : AddSubgroup R) (hT : ∀ a b : R, a * b - b * a ∈ T) :
+    (x + y) ^ p - x ^ p - y ^ p ∈ T := by
+  classical
+  obtain ⟨n, rfl⟩ : ∃ n, p = n + 1 := ⟨p - 1, by have := hp.pos; omega⟩
+  set π : R →+ R ⧸ T := QuotientAddGroup.mk' T with hπ
+  set f : (Fin (n + 1) → Bool) → R ⧸ T := fun w => π (wordProd x y w) with hf
+  -- rotation does not change `f`
+  have hfinv : ∀ w, f (rotateWord w) = f w := by
+    intro w
+    rw [hf, hπ]
+    exact QuotientAddGroup.eq_iff_sub_mem.mpr (wordProd_rotateWord_sub_mem x y w T hT)
+  -- scalars: `p` annihilates the quotient
+  have hkill : ∀ q : R ⧸ T, (n + 1) • q = 0 := by
+    intro q
+    obtain ⟨r, rfl⟩ := QuotientAddGroup.mk'_surjective T q
+    rw [← map_nsmul, nsmul_eq_mul, hchar, zero_mul, map_zero]
+  -- split the words
+  have hsplit := Finset.sum_filter_add_sum_filter_not
+    (Finset.univ : Finset (Fin (n + 1) → Bool)) (fun w => ∀ i j, w i = w j) f
+  have hconst : ∑ w ∈ Finset.univ.filter (fun w : Fin (n + 1) → Bool => ∀ i j, w i = w j), f w
+      = π (x ^ (n + 1)) + π (y ^ (n + 1)) := by
+    rw [filter_const_eq, Finset.sum_insert (by simp [funext_iff]), Finset.sum_singleton,
+      hf]
+    simp only [wordProd_const]
+    norm_num
+  obtain ⟨z, hz⟩ := exists_nsmul_sum_of_free rotateWord (Nat.succ_pos n)
+    isPeriodicPt_rotateWord
+    (Finset.univ.filter fun w : Fin (n + 1) → Bool => ¬ ∀ i j, w i = w j) f hfinv
+    (fun w hw => by
+      intro v hv
+      obtain ⟨k, _, rfl⟩ := mem_iterateOrbit_iff.mp hv
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _,
+        not_const_iterate_rotateWord (Finset.mem_filter.mp hw).2 k⟩)
+    (fun w hw k hk hfix => by
+      by_contra hk0
+      exact (Finset.mem_filter.mp hw).2
+        (const_of_iterate_rotateWord_eq hp rfl (fun hd => hk0 (Nat.eq_zero_of_dvd_of_lt hd hk
+          |>.symm ▸ rfl)) hfix))
+  rw [hconst, hz, hkill, add_zero] at hsplit
+  have htot : ∑ w : Fin (n + 1) → Bool, f w = π ((x + y) ^ (n + 1)) := by
+    rw [hf, hπ, ← map_sum, ← add_pow_eq_sum_wordProd]
+  rw [htot] at hsplit
+  refine (QuotientAddGroup.eq_zero_iff _).mp ?_
+  have : π ((x + y) ^ (n + 1) - x ^ (n + 1) - y ^ (n + 1)) = 0 := by
+    rw [map_sub, map_sub, ← hsplit]
+    abel
+  simpa [hπ] using this
+
+end Freshman
+
+
+
+/-! ### The commutator subgroup is closed under `p`-th powers
+
+For `T'` — the set of elements some `p`-power of which is a commutator sum — to be a subspace,
+one needs `t ∈ T ⟹ t ^ p ∈ T`.  The two steps are `(ab)^p - (ba)^p ∈ T` (it is literally a
+commutator) and `(ab - ba)^p ≡ (ab)^p - (ba)^p` by the freshman's dream.
+-/
+
+section PowerClosed
+
+variable {R : Type*} [Ring R]
+
+/-- `(a b) ^ (m+1) = a ((b a) ^ m b)`: the two products are cyclic rotations of each other. -/
+theorem mul_pow_succ_eq (a b : R) (m : ℕ) : (a * b) ^ (m + 1) = a * ((b * a) ^ m * b) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    rw [pow_succ, ih, pow_succ]
+    noncomm_ring
+
+/-- **`(ab)^p - (ba)^p` is a commutator.** -/
+theorem mul_pow_sub_mul_pow_mem (a b : R) {m : ℕ} (hm : 0 < m) (T : AddSubgroup R)
+    (hT : ∀ u v : R, u * v - v * u ∈ T) : (a * b) ^ m - (b * a) ^ m ∈ T := by
+  obtain ⟨j, rfl⟩ : ∃ j, m = j + 1 := ⟨m - 1, by omega⟩
+  have hz : (a * b) ^ (j + 1) - (b * a) ^ (j + 1)
+      = a * ((b * a) ^ j * b) - ((b * a) ^ j * b) * a := by
+    rw [mul_pow_succ_eq, pow_succ]
+    noncomm_ring
+  rw [hz]
+  exact hT _ _
+
+/-- **The `p`-th power of a commutator is again in `T`.** -/
+theorem commutator_pow_mem (a b : R) {p : ℕ} (hp : p.Prime) (hchar : (p : R) = 0)
+    (T : AddSubgroup R) (hT : ∀ u v : R, u * v - v * u ∈ T) :
+    (a * b - b * a) ^ p ∈ T := by
+  have hneg : ((-1 : R)) ^ p = -1 := by
+    rcases hp.eq_two_or_odd' with rfl | hodd
+    · have h2 : (1 : R) + 1 = 0 := by simpa [one_add_one_eq_two] using hchar
+      have hone : (1 : R) = -1 := eq_neg_of_add_eq_zero_left h2
+      rw [← hone]
+      simp
+    · exact hodd.neg_one_pow
+  have hsplit : (a * b + -(b * a)) ^ p - (a * b) ^ p - (-(b * a)) ^ p ∈ T :=
+    add_pow_prime_sub_sub_mem (a * b) (-(b * a)) hp hchar T hT
+  have hnegpow : (-(b * a)) ^ p = -((b * a) ^ p) := by
+    rw [neg_pow, hneg, neg_one_mul]
+  rw [hnegpow, sub_neg_eq_add, ← sub_eq_add_neg] at hsplit
+  have hsplit' : (a * b - b * a) ^ p - ((a * b) ^ p - (b * a) ^ p) ∈ T := by
+    rw [show (a * b - b * a) ^ p - ((a * b) ^ p - (b * a) ^ p)
+        = (a * b - b * a) ^ p - (a * b) ^ p + (b * a) ^ p by abel]
+    exact hsplit
+  have hfin := T.add_mem hsplit' (mul_pow_sub_mul_pow_mem a b hp.pos T hT)
+  rwa [sub_add_cancel] at hfin
+
+end PowerClosed
+
+end OddOrder

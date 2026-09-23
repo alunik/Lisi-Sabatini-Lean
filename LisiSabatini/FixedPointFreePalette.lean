@@ -147,8 +147,8 @@ theorem exists_common_regular_translate_of_fixedPointFreeOffZero_zmod
     (hcard : Nat.card I < r ^ d)
     (t : I → Fin d → ZMod r) :
     ∃ v, ∀ i, MulAction.stabilizer (H i) (v + t i) = ⊥ := by
-  letI : Fact (Nat.Prime r) := ⟨hr⟩
-  letI : NeZero r := ⟨hr.ne_zero⟩
+  let : Fact (Nat.Prime r) := ⟨hr⟩
+  let : NeZero r := ⟨hr.ne_zero⟩
   apply exists_common_regular_translate_of_fixedPointFreeOffZero H hH
   simpa only [Nat.card_fun, Nat.card_fin, Nat.card_zmod] using hcard
 
@@ -163,8 +163,8 @@ theorem exists_common_regular_translate_of_active_fixedPointFreeOffZero_zmod
     (hcard : (activeLinearIndices H).card < r ^ d)
     (t : I → Fin d → ZMod r) :
     ∃ v, ∀ i, MulAction.stabilizer (H i) (v + t i) = ⊥ := by
-  letI : Fact (Nat.Prime r) := ⟨hr⟩
-  letI : NeZero r := ⟨hr.ne_zero⟩
+  let : Fact (Nat.Prime r) := ⟨hr⟩
+  let : NeZero r := ⟨hr.ne_zero⟩
   apply exists_common_regular_translate_of_active_fixedPointFreeOffZero H hH
   simpa only [Nat.card_fun, Nat.card_fin, Nat.card_zmod] using hcard
 

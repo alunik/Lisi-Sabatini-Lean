@@ -18,7 +18,7 @@ namespace LisiSabatini
 
 /-- Hall's hypothesis, noncommutativity, and central Frattini control give
 the intrinsic cyclic-center class-two structure on the whole group. -/
-def oddCyclicCenterClassTwo_of_hall_of_frattini_le_center
+theorem oddCyclicCenterClassTwo_of_hall_of_frattini_le_center
     {p : ℕ} {P : Type*} [Group P] [Finite P]
     (hp : p.Prime) (hpOdd : Odd p) (hPp : IsPGroup p P)
     (hHall : HasCyclicCharacteristicAbelianSubgroups P)

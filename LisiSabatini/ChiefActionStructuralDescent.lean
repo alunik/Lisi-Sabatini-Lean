@@ -33,7 +33,7 @@ theorem ambientDimension_eq_blockCount_mul_localDimension
     (P : PrimeFieldPrimitiveInternalImprimitivityPresentation
       r b e (Fin d → ZMod r) K) :
     d = b * e := by
-  letI : Fact r.Prime := ⟨P.field_prime⟩
+  let : Fact r.Prime := ⟨P.field_prime⟩
   have hfinrank := LinearEquiv.finrank_eq P.coordinates
   calc
     d = Module.finrank (ZMod r) (Fin b → Fin e → ZMod r) := by

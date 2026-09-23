@@ -41,7 +41,7 @@ theorem exists_common_mixedSylowInter_bot_alternatingGroup_ge_forty
     (P Q : ∀ i, Sylow (p i) (alternatingGroup (Fin n))) :
     ∃ x : alternatingGroup (Fin n),
       ∀ i, mixedSylowInter (P i) (Q i) x = ⊥ := by
-  letI := Fintype.ofFinite I
+  let := Fintype.ofFinite I
   have hnTwo : 2 ≤ n := by omega
   apply
     exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one
@@ -94,7 +94,7 @@ theorem exists_common_mixedSylowInter_bot_alternatingGroup_ge_forty
           rw [normalizedSameRowSylowQuadraticCost_perm_eq_profile
             (hp i) (S i)]
         _ = 4 * alternatingSylowProfileQuadraticCost n (p i) := by
-          rw [alternatingSylowProfileQuadraticCost, if_neg htwo]
+          rw [alternatingSylowProfileQuadraticCost, ite_eq_right htwo]
   have hprofile :
       (∑ i : I, alternatingSylowProfileQuadraticCost n (p i)) <
         1 / 4 := by

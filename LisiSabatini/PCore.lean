@@ -40,8 +40,8 @@ private theorem normalPSubgroups_nonempty (p : ℕ) (G : Type u) [Group G] :
 private theorem normalPSubgroups_directedOn (p : ℕ) (G : Type u) [Group G] :
     DirectedOn (· ≤ ·) (normalPSubgroups p G) := by
   rintro K ⟨hKp, hKn⟩ L ⟨hLp, hLn⟩
-  letI : K.Normal := hKn
-  letI : L.Normal := hLn
+  let : K.Normal := hKn
+  let : L.Normal := hLn
   refine ⟨K ⊔ L, ⟨?_, inferInstance⟩, le_sup_left, le_sup_right⟩
   exact hKp.to_sup_of_normal_right hLp
 
@@ -50,7 +50,7 @@ theorem mem_pCore_iff {p : ℕ} {x : G} :
     x ∈ pCore p G ↔ ∃ K : Subgroup G, IsPGroup p K ∧ K.Normal ∧ x ∈ K := by
   rw [pCore, Subgroup.mem_sSup_of_directedOn
     (normalPSubgroups_nonempty p G) (normalPSubgroups_directedOn p G)]
-  simp only [normalPSubgroups, Set.mem_setOf_eq, and_assoc]
+  simp only [normalPSubgroups, Set.mem_ofPred_eq, and_assoc]
 
 /-- Every normal `p`-subgroup is contained in the `p`-core. -/
 theorem le_pCore {p : ℕ} {K : Subgroup G} (hKp : IsPGroup p K) (hKn : K.Normal) :

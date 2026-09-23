@@ -29,14 +29,14 @@ local instance finiteConcreteLinearSubgroupForMappedPCoreCyclicCenter
 
 /-- Abelianness of the one Frattini subgroup needed by Hall's reduction
 gives the cyclic-center class-two structure on the ambient prime group. -/
-def oddCyclicCenterClassTwo_of_hall_of_frattini_isMulCommutative
+theorem oddCyclicCenterClassTwo_of_hall_of_frattini_isMulCommutative
     {p : ℕ} {P : Type*} [Group P] [Finite P]
     (hp : p.Prime) (hpOdd : Odd p) (hPp : IsPGroup p P)
     (hHall : HasCyclicCharacteristicAbelianSubgroups P)
     (hnoncomm : ¬ IsMulCommutative P)
     (hPhiComm : IsMulCommutative (frattini P)) :
     IsOddCyclicCenterClassTwo p P := by
-  letI : IsMulCommutative (frattini P) := hPhiComm
+  let : IsMulCommutative (frattini P) := hPhiComm
   have hPhiCyclic : IsCyclic (frattini P) :=
     hHall.isCyclic (frattini P)
   exact oddCyclicCenterClassTwo_of_hall_of_frattini_le_center

@@ -1,0 +1,30 @@
+module
+
+public import LisiSabatini.SymmetricDoubleCosetCertificates.S9.Data
+
+/-! Generated literal witnesses; every acceptance is kernel checked. -/
+
+@[expose] public section
+
+namespace LisiSabatini.SymmetricDoubleCosetCertificates.S9
+
+open LisiSabatini.FiniteCertificates LisiSabatini.SymmetricDoubleCosetRows
+
+set_option maxRecDepth 100000
+
+def goodWitness_5Array : Array (Fin 7) :=
+  #[0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 2, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0,
+    0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0]
+
+def goodWitness_5 (i : Fin 128) : Fin 7 :=
+  goodWitness_5Array[i.val]'(by change i.val < 128; exact i.isLt)
+
+theorem good_5 :
+    doubleCosetInvolutionGoodCheck row9 involutionIndices tests goodWitness_5 (reps 5) = true :=
+      by
+  decide +kernel
+
+end LisiSabatini.SymmetricDoubleCosetCertificates.S9

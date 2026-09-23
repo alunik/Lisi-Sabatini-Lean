@@ -26,7 +26,7 @@ theorem exists_ne_smul_of_ne_bot
     [Semiring R] [AddCommMonoid V] [Module R V]
     (H : Subgroup (LinearMap.GeneralLinearGroup R V)) (hH : H ≠ ⊥) :
     ∃ g : H, ∃ v : V, g • v ≠ v := by
-  haveI : Nontrivial H := H.nontrivial_iff_ne_bot.mpr hH
+  have : Nontrivial H := H.nontrivial_iff_ne_bot.mpr hH
   obtain ⟨g : H, hg⟩ := exists_ne (1 : H)
   refine ⟨g, ?_⟩
   by_contra h
@@ -67,7 +67,7 @@ theorem prime_lt_natCard_of_fixedPointFreeOffZero
     (hP : IsPGroup p H) (hH : H ≠ ⊥)
     (hfp : FixedPointFreeOffZero H) :
     p < Nat.card V := by
-  letI : Fact (Nat.Prime p) := ⟨hp⟩
+  let : Fact (Nat.Prime p) := ⟨hp⟩
   obtain ⟨g, v, hgv⟩ := exists_ne_smul_of_ne_bot H hH
   have hv : v ≠ 0 := by
     intro hv0
@@ -75,9 +75,9 @@ theorem prime_lt_natCard_of_fixedPointFreeOffZero
     exact hgv (smul_zero g)
   have horbit_inj : Function.Injective (fun h : H ↦ h • v) :=
     orbitMap_injective_of_fixedPointFreeOffZero_of_ne_zero H hfp hv
-  letI : Finite H := Finite.of_injective (fun h : H ↦ h • v) horbit_inj
-  letI : Fintype V := Fintype.ofFinite V
-  letI : Fintype H := Fintype.ofFinite H
+  let : Finite H := Finite.of_injective (fun h : H ↦ h • v) horbit_inj
+  let : Fintype V := Fintype.ofFinite V
+  let : Fintype H := Fintype.ofFinite H
   have horbit : Fintype.card H < Fintype.card V :=
     Fintype.card_lt_of_injective_of_notMem
       (b := (0 : V))

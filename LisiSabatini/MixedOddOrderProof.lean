@@ -28,21 +28,21 @@ For every finite family of distinct primes and every two independently
 prescribed Sylow rows, one conjugator makes all mixed intersections equal to
 their normal prime cores. -/
 theorem mixedStrongLisiSabatini_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    {G : Type uG} [Group G] [Finite G] [Group.IsSolvable G]
     (hodd : Odd (Nat.card G)) :
     HasMixedTwoSylowCoreSynchronization.{uG, uI} G := by
   classical
   by_cases hsubsingleton : Subsingleton G
-  · letI : Subsingleton G := hsubsingleton
+  · let : Subsingleton G := hsubsingleton
     exact mixedTwoSylowCoreSynchronization_of_subsingleton
-  · letI : Nontrivial G :=
+  · let : Nontrivial G :=
       not_subsingleton_iff_nontrivial.mp hsubsingleton
     obtain ⟨N, hN⟩ := exists_minimalNormal (G := G)
-    letI : N.Normal := hN.normal
+    let : N.Normal := hN.normal
     obtain ⟨C, hCN, hrTwo⟩ :=
       hN.exists_oddChiefElementaryAbelianSection hodd
     subst N
-    letI : Fact C.r.Prime := ⟨C.prime⟩
+    let : Fact C.r.Prime := ⟨C.prime⟩
     have hmarked : NormalComponentOrbitAvoidingSynchronization.{uI}
         C.r C.d C.chiefAction :=
       primewiseAffineOrbitAvoidance_of_irreducible.{uI}
@@ -72,7 +72,7 @@ decreasing_by
 /-- Diagonal specialization: the mixed theorem recovers the existing strong
 same-row odd-order theorem. -/
 theorem strongLisiSabatini_of_mixed_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    {G : Type uG} [Group G] [Finite G] [Group.IsSolvable G]
     (hodd : Odd (Nat.card G)) :
     StrongLisiSabatini.{uG, uI} G :=
   HasMixedTwoSylowCoreSynchronization.strongLisiSabatini
@@ -81,7 +81,7 @@ theorem strongLisiSabatini_of_mixed_solvable_of_odd
 /-- The mixed two-row theorem immediately supplies mixed three-row
 synchronization in finite solvable odd-order groups. -/
 theorem mixedThreeSylowCoreSynchronization_of_solvable_of_odd
-    {G : Type uG} [Group G] [Finite G] [IsSolvable G]
+    {G : Type uG} [Group G] [Finite G] [Group.IsSolvable G]
     (hodd : Odd (Nat.card G)) :
     HasMixedThreeSylowCoreSynchronization.{uG, uI} G :=
   mixedTwo_to_mixedThree

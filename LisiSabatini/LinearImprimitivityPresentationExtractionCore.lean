@@ -212,7 +212,7 @@ def distinguishedFinIndex (P : ExtractedPrimitiveCoarsening W) :
 
 theorem blockCount_one_lt (P : ExtractedPrimitiveCoarsening W) :
     1 < P.blockCount := by
-  letI : Nontrivial P.CoarseIndex := P.coarseIndex_nontrivial
+  let : Nontrivial P.CoarseIndex := P.coarseIndex_nontrivial
   exact Fintype.one_lt_card_iff_nontrivial.2 inferInstance
 
 /-- Maximality makes the actual coarse permutation top primitive. -/

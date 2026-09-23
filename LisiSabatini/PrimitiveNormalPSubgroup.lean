@@ -27,6 +27,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 universe uG uΩ
 
 variable {G : Type uG} {Ω : Type uΩ}
@@ -45,14 +47,14 @@ theorem centerImage_le (H : Subgroup G) : centerImage H ≤ H := by
 /-- The ambient image of a center is abelian. -/
 theorem centerImage_isMulCommutative (H : Subgroup G) :
     IsMulCommutative (centerImage H) := by
-  letI : IsMulCommutative (Subgroup.center H) :=
+  let : IsMulCommutative (Subgroup.center H) :=
     Subgroup.center.isMulCommutative H
   exact Subgroup.map_isMulCommutative (Subgroup.center H) H.subtype
 
 /-- The center image of a normal subgroup is normal in the ambient group. -/
 theorem centerImage_normal (H : Subgroup G) (hHn : H.Normal) :
     (centerImage H).Normal := by
-  letI : H.Normal := hHn
+  let : H.Normal := hHn
   exact ConjAct.normal_of_characteristic_of_normal
 
 /-- A nontrivial finite `p`-group has nontrivial center image in the ambient
@@ -61,9 +63,9 @@ theorem centerImage_ne_bot
     [Finite G] {p : ℕ} (hp : p.Prime)
     (H : Subgroup G) (hHp : IsPGroup p H) (hH : H ≠ ⊥) :
     centerImage H ≠ ⊥ := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : Nontrivial H := H.nontrivial_iff_ne_bot.mpr hH
-  haveI : Nontrivial (Subgroup.center H) := hHp.center_nontrivial
+  let : Fact p.Prime := ⟨hp⟩
+  let : Nontrivial H := H.nontrivial_iff_ne_bot.mpr hH
+  have : Nontrivial (Subgroup.center H) := hHp.center_nontrivial
   intro hcenter
   have hcenterBot : Subgroup.center H = ⊥ := by
     rw [← Subgroup.map_subtype_inj]
@@ -90,17 +92,17 @@ theorem eq_centerImage
     (H : Subgroup G) (hHn : H.Normal)
     (hHp : IsPGroup p H) (hH : H ≠ ⊥) :
     H = centerImage H := by
-  letI : H.Normal := hHn
+  let : H.Normal := hHn
   let Z : Subgroup G := centerImage H
   have hZn : Z.Normal := centerImage_normal H hHn
-  letI : Z.Normal := hZn
+  let : Z.Normal := hZn
   have hZne : Z ≠ ⊥ := centerImage_ne_bot hp H hHp hH
   have hZtrans : MulAction.IsPretransitive Z Ω :=
     PrimitiveSolvableTop.isPretransitive_of_normal_of_ne_bot hZne
-  letI : MulAction.IsPretransitive Z Ω := hZtrans
+  let : MulAction.IsPretransitive Z Ω := hZtrans
   have hZcomm : IsMulCommutative Z := by
     exact centerImage_isMulCommutative H
-  letI : IsMulCommutative Z := hZcomm
+  let : IsMulCommutative Z := hZcomm
   have hZcentralizer : Subgroup.centralizer (Z : Set G) = Z :=
     PrimitiveSolvableTop.centralizer_eq_of_isMulCommutative_of_isPretransitive
       (Ω := Ω) Z
@@ -130,13 +132,13 @@ theorem isRegularSubgroupAction
     (H : Subgroup G) (hHn : H.Normal)
     (hHp : IsPGroup p H) (hH : H ≠ ⊥) :
     IsRegularSubgroupAction H Ω := by
-  letI : H.Normal := hHn
+  let : H.Normal := hHn
   have hcomm : IsMulCommutative H :=
     isMulCommutative (Ω := Ω) hp H hHn hHp hH
-  letI : IsMulCommutative H := hcomm
+  let : IsMulCommutative H := hcomm
   have htrans : MulAction.IsPretransitive H Ω :=
     PrimitiveSolvableTop.isPretransitive_of_normal_of_ne_bot hH
-  letI : MulAction.IsPretransitive H Ω := htrans
+  let : MulAction.IsPretransitive H Ω := htrans
   exact ⟨htrans,
     PrimitiveSolvableTop.isCancelSMul_of_isMulCommutative_of_isPretransitive H⟩
 
@@ -151,7 +153,7 @@ theorem stabilizer_eq_bot
     MulAction.stabilizer H ω = ⊥ := by
   have hregular :=
     isRegularSubgroupAction (Ω := Ω) hp H hHn hHp hH
-  letI : IsCancelSMul H Ω := hregular.2
+  let : IsCancelSMul H Ω := hregular.2
   exact IsCancelSMul.stabilizer_eq_bot ω
 
 /-- The faithful permutation image of `H`. -/
@@ -172,7 +174,7 @@ theorem permutationImage_isRegularAbelian
     isRegularSubgroupAction (Ω := Ω) hp H hHn hHp hH
   have hcomm : IsMulCommutative H :=
     isMulCommutative (Ω := Ω) hp H hHn hHp hH
-  letI : IsMulCommutative H := hcomm
+  let : IsMulCommutative H := hcomm
   let A : Subgroup (Equiv.Perm Ω) := permutationImage H
   have hAcomm : IsMulCommutative A := by
     dsimp [A, permutationImage]
@@ -184,7 +186,7 @@ theorem permutationImage_isRegularAbelian
       ⟨MulAction.toPermHom G Ω h,
         Subgroup.mem_map.mpr ⟨h, h.property, rfl⟩⟩
     exact ⟨a, hh⟩
-  · letI : IsMulCommutative A := hAcomm
+  · let : IsMulCommutative A := hAcomm
     intro a b
     exact mul_comm a b
 

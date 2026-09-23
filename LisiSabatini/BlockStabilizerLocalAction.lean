@@ -130,8 +130,8 @@ theorem componentBaseInBlockStabilizer_normal
     (S : LinearImprimitivitySystem (I := I) K)
     (H : Subgroup K) (hH : H.Normal) (i : I) :
     (S.componentBaseInBlockStabilizer H i).Normal := by
-  letI : H.Normal := hH
-  letI : S.blockPerm.ker.Normal := S.blockPerm.normal_ker
+  let : H.Normal := hH
+  let : S.blockPerm.ker.Normal := S.blockPerm.normal_ker
   have hinter : (H ⊓ S.blockPerm.ker).Normal := inferInstance
   exact Subgroup.Normal.comap hinter (S.blockStabilizer i).subtype
 
@@ -196,24 +196,24 @@ theorem blockStabilizerLocalImage_finite
     [Finite K]
     (S : LinearImprimitivitySystem (I := I) K) (i : I) :
     Finite (S.blockStabilizerLocalImage i) := by
-  letI : Finite (S.blockStabilizer i) := inferInstance
+  let : Finite (S.blockStabilizer i) := inferInstance
   exact Finite.of_surjective (S.blockStabilizerLocalRangeHom i)
     (S.blockStabilizerLocalRangeHom_surjective i)
 
 theorem blockStabilizerLocalImage_isSolvable
-    [IsSolvable K]
+    [Group.IsSolvable K]
     (S : LinearImprimitivitySystem (I := I) K) (i : I) :
-    IsSolvable (S.blockStabilizerLocalImage i) := by
-  letI : IsSolvable (S.blockStabilizer i) := inferInstance
-  exact solvable_of_surjective (S.blockStabilizerLocalRangeHom_surjective i)
+    Group.IsSolvable (S.blockStabilizerLocalImage i) := by
+  let : Group.IsSolvable (S.blockStabilizer i) := inferInstance
+  exact Group.isSolvable_of_surjective (S.blockStabilizerLocalRangeHom_surjective i)
 
 theorem blockStabilizerLocalImage_odd
     [Finite K]
     (S : LinearImprimitivitySystem (I := I) K) (i : I)
     (hodd : Odd (Nat.card K)) :
     Odd (Nat.card (S.blockStabilizerLocalImage i)) := by
-  letI : Finite (S.blockStabilizer i) := inferInstance
-  letI : Finite (S.blockStabilizerLocalImage i) :=
+  let : Finite (S.blockStabilizer i) := inferInstance
+  let : Finite (S.blockStabilizerLocalImage i) :=
     S.blockStabilizerLocalImage_finite i
   exact hodd.of_dvd_nat <|
     (Subgroup.card_range_dvd (S.blockStabilizerLocalHom i)).trans
@@ -486,7 +486,8 @@ theorem isIrreducible_map_conjugation
     change
       LinearMap.GeneralLinearGroup.congrLinearEquiv e a.1 • e x ∈ U
       at hae
-    simpa only [congrLinearEquiv_smul] using hae
+    rw [congrLinearEquiv_smul] at hae
+    exact hae
   rcases hA U' hU'inv with hbot | htop
   · left
     apply le_antisymm
@@ -841,8 +842,8 @@ theorem blockStabilizerLocalAction_finite
     (P : PrimeFieldPrimitiveInternalImprimitivityPresentation
       r b e V K) (i : Fin b) :
     Finite (P.blockStabilizerLocalAction i) := by
-  letI : Finite K := P.finite_action
-  letI : Finite (P.system.blockStabilizerLocalImage i) :=
+  let : Finite K := P.finite_action
+  let : Finite (P.system.blockStabilizerLocalImage i) :=
     P.system.blockStabilizerLocalImage_finite i
   exact Finite.of_surjective
     (P.system.blockStabilizerLocalImageCoordinateEquiv i
@@ -852,13 +853,13 @@ theorem blockStabilizerLocalAction_finite
 
 /-- Solvability descends from the presented ambient action. -/
 theorem blockStabilizerLocalAction_isSolvable
-    [IsSolvable K]
+    [Group.IsSolvable K]
     (P : PrimeFieldPrimitiveInternalImprimitivityPresentation
       r b e V K) (i : Fin b) :
-    IsSolvable (P.blockStabilizerLocalAction i) := by
-  letI : IsSolvable (P.system.blockStabilizerLocalImage i) :=
+    Group.IsSolvable (P.blockStabilizerLocalAction i) := by
+  let : Group.IsSolvable (P.system.blockStabilizerLocalImage i) :=
     P.system.blockStabilizerLocalImage_isSolvable i
-  exact solvable_of_surjective
+  exact Group.isSolvable_of_surjective
     (f := (P.system.blockStabilizerLocalImageCoordinateEquiv i
       (P.localCoordinates i)).toMonoidHom)
     (P.system.blockStabilizerLocalImageCoordinateEquiv i
@@ -870,10 +871,10 @@ theorem blockStabilizerLocalAction_odd
       r b e V K) (i : Fin b)
     (hodd : Odd (Nat.card K)) :
     Odd (Nat.card (P.blockStabilizerLocalAction i)) := by
-  letI : Finite K := P.finite_action
-  letI : Finite (P.system.blockStabilizerLocalImage i) :=
+  let : Finite K := P.finite_action
+  let : Finite (P.system.blockStabilizerLocalImage i) :=
     P.system.blockStabilizerLocalImage_finite i
-  letI : Finite (P.blockStabilizerLocalAction i) :=
+  let : Finite (P.blockStabilizerLocalAction i) :=
     P.blockStabilizerLocalAction_finite i
   rw [Nat.card_congr
     (P.system.blockStabilizerLocalImageCoordinateEquiv i

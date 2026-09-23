@@ -13,6 +13,8 @@ noncomputable section
 
 namespace LisiSabatini
 
+open scoped IsMulCommutative
+
 set_option backward.isDefEq.respectTransparency false
 
 /-- Every characteristic abelian subgroup of a cross-characteristic prime
@@ -24,8 +26,8 @@ theorem pCore_hasCyclicCharacteristicAbelianSubgroups_of_quasiprimitive
     (hqp : IsQuasiprimitiveLinearAction r d K) :
     HasCyclicCharacteristicAbelianSubgroups (pCore q K) := by
   intro A hAchar hAcomm
-  letI : A.Characteristic := hAchar
-  letI : IsMulCommutative A := hAcomm
+  let : A.Characteristic := hAchar
+  let : IsMulCommutative A := hAcomm
   let Abar : Subgroup K := A.map (pCore q K).subtype
   have hAbarNormal : Abar.Normal := by
     dsimp only [Abar]
@@ -35,7 +37,7 @@ theorem pCore_hasCyclicCharacteristicAbelianSubgroups_of_quasiprimitive
     exact ((pCore_isPGroup q K).to_subgroup A).map
       (pCore q K).subtype
   have hAbarComm : ∀ a b : Abar, Commute a b := by
-    letI : IsMulCommutative Abar := by
+    let : IsMulCommutative Abar := by
       dsimp only [Abar]
       exact Subgroup.map_isMulCommutative A (pCore q K).subtype
     intro a b

@@ -70,7 +70,7 @@ theorem exists_common_mixedSylowInter_bot_of_normalized_cost_sum_lt_one
           ∑ i, rowTotal i := by
         apply Finset.sum_congr rfl
         intro i _hi
-        letI : Fact (p i).Prime := ⟨hp i⟩
+        let : Fact (p i).Prime := ⟨hp i⟩
         apply Finset.sum_congr rfl
         intro C _hC
         exact

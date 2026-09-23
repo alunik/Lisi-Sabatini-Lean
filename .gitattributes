@@ -1,0 +1,5 @@
+vendor/odd-order/** linguist-vendored=true
+LisiSabatini/FiniteCertificates/*.lean linguist-generated=true
+LisiSabatini/SymmetricDoubleCosetCertificates/*.lean linguist-generated=true
+LisiSabatini/SymmetricFiniteCertificates/*.lean linguist-generated=true
+LisiSabatini/SymmetricEightCertificates/*.lean linguist-generated=true

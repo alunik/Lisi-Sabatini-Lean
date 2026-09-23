@@ -82,12 +82,12 @@ theorem nilpotentSelfIntersectionInFitting_of_strongLS
     NilpotentSelfIntersectionInFitting G := by
   classical
   intro H hHnil
-  letI : Group.IsNilpotent H := hHnil
+  let : Group.IsNilpotent H := hHnil
   let ps := (Nat.card H).primeFactors
   let S : ∀ i : ps, Sylow (i : ℕ) H := fun _ ↦ default
   have hSnormal : ∀ i : ps, (S i : Subgroup H).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := H)).out 0 3).mp hHnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := H)).out 1 4).mp hHnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (S i)
   let Pexists : ∀ i : ps, ∃ P : Sylow (i : ℕ) G,
       (S i : Subgroup H).map H.subtype ≤ (P : Subgroup G) := fun i ↦
@@ -105,15 +105,15 @@ theorem nilpotentSelfIntersectionInFitting_of_strongLS
   have hLH : L ≤ H := inf_le_left
   have hLC : L ≤ C := inf_le_right
   let Lin : Subgroup H := L.subgroupOf H
-  letI : Group.IsNilpotent Lin := inferInstance
+  let : Group.IsNilpotent Lin := inferInstance
   let eL : Lin ≃* L := Subgroup.subgroupOfEquivOfLe hLH
-  have hLnil : Group.IsNilpotent L := nilpotent_of_mulEquiv eL
+  have hLnil : Group.IsNilpotent L := Group.nilpotent_of_mulEquiv eL
   change L ≤ fittingSubgroup G
   apply nilpotentSubgroup_le_of_sylow_map_le L (fittingSubgroup G) hLnil
   intro q Q
   have hqprime : Nat.Prime (q : ℕ) :=
     Nat.prime_of_mem_primeFactors q.2
-  letI : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
+  let : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
   have hq_dvd_H : (q : ℕ) ∣ Nat.card H :=
     (Nat.dvd_of_mem_primeFactors q.2).trans
       (Subgroup.card_dvd_of_le hLH)
@@ -121,7 +121,7 @@ theorem nilpotentSelfIntersectionInFitting_of_strongLS
     ⟨(q : ℕ), hqprime.mem_primeFactors hq_dvd_H Nat.card_pos.ne'⟩
   have mapQ_le_S (f : L →* H) :
       (Q : Subgroup L).map f ≤ (S i : Subgroup H) := by
-    letI : (S i : Subgroup H).Normal := hSnormal i
+    let : (S i : Subgroup H).Normal := hSnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -147,7 +147,7 @@ theorem nilpotentSelfIntersectionInFitting_of_strongLS
       (P i : Subgroup G) := by
     have ht :=
       hSP i (Subgroup.mem_map.mpr ⟨pull y, hyS2, rfl⟩)
-    simpa [pull, econj, C] using ht
+    exact ht
   have hyConjP : (y : G) ∈
       ((x • P i : Sylow (i : ℕ) G) : Subgroup G) := by
     rw [Sylow.coe_subgroup_smul]
@@ -173,18 +173,18 @@ theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
     (hKnil : Group.IsNilpotent K) :
     ∃ x : G, H ⊓ ((MulAut.conj x) • K) ≤ D := by
   classical
-  letI : Group.IsNilpotent H := hHnil
-  letI : Group.IsNilpotent K := hKnil
+  let : Group.IsNilpotent H := hHnil
+  let : Group.IsNilpotent K := hKnil
   let ps := (Nat.card H).primeFactors
   let SH : ∀ i : ps, Sylow (i : ℕ) H := fun _ ↦ default
   let SK : ∀ i : ps, Sylow (i : ℕ) K := fun _ ↦ default
   have hSHnormal : ∀ i : ps, (SH i : Subgroup H).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := H)).out 0 3).mp hHnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := H)).out 1 4).mp hHnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (SH i)
   have hSKnormal : ∀ i : ps, (SK i : Subgroup K).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := K)).out 0 3).mp hKnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := K)).out 1 4).mp hKnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (SK i)
   let PHexists : ∀ i : ps, ∃ P : Sylow (i : ℕ) G,
       (SH i : Subgroup H).map H.subtype ≤ (P : Subgroup G) := fun i ↦
@@ -211,15 +211,15 @@ theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
   have hLH : L ≤ H := inf_le_left
   have hLC : L ≤ C := inf_le_right
   let Lin : Subgroup H := L.subgroupOf H
-  letI : Group.IsNilpotent Lin := inferInstance
+  let : Group.IsNilpotent Lin := inferInstance
   let eL : Lin ≃* L := Subgroup.subgroupOfEquivOfLe hLH
-  have hLnil : Group.IsNilpotent L := nilpotent_of_mulEquiv eL
+  have hLnil : Group.IsNilpotent L := Group.nilpotent_of_mulEquiv eL
   change L ≤ D
   apply nilpotentSubgroup_le_of_sylow_map_le L D hLnil
   intro q Q
   have hqprime : Nat.Prime (q : ℕ) :=
     Nat.prime_of_mem_primeFactors q.2
-  letI : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
+  let : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
   have hq_dvd_H : (q : ℕ) ∣ Nat.card H :=
     (Nat.dvd_of_mem_primeFactors q.2).trans
       (Subgroup.card_dvd_of_le hLH)
@@ -227,7 +227,7 @@ theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
     ⟨(q : ℕ), hqprime.mem_primeFactors hq_dvd_H Nat.card_pos.ne'⟩
   have mapQ_le_SH (f : L →* H) :
       (Q : Subgroup L).map f ≤ (SH i : Subgroup H) := by
-    letI : (SH i : Subgroup H).Normal := hSHnormal i
+    let : (SH i : Subgroup H).Normal := hSHnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -239,7 +239,7 @@ theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
     exact le_sup_left.trans_eq heq
   have mapQ_le_SK (f : L →* K) :
       (Q : Subgroup L).map f ≤ (SK i : Subgroup K) := by
-    letI : (SK i : Subgroup K).Normal := hSKnormal i
+    let : (SK i : Subgroup K).Normal := hSKnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -265,7 +265,7 @@ theorem mixedNilpotentIntersection_le_of_synchronizedSylow_le
       (PK i : Subgroup G) := by
     have ht :=
       hSKPK i (Subgroup.mem_map.mpr ⟨pullK y, hySK, rfl⟩)
-    simpa [pullK, econj, C] using ht
+    exact ht
   have hyConjPK : (y : G) ∈
       ((x • PK i : Sylow (i : ℕ) G) : Subgroup G) := by
     rw [Sylow.coe_subgroup_smul]
@@ -285,7 +285,7 @@ theorem mixedNilpotentIntersectionInFitting_of_mixedStrongLS
   obtain ⟨x, hx⟩ := hmixed p hp hinjective P Q
   refine ⟨x, fun i ↦ ?_⟩
   rw [hx i]
-  letI : Fact (p i).Prime := ⟨hp i⟩
+  let : Fact (p i).Prime := ⟨hp i⟩
   exact pCore_le_fittingSubgroup
 
 /-- Trivial mixed two-row Sylow synchronization implies trivial
@@ -322,24 +322,24 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
     ThreeNilpotentIntersectionInFitting G := by
   classical
   intro H K M hHnil hKnil hMnil
-  letI : Group.IsNilpotent H := hHnil
-  letI : Group.IsNilpotent K := hKnil
-  letI : Group.IsNilpotent M := hMnil
+  let : Group.IsNilpotent H := hHnil
+  let : Group.IsNilpotent K := hKnil
+  let : Group.IsNilpotent M := hMnil
   let ps := (Nat.card H).primeFactors
   let SH : ∀ i : ps, Sylow (i : ℕ) H := fun _ ↦ default
   let SK : ∀ i : ps, Sylow (i : ℕ) K := fun _ ↦ default
   let SM : ∀ i : ps, Sylow (i : ℕ) M := fun _ ↦ default
   have hSHnormal : ∀ i : ps, (SH i : Subgroup H).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := H)).out 0 3).mp hHnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := H)).out 1 4).mp hHnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (SH i)
   have hSKnormal : ∀ i : ps, (SK i : Subgroup K).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := K)).out 0 3).mp hKnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := K)).out 1 4).mp hKnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (SK i)
   have hSMnormal : ∀ i : ps, (SM i : Subgroup M).Normal := by
     intro i
-    have hall := ((isNilpotent_of_finite_tfae (G := M)).out 0 3).mp hMnil
+    have hall := ((Group.isNilpotent_of_finite_tfae (G := M)).out 1 4).mp hMnil
     exact hall (i : ℕ) ⟨Nat.prime_of_mem_primeFactors i.2⟩ (SM i)
   let PHexists : ∀ i : ps, ∃ P : Sylow (i : ℕ) G,
       (SH i : Subgroup H).map H.subtype ≤ (P : Subgroup G) := fun i ↦
@@ -376,15 +376,15 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
   have hLCK : L ≤ CK := inf_le_left.trans inf_le_right
   have hLCM : L ≤ CM := inf_le_right
   let Lin : Subgroup H := L.subgroupOf H
-  letI : Group.IsNilpotent Lin := inferInstance
+  let : Group.IsNilpotent Lin := inferInstance
   let eL : Lin ≃* L := Subgroup.subgroupOfEquivOfLe hLH
-  have hLnil : Group.IsNilpotent L := nilpotent_of_mulEquiv eL
+  have hLnil : Group.IsNilpotent L := Group.nilpotent_of_mulEquiv eL
   change L ≤ fittingSubgroup G
   apply nilpotentSubgroup_le_of_sylow_map_le L (fittingSubgroup G) hLnil
   intro q Q
   have hqprime : Nat.Prime (q : ℕ) :=
     Nat.prime_of_mem_primeFactors q.2
-  letI : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
+  let : Fact (Nat.Prime (q : ℕ)) := ⟨hqprime⟩
   have hq_dvd_H : (q : ℕ) ∣ Nat.card H :=
     (Nat.dvd_of_mem_primeFactors q.2).trans
       (Subgroup.card_dvd_of_le hLH)
@@ -392,7 +392,7 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
     ⟨(q : ℕ), hqprime.mem_primeFactors hq_dvd_H Nat.card_pos.ne'⟩
   have mapQ_le_SH (f : L →* H) :
       (Q : Subgroup L).map f ≤ (SH i : Subgroup H) := by
-    letI : (SH i : Subgroup H).Normal := hSHnormal i
+    let : (SH i : Subgroup H).Normal := hSHnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -404,7 +404,7 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
     exact le_sup_left.trans_eq heq
   have mapQ_le_SK (f : L →* K) :
       (Q : Subgroup L).map f ≤ (SK i : Subgroup K) := by
-    letI : (SK i : Subgroup K).Normal := hSKnormal i
+    let : (SK i : Subgroup K).Normal := hSKnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -416,7 +416,7 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
     exact le_sup_left.trans_eq heq
   have mapQ_le_SM (f : L →* M) :
       (Q : Subgroup L).map f ≤ (SM i : Subgroup M) := by
-    letI : (SM i : Subgroup M).Normal := hSMnormal i
+    let : (SM i : Subgroup M).Normal := hSMnormal i
     have hQp : IsPGroup (q : ℕ) ((Q : Subgroup L).map f) :=
       Q.isPGroup'.map f
     have hsup : IsPGroup (q : ℕ)
@@ -445,7 +445,7 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
       (PK i : Subgroup G) := by
     have ht :=
       hSKPK i (Subgroup.mem_map.mpr ⟨pullK z, hzSK, rfl⟩)
-    simpa [pullK, econjK, CK] using ht
+    exact ht
   have hzConjPK : (z : G) ∈
       ((x • PK i : Sylow (i : ℕ) G) : Subgroup G) := by
     rw [Sylow.coe_subgroup_smul]
@@ -456,7 +456,7 @@ theorem threeNilpotentIntersectionInFitting_of_mixedThree
       (PM i : Subgroup G) := by
     have ht :=
       hSMPM i (Subgroup.mem_map.mpr ⟨pullM z, hzSM, rfl⟩)
-    simpa [pullM, econjM, CM] using ht
+    exact ht
   have hzConjPM : (z : G) ∈
       ((y • PM i : Sylow (i : ℕ) G) : Subgroup G) := by
     rw [Sylow.coe_subgroup_smul]

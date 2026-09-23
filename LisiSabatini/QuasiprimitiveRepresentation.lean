@@ -124,7 +124,7 @@ theorem fixedPointFree_of_faithful_isIsotypic_of_commuting
     change MonoidAlgebra.of k A g • f y = f y
     rw [← f.map_smul]
     exact congrArg f hy
-  haveI : IsSemisimpleModule k[A] rho.asModule := inferInstance
+  have : IsSemisimpleModule k[A] rho.asModule := inferInstance
   have hN : N = ⊥ ∨ N = ⊤ :=
     isIsotypic_iff_isFullyInvariant_imp_bot_or_top.mp hiso N hNfull
   rcases hN with hN | hN
@@ -162,19 +162,19 @@ theorem isCyclic_of_faithful_fixedPointFree_representation
     IsCyclic A := by
   classical
   by_cases hV : Subsingleton V
-  · letI : Subsingleton V := hV
-    haveI : Subsingleton (Module.End k V) := inferInstance
-    haveI : Subsingleton A := hfaith.subsingleton
+  · let : Subsingleton V := hV
+    have : Subsingleton (Module.End k V) := inferInstance
+    have : Subsingleton A := hfaith.subsingleton
     exact isCyclic_of_subsingleton
-  · letI : Nontrivial V := not_subsingleton_iff_nontrivial.mp hV
-    haveI : Nontrivial rho.asModule := rho.asModuleEquiv.toEquiv.nontrivial
-    haveI : Finite rho.asModule :=
+  · let : Nontrivial V := not_subsingleton_iff_nontrivial.mp hV
+    have : Nontrivial rho.asModule := rho.asModuleEquiv.toEquiv.nontrivial
+    have : Finite rho.asModule :=
       rho.asModuleEquiv.toEquiv.finite_iff.mpr inferInstance
-    haveI : IsSemisimpleModule k[A] rho.asModule := inferInstance
+    have : IsSemisimpleModule k[A] rho.asModule := inferInstance
     obtain ⟨S, hSsimple⟩ :=
       IsSemisimpleModule.exists_simple_submodule k[A] rho.asModule
-    letI : IsSimpleModule k[A] S := hSsimple
-    haveI : Nontrivial S := IsSimpleModule.nontrivial k[A] S
+    let : IsSimpleModule k[A] S := hSsimple
+    have : Nontrivial S := IsSimpleModule.nontrivial k[A] S
     let actionEnd (g : A) : Module.End k[A] S :=
       { toFun := fun s ↦ MonoidAlgebra.of k A g • s
         map_add' := by intro x y; exact smul_add _ _ _
@@ -227,12 +227,12 @@ theorem isCyclic_of_faithful_fixedPointFree_representation
         g = h * (h⁻¹ * g) := by simp
         _ = h * 1 := by rw [hone]
         _ = h := mul_one h
-    haveI : Finite S := inferInstance
-    haveI : Finite (Module.End k[A] S) :=
+    have : Finite S := inferInstance
+    have : Finite (Module.End k[A] S) :=
       Finite.of_injective (fun f : Module.End k[A] S ↦ (f : S → S))
         DFunLike.coe_injective
-    letI : DivisionRing (Module.End k[A] S) := Module.End.instDivisionRing
-    letI : Field (Module.End k[A] S) := littleWedderburn _
+    let : DivisionRing (Module.End k[A] S) := Module.End.instDivisionRing
+    let : Field (Module.End k[A] S) := littleWedderburn _
     exact isCyclic_of_injective_ringHom phi hphi
 
 /-- The cyclic refinement obtained by combining the two preceding

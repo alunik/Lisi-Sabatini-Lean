@@ -32,7 +32,7 @@ private theorem basic_commutator_pow_prime_eq_one_of_pow_left_commutes
     (hPhiCyclic : IsCyclic (frattini P)) (x y : P)
     (hcomm : Commute (x ^ p) y) :
     ⁅x, y⁆ ^ p = 1 := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   have hcPhi : ⁅x, y⁆ ∈ frattini P :=
     commutator_le_frattini_of_isPGroup hp hPp
       (Subgroup.commutator_mem_commutator
@@ -60,8 +60,8 @@ theorem basic_commutator_pow_prime_eq_one_of_odd_of_frattini_isCyclic
     (hp : p.Prime) (hpOdd : Odd p) (hPp : IsPGroup p P)
     (hPhiCyclic : IsCyclic (frattini P)) (x y : P) :
     ⁅x, y⁆ ^ p = 1 := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : IsCyclic (frattini P) := hPhiCyclic
+  let : Fact p.Prime := ⟨hp⟩
+  let : IsCyclic (frattini P) := hPhiCyclic
   let xp : frattini P :=
     ⟨x ^ p, pow_prime_mem_frattini_of_isPGroup hp hPp x⟩
   let yp : frattini P :=

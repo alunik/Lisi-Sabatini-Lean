@@ -66,7 +66,7 @@ theorem of_fixedPointFreeOffZero
     apply hz
     exact Subtype.ext h
   apply hP z.1 hzP v
-  simpa only [Units.smul_def] using hfix
+  exact hfix
 
 /-- No active element belongs to a center acting fixed-point-freely. -/
 theorem active_not_mem_center
@@ -78,7 +78,7 @@ theorem active_not_mem_center
   obtain ⟨hxne, v, hvfix, hvne⟩ :=
     (mem_nonzeroFixingElements P x).mp hx
   have hfix : x.1.toLinearEquiv v = v := by
-    simpa only [Units.smul_def] using hvfix
+    exact hvfix
   exact hvne (C.fixedPointFree ⟨x, hxcenter⟩
     (by simpa using hxne) v hfix)
 
@@ -102,7 +102,7 @@ theorem active_pow_prime_eq_one
           rw [pow_succ, mul_smul, hvfix, ih]
     change ((x ^ q : P).1 : LinearMap.GeneralLinearGroup
       (ZMod r) (Fin d → ZMod r)).toLinearEquiv v = v
-    simpa only [Units.smul_def] using hpowfix q
+    exact hpowfix q
   by_contra hz
   have hzsub : z ≠ 1 := by
     intro heq
@@ -238,10 +238,9 @@ theorem active_fixed_le_of_cyclicCenterClassTwo
     apply hpowneK
     apply (Subgroup.inclusion_injective
       (centerPrimeKernel_le_center q P))
-    simpa only [zC, map_pow, map_one] using hpow
+    exact hpow
   apply C.fixedPointFree (zC ^ k) hpowne v
-  simpa only [zC, zK, centerPrimeKernelToCenter, Subgroup.coe_inclusion,
-    map_pow] using hfix
+  exact hfix
 
 /-! ## Global active-element budget -/
 
@@ -368,8 +367,9 @@ theorem centerFixedPointFreeAction_pCore_of_quasiprimitive
     apply hz
     apply Subtype.ext
     apply Subtype.ext
-    simpa only [g] using congrArg Subtype.val hg
+    have hgval := congrArg Subtype.val hg
+    exact hgval
   apply hfp g hgne v
-  simpa only [g, Units.smul_def] using hfix
+  exact hfix
 
 end LisiSabatini

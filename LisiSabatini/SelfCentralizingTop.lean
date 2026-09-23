@@ -57,8 +57,8 @@ theorem normalPSubgroup_eq_bot_of_selfCentralizing
     (hself : Subgroup.centralizer (A : Set T) ≤ A)
     (hHn : H.Normal) (hHp : IsPGroup p H) :
     H = ⊥ := by
-  letI : Fact (Nat.Prime p) := ⟨hp⟩
-  letI : Fact (Nat.Prime q) := ⟨hq⟩
+  let : Fact (Nat.Prime p) := ⟨hp⟩
+  let : Fact (Nat.Prime q) := ⟨hq⟩
   have hHcentralizesA : H ≤ Subgroup.centralizer (A : Set T) := by
     intro x hx
     rw [Subgroup.mem_centralizer_iff]

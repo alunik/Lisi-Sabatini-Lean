@@ -171,7 +171,7 @@ theorem conjugate_restrictedSocle_eq (g : G) :
       ((_root_.Representation.mapSubmodule (restricted rho H)).symm
         (restrictedSocle rho H)) := by
   apply (_root_.Representation.mapSubmodule (restricted rho H)).injective
-  simpa [conjugateRestrictedSubmoduleOrderIso] using
+  simpa [conjugateRestrictedSubmoduleOrderIso, conjugateInvariantSubmoduleOrderIso] using
     conjugateRestrictedSubmoduleOrderIso_socle rho H g
 
 /-- **Modular Clifford socle lemma.** The restriction of a
@@ -187,16 +187,16 @@ theorem isSemisimpleModule_normalRestriction
   let soc : Submodule k[H] sigma.asModule := restrictedSocle rho H
   let E : sigma.invtSubmodule ≃o Submodule k[H] sigma.asModule :=
     _root_.Representation.mapSubmodule sigma
-  haveI : IsSimpleModule k[G] rho.asModule :=
+  have : IsSimpleModule k[G] rho.asModule :=
     (_root_.Representation.irreducible_iff_isSimpleModule_asModule rho).mp hirr
-  haveI : Nontrivial rho.asModule := IsSimpleModule.nontrivial k[G] rho.asModule
-  haveI : Nontrivial V := rho.asModuleEquiv.symm.toEquiv.nontrivial
-  haveI : Nontrivial sigma.asModule := sigma.asModuleEquiv.toEquiv.nontrivial
-  haveI : IsArtinian k sigma.asModule := inferInstance
-  haveI : IsArtinian k[H] sigma.asModule := isArtinian_of_tower k inferInstance
-  letI : IsAtomic (Submodule k[H] sigma.asModule) :=
-    isAtomic_of_orderBot_wellFounded_lt
-      ((isArtinian_iff k[H] sigma.asModule).mp inferInstance)
+  have : Nontrivial rho.asModule := IsSimpleModule.nontrivial k[G] rho.asModule
+  have : Nontrivial V := rho.asModuleEquiv.symm.toEquiv.nontrivial
+  have : Nontrivial sigma.asModule := sigma.asModuleEquiv.toEquiv.nontrivial
+  have : IsArtinian k sigma.asModule := inferInstance
+  have : IsArtinian k[H] sigma.asModule := isArtinian_of_tower k inferInstance
+  let : WellFoundedLT (Submodule k[H] sigma.asModule) :=
+    ⟨(isArtinian_iff k[H] sigma.asModule).mp inferInstance⟩
+  let : IsAtomic (Submodule k[H] sigma.asModule) := inferInstance
   have hsoc_ne : soc ≠ ⊥ := by
     obtain ⟨N, hN⟩ := IsAtomic.exists_atom (Submodule k[H] sigma.asModule)
     have hNsimple : IsSimpleModule k[H] N :=

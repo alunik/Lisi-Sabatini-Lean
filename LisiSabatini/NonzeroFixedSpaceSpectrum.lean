@@ -73,7 +73,7 @@ theorem ncard_nonregularVectors_le_one_add_sum_nonzeroFixedVectorSet
       1 + ∑ h ∈ nonidentityElements H,
         (nonzeroFixedVectorSet h.1).ncard := by
   classical
-  letI : Fintype {h : H // h ≠ 1} := Fintype.ofFinite _
+  let : Fintype {h : H // h ≠ 1} := Fintype.ofFinite _
   calc
     (nonregularVectors H).ncard ≤
         (nonzeroFixedSpaceSpectrumEnvelope H).ncard :=
@@ -102,7 +102,7 @@ theorem ncard_nonzeroFixedVectorSet
     (g : LinearMap.GeneralLinearGroup R V) :
     (nonzeroFixedVectorSet g).ncard = (fixedVectorSet g).ncard - 1 := by
   rw [nonzeroFixedVectorSet,
-    Set.ncard_diff_singleton_of_mem (s := fixedVectorSet g)]
+    Set.ncard_sdiff_singleton_of_mem (s := fixedVectorSet g)]
   simp [fixedVectorSet]
 
 /-- Fixed-space spectrum form of the nonregular-locus bound. -/

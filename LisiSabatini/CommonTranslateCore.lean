@@ -50,7 +50,7 @@ theorem nonregularVectors_bot
     nonregularVectors
         (⊥ : Subgroup (LinearMap.GeneralLinearGroup R V)) = ∅ := by
   ext v
-  simp only [nonregularVectors, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  simp only [nonregularVectors, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
   intro hne
   apply hne
   apply (Subgroup.eq_bot_iff_forall _).mpr

@@ -231,13 +231,13 @@ theorem SchurField.span_centralQuotientLift_linearAction_eq_top
     SchurField.algebraAction_surjective
       (k := k) (P := P) (S := S) f
   induction a using MonoidAlgebra.induction_on with
-  | hM g =>
+  | of g =>
       exact SchurField.algebraAction_of_mem_span_centralQuotientLift
         (k := k) (S := S) g
-  | hadd a b ha hb =>
+  | add a b ha hb =>
       rw [SchurField.algebraAction_add]
       exact Submodule.add_mem _ ha hb
-  | hsmul c a ha =>
+  | smul c a ha =>
       have heq : SchurField.algebraAction (S := S) (c • a) =
           algebraMap k (SchurField k[P] S) c •
             SchurField.algebraAction (S := S) a := by
@@ -468,7 +468,7 @@ theorem SchurField.linearIndependent_centralQuotientLift_linearAction
       (centralQuotientLift h)) mu
   · exact hmu
   · intro u hu
-    letI : Nontrivial S := IsSimpleModule.nontrivial k[P] S
+    let : Nontrivial S := IsSimpleModule.nontrivial k[P] S
     have hinv := SchurField.linearAction_mul_inv
       (k := k) S (centralQuotientLift u)
     rw [hu, zero_mul] at hinv
@@ -514,34 +514,34 @@ theorem HomogeneousDimensionData.exists_schurDegree_fullMultiplicity
         a * q ^ hP.cyclicCenterStructuralRank := by
   classical
   let S := H.constituent
-  letI : IsSimpleModule (ZMod r)[P] S := H.constituent_simple
-  letI : Module.Finite (ZMod r) S :=
+  let : IsSimpleModule (ZMod r)[P] S := H.constituent_simple
+  let : Module.Finite (ZMod r) S :=
     Module.Finite.of_injective
       (S.subtype.restrictScalars (ZMod r)) S.subtype_injective
-  letI : Finite rho.asModule :=
+  let : Finite rho.asModule :=
     rho.asModuleEquiv.toEquiv.finite_iff.mpr inferInstance
-  letI : Finite S := Finite.of_injective S.subtype S.subtype_injective
-  letI : Module.Finite (ZMod r) (Module.End (ZMod r)[P] S) :=
+  let : Finite S := Finite.of_injective S.subtype S.subtype_injective
+  let : Module.Finite (ZMod r) (Module.End (ZMod r)[P] S) :=
     moduleFinite_schurEnd
       (k := ZMod r) (A := (ZMod r)[P]) (S := S)
-  letI : Finite (Module.End (ZMod r)[P] S) :=
+  let : Finite (Module.End (ZMod r)[P] S) :=
     Module.finite_of_finite (ZMod r)
   let D := SchurField (ZMod r)[P] S
-  letI : Field D := by
+  let : Field D := by
     dsimp only [D]
     infer_instance
-  letI moduleDS : Module D S := by
+  let moduleDS : Module D S := by
     dsimp only [D]
     infer_instance
-  letI : SMul D S :=
+  let : SMul D S :=
     moduleDS.toDistribMulAction.toMulAction.toSemigroupAction.toSMul
-  letI : Module.Free D S := Module.Free.of_divisionRing D S
-  letI : Fintype D := Fintype.ofFinite D
-  letI : Fintype S := Fintype.ofFinite S
-  letI : Module.Finite D S := ⟨⟨Finset.univ, by simp⟩⟩
-  letI : Module.Finite (Module.End (ZMod r)[P] S) S :=
+  let : Module.Free D S := Module.Free.of_divisionRing D S
+  let : Fintype D := Fintype.ofFinite D
+  let : Fintype S := Fintype.ofFinite S
+  let : Module.Finite D S := ⟨⟨Finset.univ, by simp⟩⟩
+  let : Module.Finite (Module.End (ZMod r)[P] S) S :=
     ⟨⟨Finset.univ, by simp⟩⟩
-  letI : Fintype (P ⧸ Subgroup.center P) := Fintype.ofFinite _
+  let : Fintype (P ⧸ Subgroup.center P) := Fintype.ofFinite _
   have hLI : LinearIndependent D
       (fun u : P ⧸ Subgroup.center P ↦
         SchurField.linearAction (k := ZMod r) S (centralQuotientLift u)) :=

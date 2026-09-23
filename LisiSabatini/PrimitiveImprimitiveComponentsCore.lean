@@ -83,8 +83,8 @@ theorem componentTopImages_nontrivialIndices_subsingleton_of_primitiveTop
     PrimitiveNormalPSubgroup.isRegularSubgroupAction
       (G := D.blockPerm.range) (Ω := I) (hp i)
       Aᵢ hAᵢn hAᵢp hAᵢne
-  letI : IsMulCommutative Aᵢ := hAᵢcomm
-  letI : MulAction.IsPretransitive Aᵢ I := hAᵢregular.1
+  let : IsMulCommutative Aᵢ := hAᵢcomm
+  let : MulAction.IsPretransitive Aᵢ I := hAᵢregular.1
   let C : SelfCentralizingNormalPSubgroup (p i) D.blockPerm.range :=
     { subgroup := Aᵢ
       normal := hAᵢn

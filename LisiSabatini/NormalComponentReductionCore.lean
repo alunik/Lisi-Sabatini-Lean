@@ -277,7 +277,7 @@ theorem strongLisiSabatini_lift_normalComponents
   have ht (j : J) := Classical.choose_spec (localData j)
   have himage (j : J) : pCore (p j.1) (G ⧸ S.N) ≤
       (P j.1 : Subgroup G).map (QuotientGroup.mk' S.N) := by
-    letI : Fact (p j.1).Prime := ⟨hp j.1⟩
+    let : Fact (p j.1).Prime := ⟨hp j.1⟩
     exact S.quotientCore_le_sylow_map_of_sylowInter_eq
       (P j.1) x (hxquot j.1)
   have hpJ (j : J) : Nat.Prime (p j.1) := hp j.1
@@ -299,7 +299,7 @@ theorem strongLisiSabatini_lift_normalComponents
   by_cases hiTwo : p i = 2
   · exact sylowInter_eq_pCore_of_eq_two hodd hiTwo (P i) ((n : G) * x)
   by_cases hiSection : p i = S.r
-  · letI : Fact (p i).Prime := ⟨hp i⟩
+  · let : Fact (p i).Prime := ⟨hp i⟩
     have hNp : IsPGroup (p i) S.N := by
       simpa [hiSection] using S.isPGroup_N
     apply sylowInter_eq_pCore_of_quotient_eq S.N hNp (P i) ((n : G) * x)
@@ -311,7 +311,11 @@ theorem strongLisiSabatini_lift_normalComponents
     have hvj := hv j
     dsimp [H] at hvj
     rw [S.localImage_ambient_eq_restrictedConjugation_range (P j.1)] at hvj
-    simpa [t, n, quotientCoreComplement, quotientCorePullback] using hvj
+    change MulAction.stabilizer
+      (S.restrictedConjugation (S.quotientCoreComplement (P i))).range
+      (S.coordinates (S.coordinates.symm v + Additive.ofMul (t j))) = ⊥
+    rw [map_add, S.coordinates.apply_symm_apply]
+    exact hvj
 
 end ElementaryAbelianSection
 

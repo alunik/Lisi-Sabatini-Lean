@@ -304,7 +304,7 @@ theorem exists_maximalPrimitiveCoarsening
             |>.coarsenAlongOrbitBlockOfIrreducible C.1 W.irreducible
               C.2.2 ⟨W.baseIndex, C.2.1⟩).blockPerm.range
           (W.toLinearImprimitivitySystem.OrbitBlockIndex C.1) := by
-  letI : Nontrivial (SubmoduleOrbitIndex K W.base) :=
+  let : Nontrivial (SubmoduleOrbitIndex K W.base) :=
     W.orbitIndex_nontrivial
   exact W.toLinearImprimitivitySystem
     |>.exists_primitiveCoarsening_of_irreducible W.baseIndex W.irreducible

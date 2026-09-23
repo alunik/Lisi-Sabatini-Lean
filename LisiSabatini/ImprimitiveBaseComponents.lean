@@ -114,7 +114,8 @@ theorem componentBaseKernel_action_apply
   have hi := D.action_apply (restrictedAmbientToCommon H g.1) x i
   have hperm :
       D.blockPerm (restrictedAmbientToCommon H g.1) = 1 := g.2
-  simpa [componentBaseBlockLinearGL, componentBaseBlockLinear, hperm] using hi
+  rw [hperm] at hi
+  exact hi
 
 /-- A base-kernel element fixing a block vector has its local image in the
 stabilizer of the corresponding coordinate. -/

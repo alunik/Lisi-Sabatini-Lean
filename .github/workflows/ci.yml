@@ -1,4 +1,4 @@
-name: Lean build
+name: Verify paper formalization
 
 on:
   push:
@@ -6,14 +6,51 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      include_feit_thompson:
+        description: Also verify the separate Feit–Thompson applications
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  paper:
+    name: Paper build, axiom audit and kernel replay
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
+    env:
+      LEAN_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Test exact axiom-report validation
+        run: python3 -m unittest discover -s tests -p 'test_check_axioms.py'
+      - name: Reproduce the finite certificates
+        run: python3 scripts/certificates/check.py
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          auto-config: false
+          build: true
+          build-args: >-
+            --wfail
+            +LisiSabatini:olean
+            +LisiSabatini.PaperAlignmentAxiomAudit:olean
+          use-mathlib-cache: true
+          leanchecker: false
+          nanoda: false
+      - name: Audit the 18 paper endpoints
+        run: python3 scripts/check_axioms.py
+      - name: Replay the paper proof closure in a fresh Lean kernel environment
+        run: lake env leanchecker --fresh --verbose LisiSabatini
+
+  feit-thompson:
+    name: Optional Feit–Thompson verification
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.include_feit_thompson }}
+    needs: paper
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
     env:
       LEAN_NUM_THREADS: 4
     steps:
@@ -22,33 +59,29 @@ jobs:
         with:
           auto-config: false
           build: true
+          # Keep the pinned vendor's deprecation warnings visible.
+          # Our entrypoints are checked warning-fatally below.
           build-args: >-
-            --wfail
-            +LisiSabatini:olean
-            +LisiSabatini.HallBergerClassificationAssemblyAxiomAudit:olean
-            +LisiSabatini.SolvableThreeSylowSynchronizationAxiomAudit:olean
-            +LisiSabatini.SymmetricAxiomAudit:olean
+            +LisiSabatini.FeitThompsonApplicationsAxiomAudit:olean
           use-mathlib-cache: true
           leanchecker: false
           nanoda: false
-
-  independent-checker:
-    needs: build
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-      - name: Restore the completed Lean build
-        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
-        with:
-          path: ./.lake
-          key: lake-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain') }}-${{ hashFiles('lake-manifest.json') }}-${{ github.sha }}
-          fail-on-cache-miss: true
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
-        with:
-          auto-config: false
-          build: false
-          use-github-cache: false
-          use-mathlib-cache: false
-          leanchecker: true
-          nanoda: false
+      - name: Strictly compile project Feit–Thompson entrypoints
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          for source in \
+            LisiSabatini/FeitThompsonApplications.lean \
+            LisiSabatini/FeitThompsonApplicationsAxiomAudit.lean
+          do
+            lake env lean -j1 \
+              -DwarningAsError=true \
+              -DrelaxedAutoImplicit=false \
+              -Dweak.linter.mathlibStandardSet=true \
+              -Dweak.linter.style.header=false \
+              "$source"
+          done
+      - name: Audit the six Feit–Thompson endpoints
+        run: python3 scripts/check_axioms.py FeitThompsonApplicationsAxiomAudit
+      - name: Replay the Feit–Thompson proof closure in a fresh Lean kernel environment
+        run: lake env leanchecker --fresh --verbose LisiSabatini.FeitThompsonApplications

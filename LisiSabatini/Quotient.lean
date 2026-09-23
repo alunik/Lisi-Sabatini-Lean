@@ -72,8 +72,9 @@ theorem comap_inf_maps_quotient_mk' (N H K : Subgroup G) [N.Normal]
 conjugate of its image.  This uses mathlib's `x P x⁻¹` convention. -/
 theorem map_conj_smul (f : G →* H) (x : G) (P : Subgroup G) :
     (MulAut.conj x • P).map f = MulAut.conj (f x) • P.map f := by
-  rw [Subgroup.pointwise_smul_def, Subgroup.pointwise_smul_def,
-    Subgroup.map_map, Subgroup.map_map]
+  change (P.map (MulAut.conj x).toMonoidHom).map f =
+    (P.map f).map (MulAut.conj (f x)).toMonoidHom
+  rw [Subgroup.map_map, Subgroup.map_map]
   congr 1
   ext y
   simp [MulAut.conj_apply]

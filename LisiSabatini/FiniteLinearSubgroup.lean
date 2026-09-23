@@ -2,7 +2,12 @@ module
 
 public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 public import Mathlib.Algebra.Group.Subgroup.Basic
-public import Mathlib.Data.Finite.Card
+public import Mathlib.Data.Finset.Attr
+public import Mathlib.Tactic.Bound.Init
+public import Mathlib.Tactic.Common
+public import Mathlib.Tactic.Finiteness.Attr
+public import Mathlib.Tactic.SetLike
+public import Mathlib.Util.CompileInductive
 public import Mathlib.Data.Finite.Prod
 
 /-!

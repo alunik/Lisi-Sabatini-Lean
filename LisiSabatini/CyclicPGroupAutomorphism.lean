@@ -27,7 +27,7 @@ theorem primePow_dvd_prime_mul_sub_one_of_pow_modEq_one
     {p n k : ℕ} (hp : p.Prime) (hpOdd : Odd p) (hk : 0 < k)
     (hmod : k ^ p ≡ 1 [MOD p ^ n]) :
     p ^ n ∣ p * (k - 1) := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   rcases eq_or_ne n 0 with rfl | hn
   · simp
   have honePow : 1 ≤ k ^ p := one_le_pow₀ hk
@@ -80,10 +80,10 @@ theorem cyclicPGroup_aut_pow_fixed_of_pow_prime_eq_one
     (hp : p.Prime) (hpOdd : Odd p) (hAp : IsPGroup p A)
     (hACyclic : IsCyclic A) (σ : MulAut A) (hσ : σ ^ p = 1) :
     ∀ a : A, σ (a ^ p) = a ^ p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   by_cases hA : Nontrivial A
-  · letI : Nontrivial A := hA
-    letI : IsCyclic A := hACyclic
+  · let : Nontrivial A := hA
+    let : IsCyclic A := hACyclic
     obtain ⟨n, hcard⟩ := IsPGroup.iff_card.mp hAp
     have hn : n ≠ 0 := by
       intro hn0
@@ -154,7 +154,7 @@ theorem cyclicPGroup_aut_pow_fixed_of_pow_prime_eq_one
       _ = (g ^ p) ^ m := by rw [hgpfixed]
       _ = (g ^ m) ^ p := by
         rw [← pow_mul, ← pow_mul, mul_comm]
-  · haveI : Subsingleton A := not_nontrivial_iff_subsingleton.mp hA
+  · have : Subsingleton A := not_nontrivial_iff_subsingleton.mp hA
     intro a
     exact Subsingleton.elim _ _
 

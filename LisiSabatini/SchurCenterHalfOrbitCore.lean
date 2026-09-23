@@ -48,17 +48,17 @@ theorem HomogeneousDimensionData.exists_schurDegree_fullCenter_row
   obtain ⟨a, ha, hqDvd, hcardEnd, hconstituentDim⟩ :=
     H.exists_schurDegree_fullMultiplicity rho hfaith hP
   let S := H.constituent
-  letI : IsSimpleModule (ZMod r)[P] S := H.constituent_simple
-  letI : Module.Finite (ZMod r) S :=
+  let : IsSimpleModule (ZMod r)[P] S := H.constituent_simple
+  let : Module.Finite (ZMod r) S :=
     Module.Finite.of_injective
       (S.subtype.restrictScalars (ZMod r)) S.subtype_injective
-  letI : Finite rho.asModule :=
+  let : Finite rho.asModule :=
     rho.asModuleEquiv.toEquiv.finite_iff.mpr inferInstance
-  letI : Finite S := Finite.of_injective S.subtype S.subtype_injective
-  letI : Module.Finite (ZMod r) (Module.End (ZMod r)[P] S) :=
+  let : Finite S := Finite.of_injective S.subtype S.subtype_injective
+  let : Module.Finite (ZMod r) (Module.End (ZMod r)[P] S) :=
     moduleFinite_schurEnd
       (k := ZMod r) (A := (ZMod r)[P]) (S := S)
-  letI : Finite (Module.End (ZMod r)[P] S) :=
+  let : Finite (Module.End (ZMod r)[P] S) :=
     Module.finite_of_finite (ZMod r)
   have hcenterDvd : Nat.card (Subgroup.center P) ∣ r ^ a - 1 := by
     have h := card_center_dvd_natCard_schurField_sub_one

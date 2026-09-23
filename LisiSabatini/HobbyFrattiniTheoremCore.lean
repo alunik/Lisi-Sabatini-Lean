@@ -33,10 +33,12 @@ set_option backward.isDefEq.respectTransparency false
 
 open Subgroup
 
+open scoped IsMulCommutative
+
 theorem isMulCommutative_of_isCyclic
     {A : Type*} [Group A] (hA : IsCyclic A) : IsMulCommutative A := by
-  letI : IsCyclic A := hA
-  exact ⟨IsCyclic.commutative⟩
+  let : IsCyclic A := hA
+  exact IsCyclic.isMulCommutative
 
 /-! ## The prime-order layer of a finite abelian p-group -/
 
@@ -56,7 +58,7 @@ private theorem primePowerKernel_card_le
       let Ks : Subgroup A := (powMonoidHom (p ^ (k + 1)) : A →* A).ker
       let Kk : Subgroup A := (powMonoidHom (p ^ k) : A →* A).ker
       let f : Ks →* Kk :=
-        ((powMonoidHom p : A →* A).restrict Ks).codRestrict Kk (by
+        ((powMonoidHom p : A →* A).domRestrict Ks).codRestrict Kk (by
           intro x
           rw [MonoidHom.mem_ker]
           change ((x : A) ^ p) ^ (p ^ k) = 1
@@ -99,9 +101,9 @@ theorem isCyclic_of_isPGroup_of_natCard_primeKernel_le_prime
     (hp : p.Prime) (hAp : IsPGroup p A)
     (hker : Nat.card (powMonoidHom p : A →* A).ker ≤ p) :
     IsCyclic A := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   classical
-  letI := Fintype.ofFinite A
+  let := Fintype.ofFinite A
   apply isCyclic_of_card_pow_eq_one_le
   intro n hn
   obtain ⟨s, hAcard⟩ := IsPGroup.iff_card.mp hAp
@@ -147,8 +149,8 @@ theorem prime_sq_le_natCard_powMonoidHom_ker_of_not_isCyclic
     {p : ℕ} {A : Type*} [CommGroup A] [Finite A]
     (hp : p.Prime) (hAp : IsPGroup p A) (hnot : ¬ IsCyclic A) :
     p ^ 2 ≤ Nat.card (powMonoidHom p : A →* A).ker := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : Nontrivial A := Nontrivial.of_not_isCyclic hnot
+  let : Fact p.Prime := ⟨hp⟩
+  let : Nontrivial A := Nontrivial.of_not_isCyclic hnot
   let K : Subgroup A := (powMonoidHom p : A →* A).ker
   obtain ⟨C, _hCnormal, _hCtop, hCcard, _hCcenter⟩ :=
     exists_normal_central_subgroup_card_prime_le
@@ -190,7 +192,7 @@ theorem frattini_le_of_index_le_prime
     (hp : p.Prime) (hGp : IsPGroup p G)
     (K : Subgroup G) (hindex : K.index ≤ p) :
     frattini G ≤ K := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   by_cases hKtop : K = ⊤
   · simpa only [hKtop] using (show frattini G ≤ (⊤ : Subgroup G) from le_top)
   obtain ⟨n, hn⟩ := hGp.index K
@@ -238,8 +240,8 @@ theorem natCard_subgroupPrimeKernel_eq_prime_of_isCyclic_prime_sq
     (hAcyclic : IsCyclic A) (hAcard : Nat.card A = p ^ 2) :
     Nat.card
       (subgroupPrimeKernel p A (isMulCommutative_of_isCyclic hAcyclic)) = p := by
-  letI : IsCyclic A := hAcyclic
-  letI : IsMulCommutative A := isMulCommutative_of_isCyclic hAcyclic
+  let : IsCyclic A := hAcyclic
+  let : IsMulCommutative A := isMulCommutative_of_isCyclic hAcyclic
   let K0 := (powMonoidHom p : A →* A).ker
   have hK0card : Nat.card K0 = p := by
     calc
@@ -259,16 +261,16 @@ theorem natCard_map_quotient_eq_prime_of_prime_sq_prime_cube
     (hAN : A ≤ N) (hAcard : Nat.card A = p ^ 2)
     (hNcard : Nat.card N = p ^ 3) :
     Nat.card (N.map (QuotientGroup.mk' A)) = p := by
-  letI : A.Normal := hAnormal
+  let : A.Normal := hAnormal
   let q : G →* G ⧸ A := QuotientGroup.mk' A
-  let f : N →* G ⧸ A := q.restrict N
+  let f : N →* G ⧸ A := q.domRestrict N
   have hfker : f.ker = A.subgroupOf N := by
     change (q.ker.subgroupOf N) = A.subgroupOf N
     rw [show q.ker = A by
       simpa only [q] using (QuotientGroup.ker_mk' (G := G) (N := A))]
   have hfrange : f.range = N.map q := by
-    change (q.restrict N).range = N.map q
-    exact MonoidHom.restrict_range N q
+    change (q.domRestrict N).range = N.map q
+    exact MonoidHom.domRestrict_range N q
   have hAsubCard : Nat.card (A.subgroupOf N) = p ^ 2 := by
     calc
       Nat.card (A.subgroupOf N) = Nat.card A :=
@@ -290,7 +292,7 @@ theorem not_isCyclic_of_natCard_eq_prime_sq_of_pow_eq_one
     (hexp : ∀ a : A, a ^ p = 1) :
     ¬ IsCyclic A := by
   intro hcyc
-  letI : IsCyclic A := hcyc
+  let : IsCyclic A := hcyc
   have hkerCard := IsCyclic.card_powMonoidHom_ker A p
   have hkerTop : (powMonoidHom p : A →* A).ker = ⊤ := by
     ext a
@@ -335,10 +337,10 @@ theorem hobby_lemma_three
     (b : G) (hbN : b ∈ N) (hbpCenter : b ^ p ∈ Subgroup.center G)
     (hNgen : N = A ⊔ Subgroup.zpowers b) :
     N ≤ characteristicCenterImage (frattini G) := by
-  letI : Fact p.Prime := ⟨hp⟩
-  letI : A.Normal := hAnormal
-  letI : N.Normal := hNnormal
-  letI : IsMulCommutative N := hNcomm
+  let : Fact p.Prime := ⟨hp⟩
+  let : A.Normal := hAnormal
+  let : N.Normal := hNnormal
+  let : IsMulCommutative N := hNcomm
   let hAcomm : IsMulCommutative A := isMulCommutative_of_isCyclic hAcyclic
   let K : Subgroup G := subgroupPrimeKernel p A hAcomm
   have hKcard : Nat.card K = p :=
@@ -464,7 +466,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
     IsMulCommutative (frattini G) := by
   induction hn : Nat.card (frattini G) using Nat.strong_induction_on generalizing G with
   | h n ih =>
-      letI : Fact p.Prime := ⟨hp⟩
+      let : Fact p.Prime := ⟨hp⟩
       by_contra hnotComm
       have hPhiNe : frattini G ≠ ⊥ := by
         intro hbot
@@ -474,7 +476,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
       obtain ⟨C, hCnormal, hCPhi, hCcard, hCcenter⟩ :=
         exists_normal_central_subgroup_card_prime_le
           hp hGp (frattini G) inferInstance hPhiNe
-      letI : C.Normal := hCnormal
+      let : C.Normal := hCnormal
       let q : G →* G ⧸ C := QuotientGroup.mk' C
       have hQp : IsPGroup p (G ⧸ C) := hGp.to_quotient C
       have hPhiMap :
@@ -501,7 +503,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
         intro hZbarCyclic
         have hPhiQcomm : IsMulCommutative (frattini (G ⧸ C)) :=
           ih _ hcardLt hQp hZbarCyclic rfl
-        letI : IsMulCommutative (frattini (G ⧸ C)) := hPhiQcomm
+        let : IsMulCommutative (frattini (G ⧸ C)) := hPhiQcomm
         have hcenterTop :
             Subgroup.center (frattini (G ⧸ C)) = ⊤ := by
           ext x
@@ -511,14 +513,14 @@ theorem frattini_isMulCommutative_of_center_isCyclic
         have hPhiQCyclic : IsCyclic (frattini (G ⧸ C)) := by
           rw [hcenterTop] at hZbarCyclic
           exact Subgroup.topEquiv.isCyclic.mp hZbarCyclic
-        let r : frattini G →* G ⧸ C := q.restrict (frattini G)
+        let r : frattini G →* G ⧸ C := q.domRestrict (frattini G)
         have hrange : r.range = frattini (G ⧸ C) := by
           simpa only [r] using
-            (MonoidHom.restrict_range (frattini G) q).trans hPhiMap
+            (MonoidHom.domRestrict_range (frattini G) q).trans hPhiMap
         have hrangeCyclic : IsCyclic r.range := by
           rw [hrange]
           exact hPhiQCyclic
-        letI : IsCyclic r.range := hrangeCyclic
+        let : IsCyclic r.range := hrangeCyclic
         have hkerCenter : r.rangeRestrict.ker ≤ Subgroup.center (frattini G) := by
           intro x hx
           have hxq := congrArg Subtype.val (MonoidHom.mem_ker.mp hx)
@@ -530,14 +532,14 @@ theorem frattini_isMulCommutative_of_center_isCyclic
           apply Subtype.ext
           exact Subgroup.mem_center_iff.mp (hCcenter hxC) y
         apply hnotComm
-        exact ⟨⟨commutative_of_cyclic_center_quotient
-          r.rangeRestrict hkerCenter⟩⟩
+        exact MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center
+          r.rangeRestrict hkerCenter
       let Z : Subgroup (G ⧸ C) :=
         characteristicCenterImage (frattini (G ⧸ C))
       have hZcomm : IsMulCommutative Z :=
         characteristicCenterImage_isMulCommutative (frattini (G ⧸ C))
       let groupZ : Group Z := inferInstance
-      letI : CommGroup Z := { groupZ with mul_comm := hZcomm.1.1 }
+      let : CommGroup Z := { groupZ with mul_comm := hZcomm.1.1 }
       have hZNot : ¬ IsCyclic Z := by
         intro hZcyclic
         apply hZbarNot
@@ -547,7 +549,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
           Subtype.coe_injective).isCyclic.mpr hZcyclic
       let P : Subgroup (G ⧸ C) := subgroupPrimeKernel p Z hZcomm
       have hPchar : P.Characteristic := by
-        letI : Z.Characteristic :=
+        let : Z.Characteristic :=
           characteristicCenterImage_characteristic (frattini (G ⧸ C))
         unfold P subgroupPrimeKernel
         apply characteristic_map_subtype
@@ -559,7 +561,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
           (((powMonoidHom p : Z →* Z).ker).map Z.subtype)
         rw [Subgroup.card_map_of_injective Z.subtype_injective]
         exact hOmega
-      letI : P.Characteristic := hPchar
+      let : P.Characteristic := hPchar
       obtain ⟨Mbar, Nbar, hMbarNormal, hNbarNormal, hMbarNbar,
           hNbarP, hMbarCard, hNbarCard, _hMbarCenter⟩ :=
         exists_normal_flag_card_prime_prime_sq_le
@@ -613,12 +615,12 @@ theorem frattini_isMulCommutative_of_center_isCyclic
           (Subgroup.center (frattini G)) (frattini G).subtype
           Subtype.coe_injective).isCyclic.mp hCenter
       have hMcyclic : IsCyclic M := by
-        letI : IsCyclic (characteristicCenterImage (frattini G)) :=
+        let : IsCyclic (characteristicCenterImage (frattini G)) :=
           hCenterImageCyclic
         exact Subgroup.isCyclic_of_le hMcenter
       let Msub : Subgroup N := M.subgroupOf N
       have hMsubNormal : Msub.Normal := hMnormal.subgroupOf N
-      letI : Msub.Normal := hMsubNormal
+      let : Msub.Normal := hMsubNormal
       have hMsubCenter : Msub ≤ Subgroup.center N := by
         intro m hm
         rw [Subgroup.mem_center_iff]
@@ -643,18 +645,18 @@ theorem frattini_isMulCommutative_of_center_isCyclic
         exact hMsubIndex
       have hquotCyclic : IsCyclic (N ⧸ Msub) :=
         isCyclic_of_prime_card hquotCard
-      letI : IsCyclic (N ⧸ Msub) := hquotCyclic
+      let : IsCyclic (N ⧸ Msub) := hquotCyclic
       have hNcomm : IsMulCommutative N :=
-        ⟨⟨commutative_of_cyclic_center_quotient
+        MonoidHom.isMulCommutative_of_isCyclic_of_ker_le_center
           (QuotientGroup.mk' Msub)
-          (by simpa only [QuotientGroup.ker_mk'] using hMsubCenter)⟩⟩
+          (by simpa only [QuotientGroup.ker_mk'] using hMsubCenter)
       have hNbarComm : IsMulCommutative Nbar := ⟨⟨fun x y ↦ by
         exact Subtype.ext (congrArg (fun z : Z ↦ (z : G ⧸ C))
           (hZcomm.1.1
             (⟨x, hPZ (hNbarP x.2)⟩ : Z)
             (⟨y, hPZ (hNbarP y.2)⟩ : Z)))⟩⟩
       let groupNbar : Group Nbar := inferInstance
-      letI : CommGroup Nbar := { groupNbar with mul_comm := hNbarComm.1.1 }
+      let : CommGroup Nbar := { groupNbar with mul_comm := hNbarComm.1.1 }
       have hNbarExp : ∀ x : Nbar, x ^ p = 1 := by
         intro x
         apply Subtype.ext
@@ -704,11 +706,11 @@ theorem frattini_isMulCommutative_of_center_isCyclic
         hobby_lemma_three hp hGp M N hMnormal hNnormal hMN hNPhi
           hMcard hNcard hMcyclic hNcomm hMcenter b hbN hbpCenter hNgen
       have hNcyclic : IsCyclic N := by
-        letI : IsCyclic (characteristicCenterImage (frattini G)) :=
+        let : IsCyclic (characteristicCenterImage (frattini G)) :=
           hCenterImageCyclic
         exact Subgroup.isCyclic_of_le hNcenter
       let f : N →* Nbar :=
-        (q.restrict N).codRestrict Nbar (fun x ↦ x.2)
+        (q.domRestrict N).codRestrict Nbar (fun x ↦ x.2)
       have hfsurj : Function.Surjective f := by
         intro y
         obtain ⟨g, hg⟩ := QuotientGroup.mk'_surjective C y.1
@@ -719,7 +721,7 @@ theorem frattini_isMulCommutative_of_center_isCyclic
         apply Subtype.ext
         exact hg
       apply hNbarNot
-      letI : IsCyclic N := hNcyclic
+      let : IsCyclic N := hNcyclic
       exact isCyclic_of_surjective f hfsurj
 
 /-- Hall's cyclic-characteristic-abelian hypothesis supplies Hobby's cyclic

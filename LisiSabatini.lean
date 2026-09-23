@@ -1,24 +1,14 @@
 module
 
-public import LisiSabatini.Alternating
-public import LisiSabatini.NilpotentIntersectionApplications
-public import LisiSabatini.Symmetric
+public import LisiSabatini.PaperAlignment
 
 /-!
-# Formalized Sylow-intersection results
+# Lisi–Sabatini: the paper formalization
 
-The library exposes two related but distinct developments:
+This is the main import for the paper's solvable theorem, translated
+regular-orbit proposition, and alternating- and symmetric-group results.
+See `LisiSabatini.PaperAlignment` for the public theorem names and scope.
 
-* the original Lisi--Sabatini property for finite solvable groups of odd
-  order, and for alternating and symmetric groups of degree at least forty;
-  and
-* mixed three-Sylow-core synchronization, hence the same-row
-  three-conjugates property, for every finite solvable group.
-
-For alternating and symmetric groups of degree at least forty, the library
-also exports mixed two-row Sylow synchronization with trivial intersection.
-Consequently any two nilpotent subgroups admit a relative conjugate with
-trivial intersection; the corresponding three-subgroup statement follows
-immediately.  The nilpotent-subgroup consequences of the solvable
-synchronization theorems are exported here as well.
+The odd-order corollaries using the Feit–Thompson theorem have the separate
+import `LisiSabatini.FeitThompsonApplications`.
 -/

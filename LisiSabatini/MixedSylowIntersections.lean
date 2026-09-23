@@ -65,8 +65,8 @@ the `p`-core. -/
 theorem mixedSylowInter_eq_of_normal {p : ℕ} [Fact p.Prime] [Finite G]
     (P Q : Sylow p G) (x : G) (hP : P.Normal) :
     mixedSylowInter P Q x = pCore p G := by
-  letI : P.Normal := hP
-  letI : Unique (Sylow p G) := Sylow.unique_of_normal P hP
+  let : P.Normal := hP
+  let : Unique (Sylow p G) := Sylow.unique_of_normal P hP
   rw [mixedSylowInter, Subsingleton.elim Q P, Sylow.smul_eq_of_normal, inf_idem]
   exact (pCore_eq_sylow_of_normal P hP).symm
 
@@ -76,8 +76,8 @@ theorem mixedSylowTripleInter_eq_of_normal
     {p : ℕ} [Fact p.Prime] [Finite G]
     (P Q R : Sylow p G) (x y : G) (hP : P.Normal) :
     mixedSylowTripleInter P Q R x y = pCore p G := by
-  letI : P.Normal := hP
-  letI : Unique (Sylow p G) := Sylow.unique_of_normal P hP
+  let : P.Normal := hP
+  let : Unique (Sylow p G) := Sylow.unique_of_normal P hP
   have hx : x • P = P := Sylow.smul_eq_of_normal
   have hy : y • P = P := Sylow.smul_eq_of_normal
   rw [mixedSylowTripleInter, Subsingleton.elim Q P, Subsingleton.elim R P,

@@ -72,7 +72,7 @@ theorem exists_blockVector_commonBaseRegular_uniqueBundleMarker_avoidingOrbit_of
     if hi : MarkerReachable i then Classical.choose hi else 1
   have markerTransporter_spec (i : I) (hi : MarkerReachable i) :
       Dmark.blockPerm (markerTransporter i) omega = i := by
-    simp only [markerTransporter, dif_pos hi]
+    simp only [markerTransporter, dite_eq_left hi]
     exact Classical.choose_spec hi
   let markerForbidden (i : I) : W :=
     (Dmark.bundleMap (markerTransporter i) (omega, markerValue)).2

@@ -26,7 +26,7 @@ namespace LisiSabatini
 
 set_option backward.isDefEq.respectTransparency false
 
-open scoped commutatorElement
+open scoped commutatorElement IsMulCommutative
 
 /-! ## Maximal subgroups and the Frattini subgroup -/
 
@@ -36,11 +36,11 @@ theorem isCoatom_index_eq_prime_of_isPGroup
     (hp : p.Prime) (hGp : IsPGroup p G)
     (M : Subgroup G) (hM : IsCoatom M) :
     M.index = p := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   have hnil : Group.IsNilpotent G := hGp.isNilpotent
   have hnormalAll : ∀ H : Subgroup G, IsCoatom H → H.Normal :=
-    ((isNilpotent_of_finite_tfae (G := G)).out 0 2).mp hnil
-  letI : M.Normal := hnormalAll M hM
+    ((Group.isNilpotent_of_finite_tfae (G := G)).out 1 3).mp hnil
+  let : M.Normal := hnormalAll M hM
   obtain ⟨n, hcardM⟩ := IsPGroup.iff_card.mp (hGp.to_subgroup M)
   obtain ⟨k, hindex⟩ := hGp.index M
   have hindexNeOne : M.index ≠ 1 := by
@@ -83,20 +83,20 @@ theorem commutator_le_frattini_of_isPGroup
     {p : ℕ} {G : Type*} [Group G] [Finite G]
     (hp : p.Prime) (hGp : IsPGroup p G) :
     commutator G ≤ frattini G := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   rw [frattini, Order.radical]
   refine le_iInf fun M ↦ le_iInf fun hM ↦ ?_
   change IsCoatom M at hM
   have hnil : Group.IsNilpotent G := hGp.isNilpotent
   have hnormalAll : ∀ H : Subgroup G, IsCoatom H → H.Normal :=
-    ((isNilpotent_of_finite_tfae (G := G)).out 0 2).mp hnil
-  letI : M.Normal := hnormalAll M hM
+    ((Group.isNilpotent_of_finite_tfae (G := G)).out 1 3).mp hnil
+  let : M.Normal := hnormalAll M hM
   have hcardQ : Nat.card (G ⧸ M) = p := by
     rw [← M.index_eq_card]
     exact isCoatom_index_eq_prime_of_isPGroup hp hGp M hM
-  letI : IsCyclic (G ⧸ M) := isCyclic_of_prime_card hcardQ
+  let : IsCyclic (G ⧸ M) := isCyclic_of_prime_card hcardQ
   apply Subgroup.Normal.quotient_commutative_iff_commutator_le.mp
-  exact IsCyclic.commutative
+  exact IsCyclic.isMulCommutative
 
 /-- Every `p`-th power in a finite `p`-group lies in its Frattini
 subgroup. -/
@@ -104,15 +104,15 @@ theorem pow_prime_mem_frattini_of_isPGroup
     {p : ℕ} {G : Type*} [Group G] [Finite G]
     (hp : p.Prime) (hGp : IsPGroup p G) (x : G) :
     x ^ p ∈ frattini G := by
-  letI : Fact p.Prime := ⟨hp⟩
+  let : Fact p.Prime := ⟨hp⟩
   rw [frattini, Order.radical]
   simp only [Subgroup.mem_iInf]
   intro M hM
   change IsCoatom M at hM
   have hnil : Group.IsNilpotent G := hGp.isNilpotent
   have hnormalAll : ∀ H : Subgroup G, IsCoatom H → H.Normal :=
-    ((isNilpotent_of_finite_tfae (G := G)).out 0 2).mp hnil
-  letI : M.Normal := hnormalAll M hM
+    ((Group.isNilpotent_of_finite_tfae (G := G)).out 1 3).mp hnil
+  let : M.Normal := hnormalAll M hM
   have hcardQ : Nat.card (G ⧸ M) = p := by
     rw [← M.index_eq_card]
     exact isCoatom_index_eq_prime_of_isPGroup hp hGp M hM
@@ -131,7 +131,7 @@ theorem commutator_pow_eq_one_of_classTwo_of_pow_mem_center
     (hpowerCenter : ∀ x : G, x ^ p ∈ Subgroup.center G) :
     ∀ c : commutator G, (c : G) ^ p = 1 := by
   let D := commutator G
-  letI : IsMulCommutative D := by
+  let : IsMulCommutative D := by
     refine ⟨⟨fun a b ↦ Subtype.ext ?_⟩⟩
     exact (Subgroup.mem_center_iff.mp (hclass a.2) b).symm
   let K0 : Subgroup D := (powMonoidHom p : D →* D).ker

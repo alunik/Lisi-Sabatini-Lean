@@ -149,7 +149,7 @@ def ofQuasiprimitive
       (Fact.out : Nat.Prime r) (hp j) (hcross j) hqp hcomm
   · intro j hne hnoncomm
     let hj : hard j := ⟨hne, hnoncomm⟩
-    simp only [rank, dif_pos hj]
+    simp only [rank, dite_eq_left hj]
   · intro j _hne _hnoncomm
     exact centerFixedPointFreeAction_pCore_of_quasiprimitive
       (hp j) (hcross j) hqp
@@ -157,23 +157,23 @@ def ofQuasiprimitive
     let hj : hard j := ⟨hne, hnoncomm⟩
     have hs := Classical.choose_spec
       (Classical.choose_spec (rows j hj))
-    simpa only [a, dif_pos hj] using hs.1
+    simpa only [a, dite_eq_left hj] using hs.1
   · intro j hne hnoncomm
     let hj : hard j := ⟨hne, hnoncomm⟩
     have hs := Classical.choose_spec
       (Classical.choose_spec (rows j hj))
-    simpa only [b, dif_pos hj] using hs.2.1
+    simpa only [b, dite_eq_left hj] using hs.2.1
   · intro j hne hnoncomm
     let hj : hard j := ⟨hne, hnoncomm⟩
     have hs := Classical.choose_spec
       (Classical.choose_spec (rows j hj))
-    simpa only [a, dif_pos hj] using
+    simpa only [a, dite_eq_left hj] using
       hs.2.2.1
   · intro j hne hnoncomm
     let hj : hard j := ⟨hne, hnoncomm⟩
     have hs := Classical.choose_spec
       (Classical.choose_spec (rows j hj))
-    simpa only [rank, a, b, dif_pos hj] using hs.2.2.2.2
+    simpa only [rank, a, b, dite_eq_left hj] using hs.2.2.2.2
 
 /-! ## Exact mixed family arithmetic -/
 
@@ -510,7 +510,7 @@ theorem six_mul_natCard_commutative_le_of_noncommutative
     6 * Nat.card ((pCore (p j.1) K).map K.subtype) ≤ r ^ d := by
   let P := (pCore (p j.1) K).map K.subtype
   let N := r ^ d
-  letI : Fact (p j.1).Prime := ⟨hp j.1⟩
+  let : Fact (p j.1).Prime := ⟨hp j.1⟩
   have hNodd : Odd N :=
     ((Fact.out : Nat.Prime r).odd_of_ne_two hrTwo).pow
   have hdPos : 0 < d := by
@@ -629,7 +629,7 @@ theorem sum_ncard_nonregularVectors_add_pCoreOrbit_lt
     simpa only [O] using ncard_orbit_le_natCard P₀ c
   cases isEmpty_or_nonempty A with
   | inl hA =>
-      letI : IsEmpty A := hA
+      let : IsEmpty A := hA
       have hSzero : S = 0 := by simp [S]
       have hFhalf : Fintype.card F ≤ N / 2 := by
         simpa [F, N] using R.commutative_count_le_half hrTwo hp hpTwo hinj
@@ -675,7 +675,7 @@ theorem sum_ncard_nonregularVectors_add_pCoreOrbit_lt
       have hNform := Nat.two_mul_odd_div_two hNmod
       omega
   | inr hA =>
-      letI : Nonempty A := hA
+      let : Nonempty A := hA
       let jE : A := Classical.choice hA
       have hSpos : 0 < S := by
         have hBpos : 0 < R.operatorBound jE.1 := by
