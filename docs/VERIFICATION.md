@@ -24,6 +24,12 @@ transitive axioms must belong to the allowlist `propext`, `Classical.choice`
 and `Quot.sound`. In particular, `sorryAx` and extra mathematical axioms
 are rejected.
 
+These are Lean's standard axioms of propositional extensionality, classical
+choice and quotient soundness. The audit concerns each result's full proof
+dependency closure, so it also excludes unfinished proofs in dependencies
+and axioms introduced to trust native computations. The claim is about the
+formal proofs, rather than a text search for the word `sorry`.
+
 The certificate reproduction command checks exact source bytes. Lean then
 checks the finite calculations as part of the proofs; Python is not trusted
 to establish any mathematical assertion.

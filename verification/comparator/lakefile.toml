@@ -1,0 +1,25 @@
+name = "PaperComparator"
+version = "0.1.0"
+defaultTargets = ["Challenge", "Solution"]
+
+[leanOptions]
+relaxedAutoImplicit = false
+
+[[require]]
+name = "LisiSabatini"
+path = ".lake/packages/LisiSabatini"
+
+[[lean_lib]]
+name = "Definitions"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"
+
+[[lean_lib]]
+name = "OddOrderChallenge"
+
+[[lean_lib]]
+name = "OddOrderSolution"

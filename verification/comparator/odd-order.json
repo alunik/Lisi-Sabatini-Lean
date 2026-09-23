@@ -1,0 +1,15 @@
+{
+  "challenge_module": "OddOrderChallenge",
+  "solution_module": "OddOrderSolution",
+  "theorem_names": [
+    "PaperVerification.oddOrderCore",
+    "PaperVerification.oddOrderMinimal",
+    "PaperVerification.oddOrderNilpotent",
+    "PaperVerification.oddOrderMixedNilpotent"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ]
+}
